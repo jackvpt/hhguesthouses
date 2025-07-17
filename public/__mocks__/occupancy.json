@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "occupant": "John Doe",
+    "house": "32",
+    "room": "A",
+    "startDate": "2025-07-17",
+    "endDate": "2025-07-24"
+  },
+  {
+    "id": 2,
+    "occupant": "Jane Smith",
+    "house": "36",
+    "room": "B",
+    "startDate": "2025-08-01",
+    "endDate": "2025-08-15"
+  }
+]

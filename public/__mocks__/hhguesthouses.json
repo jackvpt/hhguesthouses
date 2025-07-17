@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "house": "32",
+    "rooms": [
+      { "name": "A", "description": "Downstairs" },
+      { "name": "B", "description": "Upstairs street" },
+      { "name": "C", "description": "Upstairs parking" },
+      { "name": "D", "description": "Harry Potter" }
+    ]
+  },
+  {
+    "id": 2,
+    "house": "36",
+    "rooms": [
+      { "name": "A", "description": "Downstairs" },
+      { "name": "B", "description": "Upstairs street" },
+      { "name": "C", "description": "Upstairs parking" },
+      { "name": "D", "description": "Harry Potter" }
+    ]
+  }
+]
