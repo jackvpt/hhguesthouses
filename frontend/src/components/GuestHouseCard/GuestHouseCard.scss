@@ -1,0 +1,25 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.guest-house-card {
+  background-color: $primary-color-2;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid $text-color-1;
+
+    h2 {
+      flex: 1;
+      text-align: center;
+      margin: 0;
+    }
+
+    &-icon {
+      flex-shrink: 0;
+    }
+  }
+}

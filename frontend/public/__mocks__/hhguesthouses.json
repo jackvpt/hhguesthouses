@@ -1,0 +1,20 @@
+[
+  {
+    "name": "32 Californiestraat",
+    "rooms": [
+      { "name": "A", "description": "Downstairs" },
+      { "name": "B", "description": "Upstairs street" },
+      { "name": "C", "description": "Upstairs parking" },
+      { "name": "D", "description": "Harry Potter" }
+    ]
+  },
+  {
+    "name": "36 Californiestraat",
+    "rooms": [
+      { "name": "A", "description": "Downstairs" },
+      { "name": "B", "description": "Upstairs street" },
+      { "name": "C", "description": "Upstairs parking" },
+      { "name": "D", "description": "Harry Potter" }
+    ]
+  }
+]

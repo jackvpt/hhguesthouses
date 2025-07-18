@@ -1,0 +1,8 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.display {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
