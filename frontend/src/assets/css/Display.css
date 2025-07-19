@@ -1,2 +1,7 @@
 /* Responsive */
-/* Responsive *//*# sourceMappingURL=Display.css.map */
+/* Responsive */
+.display {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}/*# sourceMappingURL=Display.css.map */

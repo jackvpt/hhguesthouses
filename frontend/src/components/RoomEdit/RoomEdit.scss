@@ -1,0 +1,75 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.room-edit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: $text-color-1;
+  padding: 10px;
+  border-bottom: 1px solid $text-color-1;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__select {
+    background-color: $text-color-1;
+    color: $primary-color-2;
+
+    .MuiSelect-select {
+      padding: 8px;
+    }
+
+    &:hover {
+      background-color: $primary-color-4;
+    }
+  }
+
+  &__arrival-date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    &-label {
+      color: $text-color-3;
+    }
+    &-toggle-group {
+      .MuiToggleButton-root {
+        &.Mui-selected {
+          background-color: $primary-color-2;
+          color: $text-color-1;
+        }
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+
+    .btn_cancel {
+      background-color: $primary-color-3;
+
+      &:hover {
+        background-color: darken($color: $primary-color-3, $amount: 10%);
+      }
+    }
+
+    .btn_add {
+      background-color: $secondary-color-1;
+      color: $text-color-1;
+      &:hover {
+        background-color: darken($color: $secondary-color-1, $amount: 10%);
+      }
+    }
+  }
+}

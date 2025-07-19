@@ -7,5 +7,6 @@ const occupanciesCtrl = require("../controllers/occupancies")
 
 /** Set routes */
 router.get("/", occupanciesCtrl.getAllOccupancies)
+router.post("/",multer().none(), occupanciesCtrl.createOccupancy)
 
 module.exports = router

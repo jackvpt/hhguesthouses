@@ -34,5 +34,29 @@ export function getWeekRangeFromDate(date) {
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
 
-  return { monday, sunday }
+  return { monday: monday.toISOString(), sunday: sunday.toISOString() }
+}
+
+/**
+ * Convert a date string to a formatted string in "DD/MM" format.
+ * @param {String} dateString
+ * @returns {String}
+ */
+export function formatDateToDDMM(dateString) {
+  const date = new Date(dateString)
+  const day = String(date.getDate()).padStart(2, "0")
+  const month = String(date.getMonth() + 1).padStart(2, "0") // Mois de 0 à 11
+  return `${day}/${month}`
+}
+
+/**
+ * Add a number of days to a given date and return the new Date.
+ * @param {Date} date - The base date
+ * @param {number} days - Number of days to add (can be negative)
+ * @returns {Date}
+ */
+export function addDays(date, days) {
+  const result = new Date(date)
+  result.setDate(result.getDate() + days)
+  return result
 }

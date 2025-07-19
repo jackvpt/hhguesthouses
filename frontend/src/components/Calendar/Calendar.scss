@@ -35,5 +35,12 @@
       font-size: 0.8rem;
       height: 15px;
     }
+
+    &__occupancy{
+      padding-top:10px;
+      display: flex;
+      flex-direction: column;
+      gap:14px
+    }
   }
 }

@@ -8,6 +8,8 @@ const initialState = {
   referenceDate: referenceDateISO,
   weekNumber: getWeekNumber(referenceDate),
   weekRange: getWeekRangeFromDate(referenceDate),
+
+  roomEdit:null
 }
 
 const parametersSlice = createSlice({
@@ -28,6 +30,10 @@ const parametersSlice = createSlice({
       state.referenceDate = current.toISOString()
       state.weekNumber = getWeekNumber(current)
       state.weekRange = getWeekRangeFromDate(current)
+    },
+
+    setRoomEdit: (state, action) => {
+      state.roomEdit = action.payload
     },
   },
 })

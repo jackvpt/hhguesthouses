@@ -1,0 +1,17 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.occupancy-badge{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $secondary-color-1;
+    font-size:0.7rem;
+    padding:5px 10px;
+    min-width: 44px;
+    min-height: 24px;
+}
+
+.occupied{
+    background-color: $secondary-color-2
+}

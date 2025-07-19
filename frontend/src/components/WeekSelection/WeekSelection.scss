@@ -9,6 +9,10 @@
   background-color: $primary-color-2;
   padding: 10px;
 
+  &__button{
+    cursor: pointer;
+  }
+
   &__date {
     display: flex;
     flex-direction: column;

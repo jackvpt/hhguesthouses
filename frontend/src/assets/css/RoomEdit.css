@@ -1,0 +1,60 @@
+/* Responsive */
+/* Responsive */
+.room-edit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #fff;
+}
+.room-edit__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.room-edit__select {
+  background-color: #fff;
+  color: #2c2c2c;
+}
+.room-edit__select .MuiSelect-select {
+  padding: 8px;
+}
+.room-edit__select:hover {
+  background-color: #d4d4d4;
+}
+.room-edit__arrival-date {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.room-edit__arrival-date-label {
+  color: #2c2c2c;
+}
+.room-edit__arrival-date-toggle-group .MuiToggleButton-root.Mui-selected {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+.room-edit__buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.room-edit__buttons .btn_cancel {
+  background-color: #a1a1a1;
+}
+.room-edit__buttons .btn_cancel:hover {
+  background-color: #888888;
+}
+.room-edit__buttons .btn_add {
+  background-color: #01b121;
+  color: #fff;
+}
+.room-edit__buttons .btn_add:hover {
+  background-color: #017e18;
+}/*# sourceMappingURL=RoomEdit.css.map */

@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 
 /** Create a mongoose Schema */
 const OccupancySchema = mongoose.Schema({
-  OccupantCode: { type: String, required: true },
+  occupantCode: { type: String, required: true },
   house: { type: String, required: true },
   room: { type: String, required: true },
   startDate: { type: Date, required: true },

@@ -1,0 +1,26 @@
+/* Responsive */
+/* Responsive */
+.week-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  background-color: #2c2c2c;
+  padding: 10px;
+}
+.week-selection__button {
+  cursor: pointer;
+}
+.week-selection__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.week-selection__date-weekNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.week-selection__date-range {
+  font: size 0.75rem;
+}/*# sourceMappingURL=WeekSelection.css.map */
