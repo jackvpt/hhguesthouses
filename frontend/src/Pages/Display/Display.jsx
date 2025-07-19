@@ -21,8 +21,8 @@ const Display = () => {
     <div className="display">
       <WeekSelection />
 
-      {guestHouses.map((guestHouse) => (
-        <GuestHouseCard key={guestHouse.id} guestHouse={guestHouse} />
+      {guestHouses.map((guestHouse, index) => (
+        <GuestHouseCard key={index} guestHouse={guestHouse} />
       ))}
     </div>
   )

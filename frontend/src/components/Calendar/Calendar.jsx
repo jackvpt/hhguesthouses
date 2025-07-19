@@ -8,7 +8,7 @@ const Calendar = ({ guestHouse }) => {
     <div className="calendar">
       <div className="calendar__rooms">
         {rooms.map((room) => (
-          <div key={room.id} className="calendar__rooms__room">
+          <div key={room.name} className="calendar__rooms__room">
             <p className="calendar__room-name">{room.name}</p>
           </div>
         ))}

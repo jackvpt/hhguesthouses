@@ -1,8 +1,8 @@
 /**
  * Utility function to get the ISO week number of a given date.
  * The week starts on Monday and the first week of the year is the one containing the first Thursday.
- * @param {Date} date 
- * @returns 
+ * @param {Date} date
+ * @returns
  */
 export function getWeekNumber(date) {
   const d = new Date(
@@ -16,22 +16,20 @@ export function getWeekNumber(date) {
 }
 
 /**
- * Get the start and end dates of the week for a given week number and year.
- * @param {Number} weekNumber 
- * @param {Number} year 
- * @returns {Object} An object containing the start (Monday) and end (Sunday) dates of the week.
- * The dates are in the local timezone.
+ * Get the start (Monday) and end (Sunday) dates of the week for a given date.
+ * @param {Date} date - The reference date
+ * @returns {{ monday: Date, sunday: Date }}
  */
-export function getWeekRangeFromWeekNumber(weekNumber, year) {
-  const simple = new Date(year, 0, 4)
+export function getWeekRangeFromDate(date) {
+  const ref = new Date(date) // copy to avoid mutating input
 
-  const dayOfWeek = simple.getDay() || 7
+  const day = ref.getDay() // Sunday=0, Monday=1, ..., Saturday=6
 
-  const mondayOfWeek1 = new Date(simple)
-  mondayOfWeek1.setDate(simple.getDate() - dayOfWeek + 1)
+  // Calculate the difference to Monday (ISO: Monday is the first day)
+  const diffToMonday = day === 0 ? -6 : 1 - day
 
-  const monday = new Date(mondayOfWeek1)
-  monday.setDate(mondayOfWeek1.getDate() + (weekNumber - 1) * 7)
+  const monday = new Date(ref)
+  monday.setDate(ref.getDate() + diffToMonday)
 
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
