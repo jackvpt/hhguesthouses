@@ -31,7 +31,7 @@ const GuestHouseCard = ({ guestHouse }) => {
       </div>
 
       <div className={`guest-house-card__edit ${isEditMode ? "is-open" : ""}`}>
-        <RoomEdit />
+        <RoomEdit guestHouse={guestHouse} />
       </div>
 
       <div className="guest-house-card__calendar">

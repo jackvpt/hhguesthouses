@@ -4,12 +4,40 @@ import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import { useState } from "react"
-import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material"
+import {
+  Alert,
+  Button,
+  Snackbar,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { addDays } from "../../utils/dateTools"
+import { useDispatch } from "react-redux"
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
+import { postOccupancy } from "../../api/occupancies"
 
-const RoomEdit = () => {
+const RoomEdit = ({ guestHouse }) => {
+  const queryClient = useQueryClient()
+  const dispatch = useDispatch()
+
+  const addMutation = useMutation({
+    mutationFn: postOccupancy,
+    onSuccess: () => {
+      queryClient.invalidateQueries("occupancies")
+      setToastMessage("Occupancy added successfully")
+      setToastOpen(true)
+      handleCancelClick()
+    },
+    onError: (error) => {
+      console.error("Erreur lors de la soumission :", error)
+    },
+  })
+
+  const [toastOpen, setToastOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
+
   const [name, setName] = useState("")
   const [room, setRoom] = useState("")
   const [arrivalDate, setArrivalDate] = useState("today")
@@ -31,6 +59,35 @@ const RoomEdit = () => {
 
   const handleDepartureDateChange = (newValue) => {
     setDepartureDate(newValue)
+  }
+
+  const handleCancelClick = () => {
+    dispatch({
+      type: "parameters/setRoomEdit",
+      payload: null,
+    })
+  }
+
+  const handleAddClick = () => {
+    const arrivalDateValue =
+      arrivalDate === "today"
+        ? new Date()
+        : arrivalDate === "tomorrow"
+        ? addDays(new Date(), 1)
+        : null
+    const occupancyData = {
+      house: guestHouse.name,
+      occupantCode: name,
+      room,
+      startDate: arrivalDateValue,
+      endDate: departureDate,
+    }
+    addMutation.mutate(occupancyData)
+  }
+
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") return
+    setToastOpen(false)
   }
 
   return (
@@ -84,9 +141,11 @@ const RoomEdit = () => {
             label="Room"
             onChange={handleRoomChange}
           >
-            <MenuItem value={"A"}>A</MenuItem>
-            <MenuItem value={"B"}>B</MenuItem>
-            <MenuItem value={"C"}>C</MenuItem>
+            {guestHouse.rooms.map((room) => (
+              <MenuItem key={room.name} value={room.name}>
+                {room.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -108,9 +167,38 @@ const RoomEdit = () => {
         </LocalizationProvider>
       </div>
       <div className="room-edit__buttons">
-        <Button className="btn_cancel" sx={{ m: 1, minWidth: 120 }} variant="contained">Cancel</Button>
-        <Button className="btn_add" sx={{ m: 1, minWidth: 120 }} variant="contained">Add</Button>
+        <Button
+          className="btn_cancel"
+          sx={{ m: 1, minWidth: 120 }}
+          variant="contained"
+          onClick={handleCancelClick}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="btn_add"
+          sx={{ m: 1, minWidth: 120 }}
+          variant="contained"
+          onClick={handleAddClick}
+        >
+          Add
+        </Button>
       </div>
+      {/* Toast notification for success messages */}
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={3000}
+        onClose={handleToastClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleToastClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {toastMessage}
+        </Alert>
+      </Snackbar>
     </section>
   )
 }
