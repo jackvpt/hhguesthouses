@@ -7,6 +7,7 @@ const mongoose = require("mongoose")
 const rateLimiter = require("./middleware/rate-limiter")
 const guestHousesRoutes = require("./routes/guesthouses")
 const occupanciesRoutes = require("./routes/occupancies")
+const usersRoutes = require("./routes/users")
 
 /** Create an express application */
 const app = express()
@@ -43,5 +44,8 @@ app.use("/api/guesthouses", rateLimiter[1], guestHousesRoutes)
 
 /** Occupancies routes */
 app.use("/api/occupancies", rateLimiter[1], occupanciesRoutes)
+
+/** Users routes */
+app.use("/api/users", rateLimiter[1], usersRoutes)
 
 module.exports = app

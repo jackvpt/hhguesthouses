@@ -17,6 +17,7 @@ const WeekSelection = () => {
         className="week-selection__button"
         alt="previous"
         width={12}
+        height={24}
         onClick={() => dispatch({ type: "parameters/previousWeek" })}
       />
       <div className="week-selection__date">
@@ -31,6 +32,7 @@ const WeekSelection = () => {
         className="week-selection__button"
         alt="next"
         width={12}
+        height={24}
         onClick={() => dispatch({ type: "parameters/nextWeek" })}
       />
     </div>

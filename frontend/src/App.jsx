@@ -2,6 +2,7 @@ import Router from "./router/Router"
 import { useQuery } from "@tanstack/react-query"
 import { fetchAllGuestHouses } from "./api/guesthouses"
 import { fetchAllOccupancies } from "./api/occupancies"
+import { fetchAllUsers } from "./api/users"
 
 function App() {
   useQuery({
@@ -12,6 +13,11 @@ function App() {
   useQuery({
     queryKey: ["occupancies"],
     queryFn: fetchAllOccupancies,
+  })
+
+  useQuery({
+    queryKey: ["users"],
+    queryFn: fetchAllUsers,
   })
 
   return (

@@ -18,10 +18,16 @@
       margin: 0;
     }
 
-    &-icon {
-      flex-shrink: 0;
-      cursor: pointer;
-    }
+.guest-house-card__header-icon {
+  color: $text-color-1;
+}
+
+.guest-house-card__header-icon:hover {
+  color: $secondary-color-3; 
+}
+
+
+
   }
 
   &__edit {

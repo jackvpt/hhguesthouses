@@ -1,8 +1,13 @@
 import "./GuestHouseCard.scss"
-import addIcon from "../../assets/images/add.png"
 import Calendar from "../Calendar/Calendar"
 import RoomEdit from "../RoomEdit/RoomEdit"
+import IconButton from "@mui/material/IconButton"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDispatch, useSelector } from "react-redux"
+import {
+  faSquarePlus,
+  faSquareCaretUp,
+} from "@fortawesome/free-solid-svg-icons"
 
 const GuestHouseCard = ({ guestHouse }) => {
   const dispatch = useDispatch()
@@ -21,13 +26,18 @@ const GuestHouseCard = ({ guestHouse }) => {
     <section className="guest-house-card">
       <div className="guest-house-card__header">
         <h2>{guestHouse.name}</h2>
-        <img
-          src={addIcon}
-          alt="Add"
+
+        <IconButton
           className="guest-house-card__header-icon"
-          width={24}
+          aria-label="add"
           onClick={handleAddClick}
-        />
+        >
+          {isEditMode ? (
+            <FontAwesomeIcon icon={faSquareCaretUp} size="xl" />
+          ) : (
+            <FontAwesomeIcon icon={faSquarePlus} size="xl" />
+          )}
+        </IconButton>
       </div>
 
       <div className={`guest-house-card__edit ${isEditMode ? "is-open" : ""}`}>

@@ -13,10 +13,11 @@ import {
 } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
-import { addDays } from "../../utils/dateTools"
+import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 import { useDispatch } from "react-redux"
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
-import { postOccupancy } from "../../api/occupancies"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { fetchAllOccupancies, postOccupancy } from "../../api/occupancies"
+import { fetchAllUsers } from "../../api/users"
 
 const RoomEdit = ({ guestHouse }) => {
   const queryClient = useQueryClient()
@@ -42,6 +43,40 @@ const RoomEdit = ({ guestHouse }) => {
   const [room, setRoom] = useState("")
   const [arrivalDate, setArrivalDate] = useState("today")
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
+  const [roomNotAvailable, setRoomNotAvailable] = useState(false)
+
+  /**
+   * Check if the given date is within the occupancies for the selected room.
+   * @param {Date} date
+   * @returns {boolean}
+   */
+  const isDateInOccupancies = (date) => {
+    return occupancies.some((occ) => {
+      const start = new Date(occ.startDate)
+      const end = new Date(occ.endDate)
+      return (
+        date >= start &&
+        date <= end &&
+        occ.house === guestHouse.name &&
+        occ.room === room
+      )
+    })
+  }
+
+  const dataHasErrors = () => {
+    if (!name || !room) return true
+
+    const arrivalConflict = isDateInOccupancies(
+      arrivalDate === "today"
+        ? new Date()
+        : arrivalDate === "tomorrow"
+        ? addDays(new Date(), 1)
+        : arrivalDate
+    )
+    const departureConflict = isDateInOccupancies(departureDate)
+
+    return arrivalConflict || departureConflict
+  }
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -90,6 +125,28 @@ const RoomEdit = ({ guestHouse }) => {
     setToastOpen(false)
   }
 
+  const {
+    data: occupancies = [],
+    isLoadingOccupancies,
+    errorOccupancies,
+  } = useQuery({
+    queryKey: ["occupancies"],
+    queryFn: fetchAllOccupancies,
+  })
+
+  const {
+    data: users = [],
+    isLoadingUsers,
+    errorUsers,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchAllUsers,
+  })
+
+  if (isLoadingUsers || isLoadingOccupancies) return <div>Loading...</div>
+  if (errorUsers || errorOccupancies)
+    return <div>Error: {errorUsers.message}</div>
+
   return (
     <section className="room-edit is-open">
       <div className="room-edit__row">
@@ -104,9 +161,11 @@ const RoomEdit = ({ guestHouse }) => {
             label="Name"
             onChange={handleNameChange}
           >
-            <MenuItem value={"FPO"}>FPO</MenuItem>
-            <MenuItem value={"VPT"}>VPT</MenuItem>
-            <MenuItem value={"JPG"}>JPG</MenuItem>
+            {users.map((user) => (
+              <MenuItem key={user.code} value={user.code}>
+                {user.code}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -166,6 +225,27 @@ const RoomEdit = ({ guestHouse }) => {
           />
         </LocalizationProvider>
       </div>
+      <Alert
+        severity={dataHasErrors() ? "error" : "success"}
+        sx={{
+          p: 0.5,
+          py: 0,
+          fontSize: "0.75rem",
+          alignItems: "center",
+          lineHeight: 1,
+        }}
+      >
+        {dataHasErrors()
+          ? "Room not available at these dates."
+          : `Room ${room} is available for ${name} from ${
+              arrivalDate === "today"
+                ? "today"
+                : arrivalDate === "tomorrow"
+                ? "tomorrow"
+                : arrivalDate
+            } to ${formatDateToDDMM(departureDate)}.`}
+      </Alert>
+
       <div className="room-edit__buttons">
         <Button
           className="btn_cancel"
@@ -179,6 +259,7 @@ const RoomEdit = ({ guestHouse }) => {
           className="btn_add"
           sx={{ m: 1, minWidth: 120 }}
           variant="contained"
+          disabled={dataHasErrors()}
           onClick={handleAddClick}
         >
           Add
