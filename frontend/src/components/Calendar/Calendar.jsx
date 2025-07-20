@@ -39,7 +39,7 @@ const Calendar = ({ guestHouse }) => {
         dateSearched >= new Date(occ.startDate) &&
         dateSearched <= new Date(occ.endDate)
     )
-    return occupancy?.occupantCode || null
+    return occupancy || null
   }
 
   return (

@@ -1,42 +1,54 @@
-import "./GuestHouseCard.scss"
-import Calendar from "../Calendar/Calendar"
-import RoomEdit from "../RoomEdit/RoomEdit"
+// 👉 MUI Core
 import IconButton from "@mui/material/IconButton"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  faSquarePlus,
-  faSquareCaretUp,
-} from "@fortawesome/free-solid-svg-icons"
 
+// 👉 FontAwesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSquarePlus, faSquareCaretUp } from "@fortawesome/free-solid-svg-icons"
+
+// 👉 Redux hooks
+import { useDispatch, useSelector } from "react-redux"
+
+// 👉 Internal components
+import RoomEdit from "../RoomEdit/RoomEdit"
+import Calendar from "../Calendar/Calendar"
+
+// 👉 Styles
+import "./GuestHouseCard.scss"
+
+/**
+ * GuestHouseCard component.
+ * Displays a guest house with its name, a toggle button to open the RoomEdit form,
+ * and a calendar showing current occupancies.
+ *
+ * @param {Object} props
+ * @param {Object} props.guestHouse - The guest house details including name and rooms.
+ * @returns {JSX.Element}
+ */
 const GuestHouseCard = ({ guestHouse }) => {
   const dispatch = useDispatch()
-
   const roomEdit = useSelector((state) => state.parameters.roomEdit)
-  const isEditMode = roomEdit && roomEdit === guestHouse
+  const isEditMode = roomEdit === guestHouse
 
-  const handleAddClick = () => {
-    const payload = isEditMode ? null : guestHouse
+  const handleToggleEdit = () => {
     dispatch({
       type: "parameters/setRoomEdit",
-      payload: payload,
+      payload: isEditMode ? null : guestHouse,
     })
   }
+
   return (
     <section className="guest-house-card">
       <div className="guest-house-card__header">
         <h2>{guestHouse.name}</h2>
-
         <IconButton
           className="guest-house-card__header-icon"
-          aria-label="add"
-          onClick={handleAddClick}
+          aria-label={isEditMode ? "close edit" : "open edit"}
+          onClick={handleToggleEdit}
         >
-          {isEditMode ? (
-            <FontAwesomeIcon icon={faSquareCaretUp} size="xl" />
-          ) : (
-            <FontAwesomeIcon icon={faSquarePlus} size="xl" />
-          )}
+          <FontAwesomeIcon
+            icon={isEditMode ? faSquareCaretUp : faSquarePlus}
+            size="xl"
+          />
         </IconButton>
       </div>
 

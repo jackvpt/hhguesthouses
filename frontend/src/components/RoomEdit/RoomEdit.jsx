@@ -1,28 +1,53 @@
+// 📁 CSS imports
 import "./RoomEdit.scss"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import FormControl from "@mui/material/FormControl"
-import Select from "@mui/material/Select"
+
+// 📦 React imports
 import { useState } from "react"
+
+// 🧩 MUI Core imports
 import {
   Alert,
   Button,
   Snackbar,
   ToggleButton,
   ToggleButtonGroup,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
 } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
+
+// 🧰 Local tools
 import { addDays, formatDateToDDMM } from "../../utils/dateTools"
+
+// 🗃️ React-Redux & React-Query
 import { useDispatch } from "react-redux"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+
+// 🌐 API calls
 import { fetchAllOccupancies, postOccupancy } from "../../api/occupancies"
 import { fetchAllUsers } from "../../api/users"
 
+/**
+ * Component for editing room occupancy details.
+ * Displays a form to add or edit occupancy details for a room in a guest house.
+ *
+ * @component
+ * @param {Object} props
+ * @param {Object} props.guestHouse - The guest house data containing rooms.
+ * @param {string} props.guestHouse.name - Name of the guest house.
+ * @param {Array<{name: string}>} props.guestHouse.rooms - List of rooms in the guest house.
+ * @returns {JSX.Element}
+ */
 const RoomEdit = ({ guestHouse }) => {
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
 
+  /**
+   * Mutation to add a new occupancy.
+   */
   const addMutation = useMutation({
     mutationFn: postOccupancy,
     onSuccess: () => {
@@ -32,23 +57,21 @@ const RoomEdit = ({ guestHouse }) => {
       handleCancelClick()
     },
     onError: (error) => {
-      console.error("Erreur lors de la soumission :", error)
+      console.error("Error while submitting occupancy:", error)
     },
   })
 
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-
   const [name, setName] = useState("")
   const [room, setRoom] = useState("")
   const [arrivalDate, setArrivalDate] = useState("today")
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
-  const [roomNotAvailable, setRoomNotAvailable] = useState(false)
 
   /**
-   * Check if the given date is within the occupancies for the selected room.
-   * @param {Date} date
-   * @returns {boolean}
+   * Check if the given date overlaps with an existing occupancy.
+   * @param {Date} date - The date to check.
+   * @returns {boolean} True if the date conflicts, false otherwise.
    */
   const isDateInOccupancies = (date) => {
     return occupancies.some((occ) => {
@@ -63,6 +86,10 @@ const RoomEdit = ({ guestHouse }) => {
     })
   }
 
+  /**
+   * Check if form data contains any errors.
+   * @returns {boolean} True if there are errors, false otherwise.
+   */
   const dataHasErrors = () => {
     if (!name || !room) return true
 
@@ -78,24 +105,44 @@ const RoomEdit = ({ guestHouse }) => {
     return arrivalConflict || departureConflict
   }
 
+  /**
+   * Handle occupant name change.
+   * @param {React.ChangeEvent<HTMLInputElement>} event
+   */
   const handleNameChange = (event) => {
     setName(event.target.value)
   }
 
+  /**
+   * Handle room selection change.
+   * @param {React.ChangeEvent<HTMLInputElement>} event
+   */
   const handleRoomChange = (event) => {
     setRoom(event.target.value)
   }
 
+  /**
+   * Handle arrival date selection (Today/Tomorrow).
+   * @param {React.MouseEvent<HTMLElement>} event
+   * @param {string} newValue
+   */
   const handleArrivalDateChange = (event, newValue) => {
     if (newValue !== null) {
       setArrivalDate(newValue)
     }
   }
 
+  /**
+   * Handle departure date change.
+   * @param {Date | null} newValue
+   */
   const handleDepartureDateChange = (newValue) => {
     setDepartureDate(newValue)
   }
 
+  /**
+   * Reset and close the room edit form.
+   */
   const handleCancelClick = () => {
     dispatch({
       type: "parameters/setRoomEdit",
@@ -103,6 +150,9 @@ const RoomEdit = ({ guestHouse }) => {
     })
   }
 
+  /**
+   * Trigger the add occupancy mutation.
+   */
   const handleAddClick = () => {
     const arrivalDateValue =
       arrivalDate === "today"
@@ -110,6 +160,7 @@ const RoomEdit = ({ guestHouse }) => {
         : arrivalDate === "tomorrow"
         ? addDays(new Date(), 1)
         : null
+
     const occupancyData = {
       house: guestHouse.name,
       occupantCode: name,
@@ -117,14 +168,21 @@ const RoomEdit = ({ guestHouse }) => {
       startDate: arrivalDateValue,
       endDate: departureDate,
     }
+
     addMutation.mutate(occupancyData)
   }
 
+  /**
+   * Close the success toast notification.
+   * @param {Event} event
+   * @param {string} reason
+   */
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") return
     setToastOpen(false)
   }
 
+  // React Query: Fetch occupancies
   const {
     data: occupancies = [],
     isLoadingOccupancies,
@@ -134,6 +192,7 @@ const RoomEdit = ({ guestHouse }) => {
     queryFn: fetchAllOccupancies,
   })
 
+  // React Query: Fetch users
   const {
     data: users = [],
     isLoadingUsers,
@@ -145,7 +204,7 @@ const RoomEdit = ({ guestHouse }) => {
 
   if (isLoadingUsers || isLoadingOccupancies) return <div>Loading...</div>
   if (errorUsers || errorOccupancies)
-    return <div>Error: {errorUsers.message}</div>
+    return <div>Error: {errorUsers?.message || errorOccupancies?.message}</div>
 
   return (
     <section className="room-edit is-open">
