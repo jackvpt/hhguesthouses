@@ -2,7 +2,7 @@
 import "./RoomEdit.scss"
 
 // 📦 React imports
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // 🧩 MUI Core imports
 import {
@@ -15,6 +15,7 @@ import {
   MenuItem,
   FormControl,
   Select,
+  TextField,
 } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -23,7 +24,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 
 // 🗃️ React-Redux & React-Query
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 // 🌐 API calls
@@ -61,12 +62,24 @@ const RoomEdit = ({ guestHouse }) => {
     },
   })
 
+  const selectedOccupancy = useSelector(
+    (state) => state.parameters.selectedOccupancy
+  )
+
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
   const [name, setName] = useState("")
-  const [room, setRoom] = useState("")
+  const [room, setRoom] = useState(guestHouse.rooms[0]?.name || "")
   const [arrivalDate, setArrivalDate] = useState("today")
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
+
+  useEffect(() => {
+    setName(selectedOccupancy?.occupantCode || "")
+    setRoom(selectedOccupancy?.room || "")
+    setDepartureDate(
+      selectedOccupancy ? new Date(selectedOccupancy.endDate) : null
+    )
+  }, [selectedOccupancy])
 
   /**
    * Check if the given date overlaps with an existing occupancy.
@@ -111,6 +124,15 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleNameChange = (event) => {
     setName(event.target.value)
+    if (selectedOccupancy) {
+      dispatch({
+        type: "parameters/setSelectedOccupancy",
+        payload: {
+          ...selectedOccupancy,
+          occupantCode: event.target.value,
+        },
+      })
+    }
   }
 
   /**
@@ -119,6 +141,15 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleRoomChange = (event) => {
     setRoom(event.target.value)
+    if (selectedOccupancy) {
+      dispatch({
+        type: "parameters/setSelectedOccupancy",
+        payload: {
+          ...selectedOccupancy,
+          room: event.target.value,
+        },
+      })
+    }
   }
 
   /**
@@ -129,6 +160,15 @@ const RoomEdit = ({ guestHouse }) => {
   const handleArrivalDateChange = (event, newValue) => {
     if (newValue !== null) {
       setArrivalDate(newValue)
+      if (selectedOccupancy) {
+        dispatch({
+          type: "parameters/setSelectedOccupancy",
+          payload: {
+            ...selectedOccupancy,
+            startDate: newValue,
+          },
+        })
+      }
     }
   }
 
@@ -138,6 +178,15 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleDepartureDateChange = (newValue) => {
     setDepartureDate(newValue)
+    if (selectedOccupancy) {
+      dispatch({
+        type: "parameters/setSelectedOccupancy",
+        payload: {
+          ...selectedOccupancy,
+          endDate: newValue,
+        },
+      })
+    }
   }
 
   /**
@@ -148,29 +197,39 @@ const RoomEdit = ({ guestHouse }) => {
       type: "parameters/setRoomEdit",
       payload: null,
     })
+    dispatch({
+      type: "parameters/setSelectedOccupancy",
+      payload: null,
+    })
+  }
+
+  /**
+   * Convert the arrival date to a Date object.
+   */
+  const convertArrivalDate = () => {
+    if (selectedOccupancy) return new Date(selectedOccupancy.startDate)
+    if (arrivalDate === "today") return new Date()
+    if (arrivalDate === "tomorrow") return addDays(new Date(), 1)
   }
 
   /**
    * Trigger the add occupancy mutation.
    */
   const handleAddClick = () => {
-    const arrivalDateValue =
-      arrivalDate === "today"
-        ? new Date()
-        : arrivalDate === "tomorrow"
-        ? addDays(new Date(), 1)
-        : null
-
     const occupancyData = {
       house: guestHouse.name,
       occupantCode: name,
       room,
-      startDate: arrivalDateValue,
+      startDate: convertArrivalDate(),
       endDate: departureDate,
     }
 
     addMutation.mutate(occupancyData)
   }
+
+  const handleModifyClick = () => {}
+
+  const handleDeleteClick=()=>{}
 
   /**
    * Close the success toast notification.
@@ -246,6 +305,16 @@ const RoomEdit = ({ guestHouse }) => {
               Tomorrow
             </ToggleButton>
           </ToggleButtonGroup>
+          <TextField
+            id="outlined-basic"
+            value={formatDateToDDMM(convertArrivalDate())}
+            variant="outlined"
+            size="small"
+            slotProps={{
+              readOnly: true,
+            }}
+            sx={{ width: 80 }}
+          />
         </div>
 
         {/** ROOM NAME */}
@@ -296,7 +365,7 @@ const RoomEdit = ({ guestHouse }) => {
       >
         {dataHasErrors()
           ? "Room not available at these dates."
-          : `Room ${room} is available for ${name} from ${
+          : `Room ${room} is available from ${
               arrivalDate === "today"
                 ? "today"
                 : arrivalDate === "tomorrow"
@@ -314,15 +383,37 @@ const RoomEdit = ({ guestHouse }) => {
         >
           Cancel
         </Button>
-        <Button
-          className="btn_add"
-          sx={{ m: 1, minWidth: 120 }}
-          variant="contained"
-          disabled={dataHasErrors()}
-          onClick={handleAddClick}
-        >
-          Add
-        </Button>
+        {selectedOccupancy && (
+          <Button
+            className="btn_modify"
+            sx={{ m: 1, minWidth: 120 }}
+            variant="contained"
+            onClick={handleModifyClick}
+          >
+            Modify
+          </Button>
+        )}
+        {selectedOccupancy && (
+          <Button
+            className="btn_delete"
+            sx={{ m: 1, minWidth: 120 }}
+            variant="contained"
+            onClick={handleDeleteClick}
+          >
+            Delete
+          </Button>
+        )}
+        {!selectedOccupancy && (
+          <Button
+            className="btn_add"
+            sx={{ m: 1, minWidth: 120 }}
+            variant="contained"
+            disabled={dataHasErrors()}
+            onClick={handleAddClick}
+          >
+            Add
+          </Button>
+        )}
       </div>
       {/* Toast notification for success messages */}
       <Snackbar

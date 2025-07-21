@@ -9,7 +9,8 @@ const initialState = {
   weekNumber: getWeekNumber(referenceDate),
   weekRange: getWeekRangeFromDate(referenceDate),
 
-  roomEdit:null
+  roomEdit: null,
+  selectedOccupancy: null,
 }
 
 const parametersSlice = createSlice({
@@ -35,9 +36,13 @@ const parametersSlice = createSlice({
     setRoomEdit: (state, action) => {
       state.roomEdit = action.payload
     },
+    setSelectedOccupancy: (state, action) => {
+      state.selectedOccupancy = action.payload
+    },
   },
 })
 
-export const { previousWeek, nextWeek } = parametersSlice.actions
+export const { previousWeek, nextWeek, setRoomEdit, setSelectedOccupancy } =
+  parametersSlice.actions
 
 export default parametersSlice.reducer

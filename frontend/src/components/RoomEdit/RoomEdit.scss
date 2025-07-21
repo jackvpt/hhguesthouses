@@ -67,8 +67,27 @@
     .btn_add {
       background-color: $secondary-color-1;
       color: $text-color-1;
+
       &:hover {
         background-color: darken($color: $secondary-color-1, $amount: 10%);
+      }
+    }
+
+    .btn_modify {
+      background-color: $secondary-color-4;
+      color: $text-color-1;
+
+      &:hover {
+        background-color: darken($color: $secondary-color-4, $amount: 10%);
+      }
+    }
+
+    .btn_delete {
+      background-color: $secondary-color-2;
+      color: $text-color-1;
+
+      &:hover {
+        background-color: darken($color: $secondary-color-2, $amount: 10%);
       }
     }
   }

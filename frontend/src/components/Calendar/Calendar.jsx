@@ -63,6 +63,7 @@ const Calendar = ({ guestHouse }) => {
               {rooms.map((room) => (
                 <OccupancyBadge
                   key={room.name}
+                  guestHouse={guestHouse}
                   occupancy={checkOccupancy(
                     guestHouse.name,
                     room.name,

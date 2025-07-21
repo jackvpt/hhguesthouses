@@ -3,7 +3,10 @@ import IconButton from "@mui/material/IconButton"
 
 // 👉 FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquarePlus, faSquareCaretUp } from "@fortawesome/free-solid-svg-icons"
+import {
+  faSquarePlus,
+  faSquareCaretUp,
+} from "@fortawesome/free-solid-svg-icons"
 
 // 👉 Redux hooks
 import { useDispatch, useSelector } from "react-redux"
@@ -33,6 +36,10 @@ const GuestHouseCard = ({ guestHouse }) => {
     dispatch({
       type: "parameters/setRoomEdit",
       payload: isEditMode ? null : guestHouse,
+    })
+    dispatch({
+      type: "parameters/setSelectedOccupancy",
+      payload: isEditMode && null,
     })
   }
 

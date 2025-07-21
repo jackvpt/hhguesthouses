@@ -1,12 +1,18 @@
 import "./OccupancyBadge.scss"
 import { useDispatch } from "react-redux"
 
-const OccupancyBadge = ({ occupancy }) => {
+const OccupancyBadge = ({ occupancy,guestHouse }) => {
   const dispatch = useDispatch()
+
   const handleClick = () => {
+    if (!occupancy) return
     dispatch({
       type: "parameters/setRoomEdit",
-      payload: occupancy.house,
+      payload: guestHouse,
+    })
+    dispatch({
+      type: "parameters/setSelectedOccupancy",
+      payload: occupancy,
     })
   }
 
