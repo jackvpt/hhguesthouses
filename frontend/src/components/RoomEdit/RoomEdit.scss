@@ -41,6 +41,8 @@
       color: $text-color-3;
     }
     &-toggle-group {
+      display: flex;
+      flex-direction: column;;
       .MuiToggleButton-root {
         &.Mui-selected {
           background-color: $secondary-color-3;

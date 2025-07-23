@@ -31,50 +31,70 @@ const Calendar = ({ guestHouse }) => {
   if (error) return <div>Error: {error.message}</div>
 
   const checkOccupancy = (guestHouse, roomName, date) => {
-    const dateSearched = new Date(date)
-    const occupancy = occupancies.find(
-      (occ) =>
+    const target = new Date(date)
+    target.setHours(0, 0, 0, 0)
+
+    const occupancy = occupancies.find((occ) => {
+      const arrival = new Date(occ.arrivalDate)
+      const departure = new Date(occ.departureDate)
+      arrival.setHours(0, 0, 0, 0)
+      departure.setHours(0, 0, 0, 0)
+
+      return (
         occ.house === guestHouse &&
         occ.room === roomName &&
-        dateSearched >= new Date(occ.startDate) &&
-        dateSearched <= new Date(occ.endDate)
-    )
+        target >= arrival &&
+        target < departure
+      )
+    })
+
     return occupancy || null
   }
 
   return (
     <div className="calendar">
-      <div className="calendar__rooms">
-        {rooms.map((room) => (
-          <div key={room.name} title={room.description} className="calendar__rooms__room">
-            <p className="calendar__room-name">{room.name}</p>
-          </div>
-        ))}
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {days.map((day, dayIndex) => {
+              const date = addDays(firstDayOfWeek, dayIndex)
+              return (
+                <th className="calendar__days" key={day}>
+                  <p>{day}</p>
+                  <p className="calendar__days-date">
+                    {formatDateToDDMM(date)}
+                  </p>
+                </th>
+              )
+            })}
+          </tr>
+        </thead>
 
-      {days.map((day, dayIndex) => {
-        const date = addDays(firstDayOfWeek, dayIndex)
-
-        return (
-          <div key={dayIndex} className="calendar__days">
-            <p className="calendar__days__day">{day}</p>
-            <p className="calendar__days__date">{formatDateToDDMM(date)}</p>
-            <div className="calendar__days__occupancy">
-              {rooms.map((room) => (
-                <OccupancyBadge
-                  key={room.name}
-                  guestHouse={guestHouse}
-                  occupancy={checkOccupancy(
-                    guestHouse.name,
-                    room.name,
-                    date
-                  )}
-                />
-              ))}
-            </div>
-          </div>
-        )
-      })}
+        <tbody>
+          {rooms.map((room) => (
+            <tr key={room.name}>
+              <th>{room.name}</th>
+              {days.map((day, dayIndex) => {
+                const date = addDays(firstDayOfWeek, dayIndex)
+                const occupancy = checkOccupancy(
+                  guestHouse.name,
+                  room.name,
+                  date
+                )
+                return (
+                  <td key={dayIndex}>
+                    <OccupancyBadge
+                      guestHouse={guestHouse}
+                      occupancy={occupancy}
+                    />
+                  </td>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

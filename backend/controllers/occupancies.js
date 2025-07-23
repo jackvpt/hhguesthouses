@@ -35,3 +35,16 @@ exports.createOccupancy = async (req, res) => {
       .json({ error: error.message || "Error adding occupancy!" })
   }
 }
+
+/** DELETE One Occupancy */
+exports.deleteOccupancy = async (req, res) => {
+  try {
+    await Occupancy.deleteOne({ _id: req.params.id })
+    res.status(200).json({ message: "Occupancy deleted successfully!" })
+    console.log(`Occupancy deleted: ${req.params.id}`)
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: error.message || "Error deleting Occupancy!" })
+  }
+}

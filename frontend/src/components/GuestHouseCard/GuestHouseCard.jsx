@@ -29,17 +29,21 @@ import "./GuestHouseCard.scss"
  */
 const GuestHouseCard = ({ guestHouse }) => {
   const dispatch = useDispatch()
-  const roomEdit = useSelector((state) => state.parameters.roomEdit)
-  const isEditMode = roomEdit === guestHouse
+  const houseEditName = useSelector((state) => state.parameters.houseEditName)
+  const isEditMode = houseEditName === guestHouse.name
 
   const handleToggleEdit = () => {
     dispatch({
-      type: "parameters/setRoomEdit",
-      payload: isEditMode ? null : guestHouse,
+      type: "parameters/setHouseEditMode",
+      payload: isEditMode ? null : "add",
+    })
+    dispatch({
+      type: "parameters/setHouseEditName",
+      payload: isEditMode ? null : guestHouse.name,
     })
     dispatch({
       type: "parameters/setSelectedOccupancy",
-      payload: isEditMode && null,
+      payload: null,
     })
   }
 

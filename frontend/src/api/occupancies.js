@@ -26,3 +26,13 @@ export const postOccupancy = async (occupancyData) => {
     throw error
   }
 }
+
+export const deleteOccupancy = async (id) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting occupancy :", error.message);
+    throw error;
+  }
+};

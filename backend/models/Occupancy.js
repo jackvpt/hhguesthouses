@@ -6,8 +6,8 @@ const OccupancySchema = mongoose.Schema({
   occupantCode: { type: String, required: true },
   house: { type: String, required: true },
   room: { type: String, required: true },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
+  arrivalDate: { type: Date, required: true },
+  departureDate: { type: Date, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 })

@@ -2,7 +2,7 @@
 import "./RoomEdit.scss"
 
 // 📦 React imports
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 // 🧩 MUI Core imports
 import {
@@ -28,7 +28,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 // 🌐 API calls
-import { fetchAllOccupancies, postOccupancy } from "../../api/occupancies"
+import {
+  deleteOccupancy,
+  fetchAllOccupancies,
+  postOccupancy,
+} from "../../api/occupancies"
 import { fetchAllUsers } from "../../api/users"
 
 /**
@@ -46,6 +50,26 @@ const RoomEdit = ({ guestHouse }) => {
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
 
+  // React Query: Fetch occupancies
+  const {
+    data: occupancies = [],
+    isLoadingOccupancies,
+    errorOccupancies,
+  } = useQuery({
+    queryKey: ["occupancies"],
+    queryFn: fetchAllOccupancies,
+  })
+
+  // React Query: Fetch users
+  const {
+    data: users = [],
+    isLoadingUsers,
+    errorUsers,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchAllUsers,
+  })
+
   /**
    * Mutation to add a new occupancy.
    */
@@ -62,24 +86,38 @@ const RoomEdit = ({ guestHouse }) => {
     },
   })
 
+  const deleteMutation = useMutation({
+    mutationFn: deleteOccupancy,
+    onSuccess: () => {
+      queryClient.invalidateQueries("occupancies")
+      setToastMessage("Occupancy deleted successfully")
+      setToastOpen(true)
+      handleCancelClick()
+    },
+    onError: (error) => {
+      console.error("Error deleting occupancy:", error)
+    },
+  })
+
+  const houseEditMode = useSelector((state) => state.parameters.houseEditMode)
   const selectedOccupancy = useSelector(
     (state) => state.parameters.selectedOccupancy
   )
 
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-  const [name, setName] = useState("")
+  const [name, setName] = useState(users[0].code || "")
   const [room, setRoom] = useState(guestHouse.rooms[0]?.name || "")
   const [arrivalDate, setArrivalDate] = useState("today")
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
 
-  useEffect(() => {
-    setName(selectedOccupancy?.occupantCode || "")
-    setRoom(selectedOccupancy?.room || "")
-    setDepartureDate(
-      selectedOccupancy ? new Date(selectedOccupancy.endDate) : null
-    )
-  }, [selectedOccupancy])
+  // useEffect(() => {
+  //   setName(selectedOccupancy?.occupantCode || "")
+  //   setRoom(selectedOccupancy?.room || "")
+  //   setDepartureDate(
+  //     selectedOccupancy ? new Date(selectedOccupancy.endDate) : null
+  //   )
+  // }, [selectedOccupancy])
 
   /**
    * Check if the given date overlaps with an existing occupancy.
@@ -88,11 +126,11 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const isDateInOccupancies = (date) => {
     return occupancies.some((occ) => {
-      const start = new Date(occ.startDate)
-      const end = new Date(occ.endDate)
+      const arrival = new Date(occ.arrivalDate)
+      const departure = new Date(occ.departureDate)
       return (
-        date >= start &&
-        date <= end &&
+        date >= arrival &&
+        date <= departure &&
         occ.house === guestHouse.name &&
         occ.room === room
       )
@@ -124,7 +162,7 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleNameChange = (event) => {
     setName(event.target.value)
-    if (selectedOccupancy) {
+    if (houseEditMode === "modify") {
       dispatch({
         type: "parameters/setSelectedOccupancy",
         payload: {
@@ -160,12 +198,12 @@ const RoomEdit = ({ guestHouse }) => {
   const handleArrivalDateChange = (event, newValue) => {
     if (newValue !== null) {
       setArrivalDate(newValue)
-      if (selectedOccupancy) {
+      if (houseEditMode === "modify") {
         dispatch({
           type: "parameters/setSelectedOccupancy",
           payload: {
             ...selectedOccupancy,
-            startDate: newValue,
+            arrivalDate: newValue,
           },
         })
       }
@@ -178,12 +216,12 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleDepartureDateChange = (newValue) => {
     setDepartureDate(newValue)
-    if (selectedOccupancy) {
+    if (houseEditMode === "modify") {
       dispatch({
         type: "parameters/setSelectedOccupancy",
         payload: {
           ...selectedOccupancy,
-          endDate: newValue,
+          departureDate: newValue,
         },
       })
     }
@@ -194,7 +232,11 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleCancelClick = () => {
     dispatch({
-      type: "parameters/setRoomEdit",
+      type: "parameters/setEditMode",
+      payload: null,
+    })
+    dispatch({
+      type: "parameters/setHouseEditName",
       payload: null,
     })
     dispatch({
@@ -207,7 +249,6 @@ const RoomEdit = ({ guestHouse }) => {
    * Convert the arrival date to a Date object.
    */
   const convertArrivalDate = () => {
-    if (selectedOccupancy) return new Date(selectedOccupancy.startDate)
     if (arrivalDate === "today") return new Date()
     if (arrivalDate === "tomorrow") return addDays(new Date(), 1)
   }
@@ -220,8 +261,8 @@ const RoomEdit = ({ guestHouse }) => {
       house: guestHouse.name,
       occupantCode: name,
       room,
-      startDate: convertArrivalDate(),
-      endDate: departureDate,
+      arrivalDate: convertArrivalDate(),
+      departureDate,
     }
 
     addMutation.mutate(occupancyData)
@@ -229,7 +270,9 @@ const RoomEdit = ({ guestHouse }) => {
 
   const handleModifyClick = () => {}
 
-  const handleDeleteClick=()=>{}
+  const handleDeleteClick = () => {
+    deleteMutation.mutate(selectedOccupancy._id)
+  }
 
   /**
    * Close the success toast notification.
@@ -240,26 +283,6 @@ const RoomEdit = ({ guestHouse }) => {
     if (reason === "clickaway") return
     setToastOpen(false)
   }
-
-  // React Query: Fetch occupancies
-  const {
-    data: occupancies = [],
-    isLoadingOccupancies,
-    errorOccupancies,
-  } = useQuery({
-    queryKey: ["occupancies"],
-    queryFn: fetchAllOccupancies,
-  })
-
-  // React Query: Fetch users
-  const {
-    data: users = [],
-    isLoadingUsers,
-    errorUsers,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchAllUsers,
-  })
 
   if (isLoadingUsers || isLoadingOccupancies) return <div>Loading...</div>
   if (errorUsers || errorOccupancies)
@@ -298,10 +321,26 @@ const RoomEdit = ({ guestHouse }) => {
             aria-label="arrival date"
             size="small"
           >
-            <ToggleButton value="today" aria-label="today arrival">
+            <ToggleButton
+              value="today"
+              aria-label="today arrival"
+              size="small"
+              sx={{
+                py: 0,
+                fontSize: "0.75rem",
+              }}
+            >
               Today
             </ToggleButton>
-            <ToggleButton value="tomorrow" aria-label="tomorrow arrival">
+            <ToggleButton
+              value="tomorrow"
+              aria-label="tomorrow arrival"
+              size="small"
+              sx={{
+                py: 0,
+                fontSize: "0.75rem",
+              }}
+            >
               Tomorrow
             </ToggleButton>
           </ToggleButtonGroup>
@@ -310,6 +349,8 @@ const RoomEdit = ({ guestHouse }) => {
             value={formatDateToDDMM(convertArrivalDate())}
             variant="outlined"
             size="small"
+            disabled
+            inputProps={{ style: { textAlign: "center" } }}
             slotProps={{
               readOnly: true,
             }}
@@ -374,6 +415,7 @@ const RoomEdit = ({ guestHouse }) => {
             } to ${formatDateToDDMM(departureDate)}.`}
       </Alert>
 
+      {/** BUTTONS */}
       <div className="room-edit__buttons">
         <Button
           className="btn_cancel"
@@ -383,7 +425,7 @@ const RoomEdit = ({ guestHouse }) => {
         >
           Cancel
         </Button>
-        {selectedOccupancy && (
+        {houseEditMode === "modify" && (
           <Button
             className="btn_modify"
             sx={{ m: 1, minWidth: 120 }}
@@ -393,7 +435,7 @@ const RoomEdit = ({ guestHouse }) => {
             Modify
           </Button>
         )}
-        {selectedOccupancy && (
+        {houseEditMode === "modify" && (
           <Button
             className="btn_delete"
             sx={{ m: 1, minWidth: 120 }}
@@ -403,7 +445,7 @@ const RoomEdit = ({ guestHouse }) => {
             Delete
           </Button>
         )}
-        {!selectedOccupancy && (
+        {houseEditMode === "add" && (
           <Button
             className="btn_add"
             sx={{ m: 1, minWidth: 120 }}
