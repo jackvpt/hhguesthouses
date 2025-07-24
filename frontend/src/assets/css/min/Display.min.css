@@ -1,1 +1,1 @@
-.display{display:flex;flex-direction:column;gap:15px}/*# sourceMappingURL=Display.min.css.map */
+.display{display:flex;flex-direction:column;gap:15px}@media all and (min-width: 768px){.display{gap:20px}}@media all and (min-width: 1024px){.display{gap:25px}}.display__guestHouses{display:flex;flex-direction:column;gap:15px}@media all and (min-width: 768px){.display__guestHouses{gap:20px}}@media all and (min-width: 1024px){.display__guestHouses{flex-direction:row;gap:25px}}/*# sourceMappingURL=Display.min.css.map */

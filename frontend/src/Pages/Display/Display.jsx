@@ -20,10 +20,11 @@ const Display = () => {
   return (
     <div className="display">
       <WeekSelection />
-
-      {guestHouses.map((guestHouse, index) => (
-        <GuestHouseCard key={index} guestHouse={guestHouse} />
-      ))}
+      <div className="display__guestHouses">
+        {guestHouses.map((guestHouse, index) => (
+          <GuestHouseCard key={index} guestHouse={guestHouse} />
+        ))}
+      </div>
     </div>
   )
 }

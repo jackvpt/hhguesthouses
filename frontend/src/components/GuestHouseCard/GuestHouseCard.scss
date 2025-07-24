@@ -7,19 +7,20 @@
   &__header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     padding: 10px;
     border-bottom: 1px solid $text-color-1;
+    position:relative;
 
     h2 {
-      flex: 1;
-      text-align: center;
       margin: 0;
     }
 
     .guest-house-card__header-icon {
       color: $text-color-1;
+      position:absolute;
+      right:10px;
     }
 
     .guest-house-card__header-icon:hover {

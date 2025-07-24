@@ -5,4 +5,27 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  @include responsive-tablet {
+    gap: 20px;
+  }
+
+  @include responsive-desktop {
+    gap: 25px;
+  }
+
+  &__guestHouses {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @include responsive-tablet {
+      gap: 20px;
+    }
+
+    @include responsive-desktop {
+      flex-direction: row;
+      gap: 25px;
+    }
+  }
 }

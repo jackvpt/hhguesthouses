@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Display from "../Pages/Display/Display"
 import Header from "../components/Header/Header"
+import Footer from "../components/Footer/Footer"
 
 /**
  * Application router component using React Router v6.
@@ -19,6 +20,7 @@ export default function Router() {
           <Route path="*" element={<Display />} />
         </Routes>
       </main>
+      <Footer />
     </BrowserRouter>
   )
 }

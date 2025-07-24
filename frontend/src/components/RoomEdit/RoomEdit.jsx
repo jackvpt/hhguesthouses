@@ -140,9 +140,7 @@ const RoomEdit = ({ guestHouse }) => {
   useEffect(() => {
     setName(selectedOccupancy?.occupantCode || users[0]?.code || "")
     setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
-    setArrivalDate(
-      selectedOccupancy?.arrivalDate || new Date()
-    )
+    setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
     setDepartureDate(
       new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
     )
@@ -334,12 +332,12 @@ const RoomEdit = ({ guestHouse }) => {
     <section className="room-edit is-open">
       <div className="room-edit__row">
         {/** OCCUPANT NAME */}
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-select-small-label">Name</InputLabel>
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" className="room-edit__occupantName">
+          <InputLabel id="select-name">Name</InputLabel>
           <Select
             className="room-edit__select"
-            labelId="demo-select-small-label"
-            id="demo-select-small"
+            labelId="select-name"
+            id="select-name"
             value={name}
             label="Name"
             onChange={handleNameChange}
@@ -396,15 +394,16 @@ const RoomEdit = ({ guestHouse }) => {
             slotProps={{
               readOnly: true,
             }}
-            sx={{ width: 80 }}
+            sx={{ width: 70 }}
           />
         </div>
+      </div>
 
+      <div className="room-edit__row">
         {/** ROOM NAME */}
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" className="room-edit__roomName">
           <InputLabel id="demo-select-small-label">Room</InputLabel>
           <Select
-            className="room-edit__select"
             labelId="demo-select-small-label"
             id="demo-select-small"
             value={room}
@@ -427,10 +426,11 @@ const RoomEdit = ({ guestHouse }) => {
             value={departureDate}
             onChange={handleDepartureDateChange}
             format="dd/MM/yyyy"
-            sx={{ width: "auto", minWidth: 150, maxWidth: 180 }}
+            size="small"
             slotProps={{
               textField: {
                 size: "small",
+                className: "room-edit__departure-date-textfield",
               },
             }}
           />

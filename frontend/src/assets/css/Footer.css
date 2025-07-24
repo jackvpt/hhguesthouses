@@ -1,0 +1,11 @@
+/* Responsive */
+/* Responsive */
+footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #d4d4d4;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=Footer.css.map */

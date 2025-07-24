@@ -6,19 +6,22 @@
 .guest-house-card__header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   padding: 10px;
   border-bottom: 1px solid #fff;
+  position: relative;
 }
 .guest-house-card__header h2 {
-  flex: 1;
-  text-align: center;
   margin: 0;
 }
-.guest-house-card__header-icon {
-  flex-shrink: 0;
-  cursor: pointer;
+.guest-house-card__header .guest-house-card__header-icon {
+  color: #fff;
+  position: absolute;
+  right: 10px;
+}
+.guest-house-card__header .guest-house-card__header-icon:hover {
+  color: #6088d8;
 }
 .guest-house-card__edit {
   overflow: hidden;

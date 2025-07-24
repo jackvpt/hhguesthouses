@@ -1,7 +1,18 @@
-header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding:10px;
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+  @include responsive-tablet {
+    padding: 15px 30px;
+  }
+
+  @include responsive-desktop {
+    padding: 20px 30px;
+  }
 }
