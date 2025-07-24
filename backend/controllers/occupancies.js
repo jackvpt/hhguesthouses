@@ -48,3 +48,23 @@ exports.deleteOccupancy = async (req, res) => {
       .json({ error: error.message || "Error deleting Occupancy!" })
   }
 }
+
+/** PUT Update Occupancy */
+exports.updateOccupancy = async (req, res) => {
+  const occupancyObject = req.body
+  occupancyObject.updatedAt = new Date()
+
+  try {
+    const updatedOccupancy = await Occupancy.findByIdAndUpdate(
+      req.params.id,
+      { ...occupancyObject, _id: req.params.id },
+      { new: true }
+    )
+    res.status(200).json(updatedOccupancy)
+    console.log(
+      `Occupancy updated: ${updatedOccupancy._id} - ${updatedOccupancy.house} - ${updatedOccupancy.room}`
+    )
+  } catch (error) {
+    res.status(401).json({ error })
+  }
+}

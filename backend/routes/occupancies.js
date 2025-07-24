@@ -9,5 +9,6 @@ const occupanciesCtrl = require("../controllers/occupancies")
 router.get("/", occupanciesCtrl.getAllOccupancies)
 router.post("/",multer().none(), occupanciesCtrl.createOccupancy)
 router.delete("/:id", occupanciesCtrl.deleteOccupancy)
+router.put("/:id",multer().none(), occupanciesCtrl.updateOccupancy)
 
 module.exports = router

@@ -2,7 +2,7 @@
 import "./RoomEdit.scss"
 
 // 📦 React imports
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // 🧩 MUI Core imports
 import {
@@ -32,6 +32,7 @@ import {
   deleteOccupancy,
   fetchAllOccupancies,
   postOccupancy,
+  updateOccupancy,
 } from "../../api/occupancies"
 import { fetchAllUsers } from "../../api/users"
 
@@ -86,6 +87,9 @@ const RoomEdit = ({ guestHouse }) => {
     },
   })
 
+  /**
+   * Mutation to delete an existing occupancy.
+   */
   const deleteMutation = useMutation({
     mutationFn: deleteOccupancy,
     onSuccess: () => {
@@ -99,6 +103,22 @@ const RoomEdit = ({ guestHouse }) => {
     },
   })
 
+  /**
+   * Mutation to update an existing occupancy.
+   */
+  const updateMutation = useMutation({
+    mutationFn: updateOccupancy,
+    onSuccess: () => {
+      queryClient.invalidateQueries("occupancies")
+      setToastMessage("Occupancy updated successfully")
+      setToastOpen(true)
+      handleCancelClick()
+    },
+    onError: (error) => {
+      console.error("Error updating occupancy:", error)
+    },
+  })
+
   const houseEditMode = useSelector((state) => state.parameters.houseEditMode)
   const selectedOccupancy = useSelector(
     (state) => state.parameters.selectedOccupancy
@@ -107,17 +127,26 @@ const RoomEdit = ({ guestHouse }) => {
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
   const [name, setName] = useState(users[0].code || "")
-  const [room, setRoom] = useState(guestHouse.rooms[0]?.name || "")
-  const [arrivalDate, setArrivalDate] = useState("today")
+  const [room, setRoom] = useState(
+    selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
+  )
+  const [arrivalToggle, setArrivalToggle] = useState("today")
+  const [arrivalDate, setArrivalDate] = useState(new Date())
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
 
-  // useEffect(() => {
-  //   setName(selectedOccupancy?.occupantCode || "")
-  //   setRoom(selectedOccupancy?.room || "")
-  //   setDepartureDate(
-  //     selectedOccupancy ? new Date(selectedOccupancy.endDate) : null
-  //   )
-  // }, [selectedOccupancy])
+  /**
+   * Initialize form fields based on selected occupancy or default values.
+   */
+  useEffect(() => {
+    setName(selectedOccupancy?.occupantCode || users[0]?.code || "")
+    setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
+    setArrivalDate(
+      selectedOccupancy?.arrivalDate || new Date()
+    )
+    setDepartureDate(
+      new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
+    )
+  }, [selectedOccupancy, users, guestHouse.rooms])
 
   /**
    * Check if the given date overlaps with an existing occupancy.
@@ -145,11 +174,11 @@ const RoomEdit = ({ guestHouse }) => {
     if (!name || !room) return true
 
     const arrivalConflict = isDateInOccupancies(
-      arrivalDate === "today"
+      arrivalToggle === "today"
         ? new Date()
-        : arrivalDate === "tomorrow"
+        : arrivalToggle === "tomorrow"
         ? addDays(new Date(), 1)
-        : arrivalDate
+        : arrivalToggle
     )
     const departureConflict = isDateInOccupancies(departureDate)
 
@@ -179,7 +208,7 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleRoomChange = (event) => {
     setRoom(event.target.value)
-    if (selectedOccupancy) {
+    if (houseEditMode === "modify") {
       dispatch({
         type: "parameters/setSelectedOccupancy",
         payload: {
@@ -197,13 +226,15 @@ const RoomEdit = ({ guestHouse }) => {
    */
   const handleArrivalDateChange = (event, newValue) => {
     if (newValue !== null) {
-      setArrivalDate(newValue)
+      setArrivalToggle(newValue)
+      const newArrivalDate = convertArrivalDate(newValue)
+      setArrivalDate(newArrivalDate)
       if (houseEditMode === "modify") {
         dispatch({
           type: "parameters/setSelectedOccupancy",
           payload: {
             ...selectedOccupancy,
-            arrivalDate: newValue,
+            arrivalDate: newArrivalDate,
           },
         })
       }
@@ -248,9 +279,9 @@ const RoomEdit = ({ guestHouse }) => {
   /**
    * Convert the arrival date to a Date object.
    */
-  const convertArrivalDate = () => {
-    if (arrivalDate === "today") return new Date()
-    if (arrivalDate === "tomorrow") return addDays(new Date(), 1)
+  const convertArrivalDate = (dateText) => {
+    if (dateText === "today") return new Date()
+    if (dateText === "tomorrow") return addDays(new Date(), 1)
   }
 
   /**
@@ -261,14 +292,25 @@ const RoomEdit = ({ guestHouse }) => {
       house: guestHouse.name,
       occupantCode: name,
       room,
-      arrivalDate: convertArrivalDate(),
+      arrivalDate: arrivalDate,
       departureDate,
     }
 
     addMutation.mutate(occupancyData)
   }
 
-  const handleModifyClick = () => {}
+  const handleModifyClick = () => {
+    updateMutation.mutate({
+      id: selectedOccupancy._id,
+      updatedData: {
+        house: guestHouse.name,
+        occupantCode: name,
+        room,
+        arrivalDate: arrivalDate,
+        departureDate,
+      },
+    })
+  }
 
   const handleDeleteClick = () => {
     deleteMutation.mutate(selectedOccupancy._id)
@@ -315,7 +357,7 @@ const RoomEdit = ({ guestHouse }) => {
           <div className="room-edit__arrival-date-label">Arrival</div>
           <ToggleButtonGroup
             className="room-edit__arrival-date-toggle-group"
-            value={arrivalDate}
+            value={arrivalToggle}
             exclusive
             onChange={handleArrivalDateChange}
             aria-label="arrival date"
@@ -346,7 +388,7 @@ const RoomEdit = ({ guestHouse }) => {
           </ToggleButtonGroup>
           <TextField
             id="outlined-basic"
-            value={formatDateToDDMM(convertArrivalDate())}
+            value={formatDateToDDMM(arrivalDate)}
             variant="outlined"
             size="small"
             disabled
@@ -407,11 +449,11 @@ const RoomEdit = ({ guestHouse }) => {
         {dataHasErrors()
           ? "Room not available at these dates."
           : `Room ${room} is available from ${
-              arrivalDate === "today"
+              arrivalToggle === "today"
                 ? "today"
-                : arrivalDate === "tomorrow"
+                : arrivalToggle === "tomorrow"
                 ? "tomorrow"
-                : arrivalDate
+                : arrivalToggle
             } to ${formatDateToDDMM(departureDate)}.`}
       </Alert>
 
