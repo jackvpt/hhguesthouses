@@ -18,6 +18,8 @@ function App() {
   useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
+      select: (data) =>
+    [...data].sort((a, b) => a.code.localeCompare(b.code)),
   })
 
   return (

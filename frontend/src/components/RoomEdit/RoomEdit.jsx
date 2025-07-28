@@ -126,7 +126,7 @@ const RoomEdit = ({ guestHouse }) => {
 
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-  const [name, setName] = useState(users[0].code || "")
+  const [name, setName] = useState(users[0]?.code || "")
   const [room, setRoom] = useState(
     selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
   )
