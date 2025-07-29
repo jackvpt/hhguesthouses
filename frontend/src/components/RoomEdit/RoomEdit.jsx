@@ -25,16 +25,16 @@ import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 
 // 🗃️ React-Redux & React-Query
 import { useDispatch, useSelector } from "react-redux"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 // 🌐 API calls
 import {
   deleteOccupancy,
-  fetchAllOccupancies,
   postOccupancy,
   updateOccupancy,
 } from "../../api/occupancies"
-import { fetchAllUsers } from "../../api/users"
+import { useUsers } from "../../hooks/useUsers"
+import { useOccupancies } from "../../hooks/useOccupancies.js"
 
 /**
  * Component for editing room occupancy details.
@@ -53,23 +53,13 @@ const RoomEdit = ({ guestHouse }) => {
 
   // React Query: Fetch occupancies
   const {
-    data: occupancies = [],
+    data: occupancies,
     isLoadingOccupancies,
     errorOccupancies,
-  } = useQuery({
-    queryKey: ["occupancies"],
-    queryFn: fetchAllOccupancies,
-  })
+  } = useOccupancies()
 
   // React Query: Fetch users
-  const {
-    data: users = [],
-    isLoadingUsers,
-    errorUsers,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchAllUsers,
-  })
+  const { data: users, isLoadingUsers, errorUsers } = useUsers()
 
   /**
    * Mutation to add a new occupancy.
@@ -126,7 +116,7 @@ const RoomEdit = ({ guestHouse }) => {
 
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-  const [name, setName] = useState(users[0]?.code || "")
+  const [name, setName] = useState(users ? users[0]?.code : "")
   const [room, setRoom] = useState(
     selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
   )
@@ -332,7 +322,11 @@ const RoomEdit = ({ guestHouse }) => {
     <section className="room-edit is-open">
       <div className="room-edit__row">
         {/** OCCUPANT NAME */}
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" className="room-edit__occupantName">
+        <FormControl
+          sx={{ m: 1, minWidth: 120 }}
+          size="small"
+          className="room-edit__occupantName"
+        >
           <InputLabel id="select-name">Name</InputLabel>
           <Select
             className="room-edit__select"
@@ -401,7 +395,11 @@ const RoomEdit = ({ guestHouse }) => {
 
       <div className="room-edit__row">
         {/** ROOM NAME */}
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" className="room-edit__roomName">
+        <FormControl
+          sx={{ m: 1, minWidth: 120 }}
+          size="small"
+          className="room-edit__roomName"
+        >
           <InputLabel id="demo-select-small-label">Room</InputLabel>
           <Select
             labelId="demo-select-small-label"

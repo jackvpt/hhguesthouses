@@ -8,6 +8,7 @@ const rateLimiter = require("./middleware/rate-limiter")
 const guestHousesRoutes = require("./routes/guesthouses")
 const occupanciesRoutes = require("./routes/occupancies")
 const usersRoutes = require("./routes/users")
+const authRoutes = require("./routes/auth")
 
 /** Create an express application */
 const app = express()
@@ -47,5 +48,8 @@ app.use("/api/occupancies", rateLimiter[1], occupanciesRoutes)
 
 /** Users routes */
 app.use("/api/users", rateLimiter[1], usersRoutes)
+
+/** Auth routes */
+app.use("/api/auth", rateLimiter[1], authRoutes)
 
 module.exports = app

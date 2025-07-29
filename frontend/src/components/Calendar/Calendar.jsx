@@ -59,8 +59,14 @@ const Calendar = ({ guestHouse }) => {
             <th></th>
             {days.map((day, dayIndex) => {
               const date = addDays(firstDayOfWeek, dayIndex)
+              const isToday = date.toDateString() === new Date().toDateString()
               return (
-                <th className="calendar__days" key={day}>
+                <th
+                  className={
+                    isToday ? "calendar__days today" : "calendar__days"
+                  }
+                  key={day}
+                >
                   <p>{day}</p>
                   <p className="calendar__days-date">
                     {formatDateToDDMM(date)}
@@ -77,6 +83,8 @@ const Calendar = ({ guestHouse }) => {
               <th>{room.name}</th>
               {days.map((day, dayIndex) => {
                 const date = addDays(firstDayOfWeek, dayIndex)
+                const isToday =
+                  date.toDateString() === new Date().toDateString()
                 const occupancy = checkOccupancy(
                   guestHouse.name,
                   room.name,
@@ -87,6 +95,7 @@ const Calendar = ({ guestHouse }) => {
                     <OccupancyBadge
                       guestHouse={guestHouse}
                       occupancy={occupancy}
+                      isToday={isToday}
                     />
                   </td>
                 )

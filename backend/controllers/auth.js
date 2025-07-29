@@ -1,0 +1,125 @@
+/** Imports */
+const User = require("../models/User")
+const Auth = require("../models/Auth")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+
+/** Check password validity */
+const isValidPassword = (password) => {
+  const minLength = 8
+  const hasUpperCase = /[A-Z]/.test(password)
+  const hasLowerCase = /[a-z]/.test(password)
+  const hasNumbers = /\d/.test(password)
+  const hasSpecialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)
+
+  return (
+    password.length >= minLength &&
+    hasUpperCase &&
+    hasLowerCase &&
+    hasNumbers &&
+    hasSpecialChars
+  )
+}
+
+/** SIGNUP new User + Auth */
+exports.signup = async (req, res) => {
+  const { firstName, lastName, code, email, password, privileges } = req.body
+
+  if (!firstName || !lastName || !code || !email || !password || !privileges) {
+    return res.status(400).json({ error: "All fields are required." })
+  }
+
+  /** Check password validity */
+  if (!isValidPassword(req.body.password)) {
+    return res.status(400).json({
+      error:
+        "Password is not valid (8 caracters mini, 1 uppercase, 1 lowercase, 1 number, 1 special car !",
+    })
+  }
+
+  try {
+    // Create the User
+    const newUser = new User({ firstName, lastName, code, email, privileges })
+    await newUser.save()
+
+    // Hash the password
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    // Create the Auth entry
+    const newAuth = new Auth({
+      userId: newUser._id,
+      passwordHash: passwordHash,
+    })
+    await newAuth.save()
+
+    res.status(201).json({
+      message: "User created successfully.",
+      user: newUser,
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error creating user.",
+    })
+  }
+}
+
+/** LOGIN User */
+exports.login = async (req, res) => {
+  console.log("Login connection trial :>> ", req.body.email)
+
+  try {
+    /** Find the user by email */
+    const user = await User.findOne({ email: req.body.email })
+
+    if (!user) {
+      return res.status(401).json({ message: "UserID/Password incorrect" })
+    }
+
+    /** Find the Auth by userId */
+    const auth = await Auth.findOne({ userId: user._id })
+    if (!auth) {
+      return res.status(401).json({ message: "Auth not found for this user" })
+    }
+
+    /** Compare entered password with stored hash */
+    const valid = await bcrypt.compare(req.body.password, auth.passwordHash)
+
+    if (!valid) {
+      return res.status(401).json({ message: "UserID/Password incorrect" })
+    }
+
+    /** Success: return token & user data */
+    console.log("Access granted :>> ", `${user.firstName} ${user.lastName} - ${user.privileges}`)
+    res.status(200).json({
+      userId: user._id,
+      token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
+        expiresIn: process.env.TOKEN_EXPIRATION || "7d",
+      }),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      privileges: user.privileges,
+    })
+  } catch (error) {
+    console.error("Access denied :>> ", error)
+    res.status(500).json({ error })
+  }
+}
+
+/** DELETE User */
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    await Auth.deleteOne({ userId: user._id }) // Delete the Auth entry
+    await user.deleteOne() // Delete the user
+
+    res.status(200).json({ message: "User and Auth deleted" })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+

@@ -1,7 +1,7 @@
 import "./OccupancyBadge.scss"
 import { useDispatch } from "react-redux"
 
-const OccupancyBadge = ({ occupancy, guestHouse }) => {
+const OccupancyBadge = ({ occupancy, guestHouse,isToday }) => {
   const dispatch = useDispatch()
 
   const handleClick = () => {
@@ -22,7 +22,7 @@ const OccupancyBadge = ({ occupancy, guestHouse }) => {
 
   return (
     <div
-      className={`occupancy-badge ${occupancy ? "occupied" : ""}`}
+      className={`occupancy-badge ${occupancy ? "occupied" : ""} ${isToday ? "istoday":""}`}
       onClick={handleClick}
     >
       {occupancy?.occupantCode}

@@ -1,7 +1,25 @@
 /** Imports */
 const User = require("../models/User")
+const Auth = require("../models/Auth")
 
-const fs = require("fs")
+const bcrypt = require("bcrypt")
+
+/** Check password validity */
+const isValidPassword = (password) => {
+  const minLength = 8
+  const hasUpperCase = /[A-Z]/.test(password)
+  const hasLowerCase = /[a-z]/.test(password)
+  const hasNumbers = /\d/.test(password)
+  const hasSpecialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)
+
+  return (
+    password.length >= minLength &&
+    hasUpperCase &&
+    hasLowerCase &&
+    hasNumbers &&
+    hasSpecialChars
+  )
+}
 
 /** GET All Users */
 exports.getAllUsers = async (req, res) => {
@@ -9,8 +27,55 @@ exports.getAllUsers = async (req, res) => {
     const allUsers = await User.find()
     res.status(200).json(allUsers)
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.message || "Error retrieving users." })
+    res.status(400).json({ error: error.message || "Error retrieving users." })
+  }
+}
+
+/** CREATE new User + Auth */
+exports.createUser = async (req, res) => {
+  const { firstName, lastName, code, email, password, privileges } = req.body
+
+  if (!firstName || !lastName || !code || !email || !password || !privileges) {
+    return res.status(400).json({ error: "All fields are required." })
+  }
+
+  /** Check password validity */
+  if (!isValidPassword(req.body.password)) {
+    return res.status(400).json({
+      error:
+        "Password is not valid (8 caracters mini, 1 uppercase, 1 lowercase, 1 number, 1 special car !",
+    })
+  }
+
+  // Check if the email already exists
+  const existingUser = await User.findOne({ email })
+  if (existingUser) {
+    return res.status(400).json({ error: "Email already exists." })
+  }
+
+  try {
+    // Create the User
+    const newUser = new User({ firstName, lastName, code, email, privileges })
+    await newUser.save()
+
+    // Hash the password
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    // Create the Auth entry
+    const newAuth = new Auth({
+      userId: newUser._id,
+      passwordHash: passwordHash,
+    })
+    await newAuth.save()
+
+    res.status(201).json({
+      message: "User created successfully.",
+      user: newUser,
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error creating user.",
+    })
   }
 }
