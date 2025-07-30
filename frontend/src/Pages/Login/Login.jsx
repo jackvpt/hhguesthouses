@@ -1,5 +1,6 @@
+import "./Login.scss"
 import {
-  Alert,
+    Alert,
   Button,
   FormControl,
   FormLabel,
@@ -10,15 +11,14 @@ import {
   TextField,
 } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
-
-import "./Signup.scss"
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { QueryClient, useMutation } from "@tanstack/react-query"
-import { signup } from "../../api/auth"
+import { useState } from "react"
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
+import { login } from "../../api/auth"
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate()
+    const queryClient = useQueryClient()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -100,30 +100,27 @@ const Signup = () => {
       return
     }
 
-    createMutation.mutate(formData)
+    loginMutation.mutate(formData)
 
     // Reset form data after submission
-    setFormData({
-      firstName: "",
-      lastName: "",
-      codeName: "",
-      email: "",
-      password: "",
-    })
+    // setFormData({
+    //   email: "",
+    //   password: "",
+    // })
   }
 
   /**
    * Mutation to create a new account.
    */
-  const createMutation = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      QueryClient.invalidateQueries("users")
-      setToastMessage("Account created successfully")
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("users")
+      setToastMessage(`Login successful. Welcome ${data.firstName}!`)
       setToastOpen(true)
     },
     onError: (error) => {
-      console.error("Error while creating account:", error)
+      console.error("Error while logging in:", error)
     },
   })
 
@@ -138,62 +135,8 @@ const Signup = () => {
   }
 
   return (
-    <section className="signup">
-      <h1>SIGN UP</h1>
-      <h2>Create your account</h2>
-      {/* FIRST NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="first-name" required className="signup__formlabel">
-          First name
-        </FormLabel>
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="first-name"
-          name="firstName"
-          variant="outlined"
-          value={formData.firstName}
-          onChange={handleInputChange}
-          required
-        />
-      </FormControl>
-
-      {/* LAST NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="last-name" required className="signup__formlabel">
-          Last name
-        </FormLabel>
-
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="last-name"
-          name="lastName"
-          variant="outlined"
-          value={formData.lastName}
-          onChange={handleInputChange}
-          required
-        />
-      </FormControl>
-
-      {/* CODE NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="code-name" required className="signup__formlabel">
-          Code name
-        </FormLabel>
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="code-name"
-          name="codeName"
-          variant="outlined"
-          value={formData.codeName}
-          onChange={handleInputChange}
-          required
-          placeholder="Enter 3 letters to code your name"
-        />
-      </FormControl>
-
+    <section className="login">
+      <h1>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>
         <FormLabel htmlFor="email" required className="signup__formlabel">
@@ -265,19 +208,20 @@ const Signup = () => {
         size="large"
         onClick={submitForm}
       >
-        Create account
+        Log in
       </Button>
-      <div className="signup__accountexists">
-        <p>Already have an account ?</p>
+      <div className="login__noaccount">
+        <p>Don't have an account ?</p>
         <p
-          className="signup__login"
+          className="login__signin"
           onClick={() => {
-            navigate("/login")
+            navigate("/signup")
           }}
         >
-          Log in
+          Sign up
         </p>
       </div>
+
       {/* Toast notification for success messages */}
       <Snackbar
         open={toastOpen}
@@ -297,4 +241,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Login

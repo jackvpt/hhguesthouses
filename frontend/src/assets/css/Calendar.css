@@ -15,4 +15,8 @@
   font-size: 0.8rem;
   font-weight: normal;
   height: 15px;
+}
+.calendar .today {
+  background-color: #fff;
+  color: #004be0;
 }/*# sourceMappingURL=Calendar.css.map */

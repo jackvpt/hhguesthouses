@@ -66,26 +66,26 @@
   background-color: #a1a1a1;
 }
 .room-edit__buttons .btn_cancel:hover {
-  background-color: rgb(135.5, 135.5, 135.5);
+  background-color: #6e6e6e;
 }
 .room-edit__buttons .btn_add {
   background-color: #01b121;
   color: #fff;
 }
 .room-edit__buttons .btn_add:hover {
-  background-color: rgb(0.7134831461, 126.2865168539, 23.5449438202);
+  background-color: rgb(0.4269662921, 75.5730337079, 14.0898876404);
 }
 .room-edit__buttons .btn_modify {
   background-color: #ff8827;
   color: #fff;
 }
 .room-edit__buttons .btn_modify:hover {
-  background-color: rgb(243, 109.125, 0);
+  background-color: rgb(192, 86.2222222222, 0);
 }
 .room-edit__buttons .btn_delete {
   background-color: #c71717;
   color: #fff;
 }
 .room-edit__buttons .btn_delete:hover {
-  background-color: rgb(153.2837837838, 17.7162162162, 17.7162162162);
+  background-color: rgb(107.5675675676, 12.4324324324, 12.4324324324);
 }/*# sourceMappingURL=RoomEdit.css.map */

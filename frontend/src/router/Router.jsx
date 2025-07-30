@@ -4,6 +4,8 @@ import Display from "../Pages/Display/Display"
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
 import Signup from "../Pages/Signup/Signup"
+import Error from "../Pages/Error/Error"
+import Login from "../Pages/Login/Login"
 
 /**
  * Application router component using React Router v6.
@@ -18,8 +20,10 @@ export default function Router() {
       <Header />
       <main>
         <Routes>
-          <Route path="*" element={<Display />} />
+          <Route path="login" element={<Login />} />
+          <Route path="display" element={<Display />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </main>
       <Footer />

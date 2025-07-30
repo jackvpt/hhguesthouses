@@ -11,7 +11,7 @@
   transition: background-color 5000s ease-in-out 0s; // Hack for Chrome
 }
 
-.signup {
+.login {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -21,11 +21,6 @@
   min-width: 350px;
   background-color: $primary-color-2;
   border-radius: 10px;
-
-  h2 {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
 
   .signup__formlabel {
     color: $text-color-1;
@@ -55,12 +50,12 @@
     padding: 5px 10px;
   }
 
-  &__accountexists {
+  &__noaccount {
     display: flex;
     flex-direction: row;
     gap: 10px;
 
-    .signup__login {
+    .login__signin {
       &:hover {
         cursor: pointer;
         color: $secondary-color-3;
