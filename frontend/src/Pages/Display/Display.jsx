@@ -4,14 +4,6 @@ import WeekSelection from "../../components/WeekSelection/WeekSelection"
 import { useGuestHouses } from "../../hooks/useGuestHouses"
 
 const Display = () => {
-  // const {
-  //   data: guestHouses = [],
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["guestHouses"],
-  //   queryFn: fetchAllGuestHouses,
-  // })
   const { data: guestHouses, isLoading, error } = useGuestHouses()
 
   if (isLoading) return <div>Loading...</div>

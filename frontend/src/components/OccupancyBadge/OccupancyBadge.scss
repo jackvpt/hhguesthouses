@@ -18,6 +18,16 @@
 }
 
 .istoday {
-  border-left: 3px solid $text-color-1;
-  border-right: 3px solid $text-color-1;
+  border-left: 1px solid $text-color-1;
+  border-right: 1px solid $text-color-1;
+
+  @include responsive-tablet {
+    border-left: 2px solid $text-color-1;
+    border-right: 2px solid $text-color-1;
+  }
+
+  @include responsive-desktop {
+    border-left: 3px solid $text-color-1;
+    border-right: 3px solid $text-color-1;
+  }
 }

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Display from "../Pages/Display/Display"
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
+import Signup from "../Pages/Signup/Signup"
 
 /**
  * Application router component using React Router v6.
@@ -18,6 +19,7 @@ export default function Router() {
       <main>
         <Routes>
           <Route path="*" element={<Display />} />
+          <Route path="signup" element={<Signup />} />
         </Routes>
       </main>
       <Footer />

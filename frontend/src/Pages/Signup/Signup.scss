@@ -1,0 +1,117 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  gap: 15px;
+  min-width: 350px;
+
+  .toggle-password-visibility {
+    color: $text-color-1;
+    &:hover {
+      color: $primary-color-3;
+    }
+  }
+
+  &__helpertext {
+    color: $text-color-1;
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  &__error {
+    color: red;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  &__textfield {
+    // Field text
+    .MuiInputBase-input {
+      color: $text-color-1;
+    }
+
+    // Label
+    .MuiInputLabel-root {
+      color: $text-color-1;
+    }
+
+    // Focused label
+    .MuiInputLabel-root.Mui-focused {
+      color: $text-color-1;
+    }
+
+    // Normal border
+    .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+      border-color: $text-color-1;
+    }
+
+    // Hover border
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+      border-color: $secondary-color-3;
+    }
+
+    // Border when the field is focused
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: $secondary-color-3;
+    }
+
+    // Helper text
+    .MuiFormHelperText-root {
+      color: red;
+      font-size: 0.75rem;
+    }
+
+    // Helper text when there is an error
+    .MuiFormHelperText-root.Mui-error {
+      color: red;
+    }
+  }
+
+  &__outlinedinput {
+    // Input text color
+    .MuiOutlinedInput-input {
+      color: $text-color-1;
+    }
+
+    // Label color
+    .MuiInputLabel-root {
+      color: $text-color-1;
+    }
+
+    // Focused label color
+    .MuiInputLabel-root.Mui-focused {
+      color: $text-color-1;
+    }
+
+    // Normal border color
+    .MuiOutlinedInput-notchedOutline {
+      border-color: $text-color-1;
+    }
+
+    // Hover border
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+      border-color: $secondary-color-3;
+    }
+
+    // Focused border color
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: $secondary-color-3;
+    }
+  }
+
+  @include responsive-tablet {
+    min-width: 500px;
+
+    gap: 20px;
+  }
+
+  @include responsive-desktop {
+    gap: 25px;
+  }
+}
