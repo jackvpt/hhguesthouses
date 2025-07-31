@@ -33,9 +33,9 @@ exports.getAllUsers = async (req, res) => {
 
 /** CREATE new User + Auth */
 exports.createUser = async (req, res) => {
-  const { firstName, lastName, code, email, password, privileges } = req.body
+  const { firstName, lastName, codeName, email, password, privileges } = req.body
 
-  if (!firstName || !lastName || !code || !email || !password || !privileges) {
+  if (!firstName || !lastName || !codeName || !email || !password || !privileges) {
     return res.status(400).json({ error: "All fields are required." })
   }
 
@@ -55,7 +55,7 @@ exports.createUser = async (req, res) => {
 
   try {
     // Create the User
-    const newUser = new User({ firstName, lastName, code, email, privileges })
+    const newUser = new User({ firstName, lastName, codeName, email, privileges })
     await newUser.save()
 
     // Hash the password

@@ -37,12 +37,14 @@ exports.signup = async (req, res) => {
     })
   }
 
+
   try {
     // Check if email already exists
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(409).json({ error: "Email is already in use." })
     }
+    console.log('code :>> ', codeName);
 
     // Create the User
     const newUser = new User({
@@ -70,6 +72,7 @@ exports.signup = async (req, res) => {
       user: newUser,
     })
   } catch (error) {
+    console.log('error/message :>> ', error.message);
     res.status(500).json({
       error: error.message || "Error creating user.",
     })
@@ -118,6 +121,7 @@ exports.login = async (req, res) => {
       ),
       firstName: user.firstName,
       lastName: user.lastName,
+      codeName: user.codeName,
       role: user.role,
     })
   } catch (error) {

@@ -27,6 +27,26 @@
     margin-bottom: 20px;
   }
 
+  &__select {
+    .MuiSelect-select {
+      color: $text-color-1;
+      border: 1px solid $text-color-1;
+
+      &:hover {
+        border-color: $secondary-color-3 !important;
+      }
+    }
+
+    .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+      border-color: gray;
+      transition: border-color 0.3s;
+    }
+
+    .MuiSelect-icon {
+      color: $text-color-1;
+    }
+  }
+
   .signup__formlabel {
     color: $text-color-1;
     font-size: 1.2rem;

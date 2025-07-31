@@ -52,6 +52,8 @@ const RoomEdit = ({ guestHouse }) => {
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
 
+  const user = useSelector((state) => state.user)
+
   // React Query: Fetch occupancies
   const {
     data: occupancies,
@@ -60,7 +62,11 @@ const RoomEdit = ({ guestHouse }) => {
   } = useOccupancies()
 
   // React Query: Fetch users
-  const { data: users, isLoadingUsers, errorUsers } = useUsers()
+  const {
+    data: users,
+    isLoadingUsers,
+    errorUsers,
+  } = useUsers({ enabled: user.role === "admin" || user.role === "superadmin" })
 
   /**
    * Mutation to add a new occupancy.
@@ -110,8 +116,6 @@ const RoomEdit = ({ guestHouse }) => {
     },
   })
 
-  const role = localStorage.getItem("role")
-
   const houseEditMode = useSelector((state) => state.parameters.houseEditMode)
   const selectedOccupancy = useSelector(
     (state) => state.parameters.selectedOccupancy
@@ -119,7 +123,8 @@ const RoomEdit = ({ guestHouse }) => {
 
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-  const [name, setName] = useState(users ? users[0]?.code : "")
+
+  const [codeName, setCodeName] = useState(user.codeName)
   const [room, setRoom] = useState(
     selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
   )
@@ -131,7 +136,7 @@ const RoomEdit = ({ guestHouse }) => {
    * Initialize form fields based on selected occupancy or default values.
    */
   useEffect(() => {
-    setName(selectedOccupancy?.occupantCode || users[0]?.code || "")
+    setCodeName(selectedOccupancy?.occupantCode || user.codeName)
     setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
     setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
     setDepartureDate(
@@ -162,8 +167,6 @@ const RoomEdit = ({ guestHouse }) => {
    * @returns {boolean} True if there are errors, false otherwise.
    */
   const dataHasErrors = () => {
-    if (!name || !room) return true
-
     const arrivalConflict = isDateInOccupancies(
       arrivalToggle === "today"
         ? new Date()
@@ -181,7 +184,7 @@ const RoomEdit = ({ guestHouse }) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   const handleNameChange = (event) => {
-    setName(event.target.value)
+    setCodeName(event.target.value)
     if (houseEditMode === "modify") {
       dispatch({
         type: "parameters/setSelectedOccupancy",
@@ -281,7 +284,7 @@ const RoomEdit = ({ guestHouse }) => {
   const handleAddClick = () => {
     const occupancyData = {
       house: guestHouse.name,
-      occupantCode: name,
+      occupantCode: codeName,
       room,
       arrivalDate: arrivalDate,
       departureDate,
@@ -295,7 +298,7 @@ const RoomEdit = ({ guestHouse }) => {
       id: selectedOccupancy._id,
       updatedData: {
         house: guestHouse.name,
-        occupantCode: name,
+        occupantCode: codeName,
         room,
         arrivalDate: arrivalDate,
         departureDate,
@@ -323,59 +326,34 @@ const RoomEdit = ({ guestHouse }) => {
 
   return (
     <section className="room-edit">
-      {/** OCCUPANT NAME */}
-      {role === "admin" && (
+      {/** CODE NAME */}
+      {user.role === "admin" ||
+        (user.role === "superAdmin" && (
         <FormControl
-          sx={{ m: 1, minWidth: 120 }}
-          size="small"
-          className="room-edit__occupantName"
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
         >
-          <InputLabel id="select-name">Name</InputLabel>
-          <Select
-            className="room-edit__select"
-            labelId="select-name"
-            id="select-name"
-            value={name}
-            label="Name"
-            onChange={handleNameChange}
-          >
-            {users.map((user) => (
-              <MenuItem key={user.codeName} value={user.codeName}>
-                {user.codeName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-
-      {/** ROOM NAME */}
-      <FormControl
-        className="room-edit__roomName"
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <FormLabel htmlFor="select-room" className="form-label">
-          Room
-        </FormLabel>
-        <Select
-          labelId="select-room-label"
-          id="select-room"
-          value={room}
-          onChange={handleRoomChange}
-          size="small"
-          sx={{ flexGrow: 1 }}
-        >
-          {guestHouse.rooms.map((room) => (
-            <MenuItem key={room.name} value={room.name}>
-              {room.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <FormLabel className="form-label">Guest</FormLabel>
+            <Select
+              className="room-edit__select"
+              labelId="select-name"
+              id="select-name"
+              value={codeName}
+              onChange={handleNameChange}
+              size="small"
+              fullWidth
+            >
+              {users.map((user) => (
+                <MenuItem key={user.codeName} value={user.codeName}>
+                  {user.codeName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        ))}
 
       {/** ARRIVAL DATE */}
       <div className="room-edit__arrival-date">
@@ -430,7 +408,7 @@ const RoomEdit = ({ guestHouse }) => {
           alignItems: "center",
         }}
       >
-        <FormLabel htmlFor="departure-date" className="form-label" >
+        <FormLabel htmlFor="departure-date" className="form-label">
           Departure
         </FormLabel>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -448,6 +426,35 @@ const RoomEdit = ({ guestHouse }) => {
             }}
           />
         </LocalizationProvider>
+      </FormControl>
+
+      {/** ROOM NAME */}
+      <FormControl
+        className="room-edit__roomName"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <FormLabel htmlFor="select-room" className="form-label">
+          Room
+        </FormLabel>
+        <Select
+          labelId="select-room-label"
+          id="select-room"
+          value={room}
+          onChange={handleRoomChange}
+          size="small"
+          sx={{ flexGrow: 1 }}
+        >
+          {guestHouse.rooms.map((room) => (
+            <MenuItem key={room.name} value={room.name}>
+              {room.name}
+            </MenuItem>
+          ))}
+        </Select>
       </FormControl>
 
       <Alert

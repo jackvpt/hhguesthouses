@@ -6,6 +6,7 @@ const BASE_URL =
 export const signup = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/signup`, userData)
+    console.log('userData :>> ', userData);
     return response.data
   } catch (error) {
     console.error(error)
@@ -16,9 +17,6 @@ export const signup = async (userData) => {
 export const login = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/login`, userData)
-    const { token,role } = response.data
-    localStorage.setItem("token", token)
-    localStorage.setItem("role", role)
     return response.data
   } catch (error) {
     console.error(error)

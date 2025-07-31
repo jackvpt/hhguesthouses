@@ -13,12 +13,14 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { login } from "../../api/auth"
+import { useDispatch } from "react-redux"
+import { setUser } from "../../features/userSlice"
 
 const Login = () => {
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
+  const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -115,7 +117,18 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      queryClient.invalidateQueries("users")
+      localStorage.setItem("token", data.token)
+      console.log("data :>> ", data)
+
+      dispatch(
+        setUser({
+          userId: data.userId,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          codeName: data.codeName,
+          role: data.role,
+        })
+      )
       showToast(`Login successful. Welcome ${data.firstName}!`)
       navigate("/display")
     },
@@ -141,6 +154,40 @@ const Login = () => {
 
   return (
     <section className="login">
+      <FormControl>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => setFormData({email:"jacques.verpoest@heliholland.nl",password:"Guesthouses.1"})}
+        >
+          JVP superAdmin
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => setFormData({email:"jp.gallot@heliholland.nl",password:"Guesthouses.1"})}
+        >
+          JPG admin
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => setFormData({email:"arie.slagter@heliholland.nl",password:"Guesthouses.1"})}
+        >
+          ARI guest
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => setFormData({email:"ian.scott@heliholland.nl",password:"Guesthouses.1"})}
+        >
+          IAN manager
+        </Button>
+      </FormControl>
       <h1>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>

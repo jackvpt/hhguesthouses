@@ -5,7 +5,9 @@ import {
   FormLabel,
   IconButton,
   InputAdornment,
+  MenuItem,
   OutlinedInput,
+  Select,
   Snackbar,
   TextField,
 } from "@mui/material"
@@ -25,6 +27,7 @@ const Signup = () => {
     firstName: "",
     lastName: "",
     codeName: "",
+    role:"guest",
     email: "",
     password: "",
   })
@@ -101,23 +104,24 @@ const Signup = () => {
       return
     }
 
-    createMutation.mutate(formData)
+    signupMutation.mutate(formData)
   }
 
   /**
    * Mutation to create a new account.
    */
-  const createMutation = useMutation({
+  const signupMutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
       queryClient.invalidateQueries("users")
       showToast("Account created successfully")
-      
+
       // Reset form data after submission
       setFormData({
         firstName: "",
         lastName: "",
         codeName: "",
+        role: "guest",
         email: "",
         password: "",
       })
@@ -200,6 +204,29 @@ const Signup = () => {
           required
           placeholder="Enter 3 letters to code your name"
         />
+      </FormControl>
+
+      {/* ROLE */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="role" required className="signup__formlabel">
+          Role
+        </FormLabel>
+        <Select
+          sx={{ marginLeft: "10px" }}
+          className="signup__select"
+          
+          id="role"
+          name="role"
+          variant="outlined"
+          value={formData.role}
+          onChange={handleInputChange}
+          required
+        >
+          <MenuItem value="guest">Guest</MenuItem>
+          <MenuItem value="manager">Manager</MenuItem>
+          <MenuItem value="admin">Admin</MenuItem>
+          <MenuItem value="superAdmin">Super admin</MenuItem>
+        </Select>
       </FormControl>
 
       {/* EMAIL */}
