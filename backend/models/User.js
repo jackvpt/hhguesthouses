@@ -8,7 +8,7 @@ const UserSchema = mongoose.Schema({
   lastName: { type: String, required: true },
   codeName: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  privileges: { type: String, default: "guest" }, // e.g., "guest", "manager", "admin", "superAdmin"
+  role: { type: String, default: "guest" }, // e.g., "guest", "manager", "admin", "superAdmin"
   createdAt: { type: Date, default: Date.now },
 })
 

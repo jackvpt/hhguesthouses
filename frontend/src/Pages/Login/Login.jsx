@@ -1,6 +1,6 @@
 import "./Login.scss"
 import {
-    Alert,
+  Alert,
   Button,
   FormControl,
   FormLabel,
@@ -13,12 +13,12 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { login } from "../../api/auth"
 
 const Login = () => {
   const navigate = useNavigate()
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -30,8 +30,8 @@ const Login = () => {
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [toast, setToast] = useState({ message: "", severity: "success" })
   const [toastOpen, setToastOpen] = useState(false)
-  const [toastMessage, setToastMessage] = useState("")
 
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
@@ -102,27 +102,32 @@ const Login = () => {
 
     loginMutation.mutate(formData)
 
-    // Reset form data after submission
-    // setFormData({
-    //   email: "",
-    //   password: "",
-    // })
+    //Reset form data after submission
+    setFormData({
+      email: "",
+      password: "",
+    })
   }
 
   /**
-   * Mutation to create a new account.
+   * Mutation to log in.
    */
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       queryClient.invalidateQueries("users")
-      setToastMessage(`Login successful. Welcome ${data.firstName}!`)
-      setToastOpen(true)
+      showToast(`Login successful. Welcome ${data.firstName}!`)
+      navigate("/display")
     },
     onError: (error) => {
       console.error("Error while logging in:", error)
     },
   })
+
+  const showToast = (message, severity = "success") => {
+    setToast({ message, severity })
+    setToastOpen(true)
+  }
 
   /**
    * Close the success toast notification.
@@ -231,10 +236,10 @@ const Login = () => {
       >
         <Alert
           onClose={handleToastClose}
-          severity="success"
+          severity={toast.severity}
           sx={{ width: "100%" }}
         >
-          {toastMessage}
+          {toast.message}
         </Alert>
       </Snackbar>
     </section>

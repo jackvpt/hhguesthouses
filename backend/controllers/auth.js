@@ -23,7 +23,7 @@ const isValidPassword = (password) => {
 
 /** SIGNUP new User + Auth */
 exports.signup = async (req, res) => {
-  const { firstName, lastName, codeName, email, password, privileges } = req.body
+  const { firstName, lastName, codeName, email, password, role } = req.body
 
   if (!firstName || !lastName || !codeName || !email || !password) {
     return res.status(400).json({ error: "All fields are required." })
@@ -38,8 +38,20 @@ exports.signup = async (req, res) => {
   }
 
   try {
+    // Check if email already exists
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+      return res.status(409).json({ error: "Email is already in use." })
+    }
+
     // Create the User
-    const newUser = new User({ firstName, lastName, codeName, email, privileges })
+    const newUser = new User({
+      firstName,
+      lastName,
+      codeName,
+      email,
+      role,
+    })
     await newUser.save()
 
     // Hash the password
@@ -92,16 +104,21 @@ exports.login = async (req, res) => {
     /** Success: return token & user data */
     console.log(
       "Access granted :>> ",
-      `${user.firstName} ${user.lastName} - ${user.privileges}`
+      `${user.firstName} ${user.lastName} - ${user.role}`
     )
     res.status(200).json({
       userId: user._id,
-      token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
-        expiresIn: process.env.TOKEN_EXPIRATION || "7d",
-      }),
+      token: jwt.sign(
+        {
+          userId: user._id,
+          role: user.role,
+        },
+        process.env.SECRET_TOKEN,
+        { expiresIn: process.env.TOKEN_EXPIRATION || "7d" }
+      ),
       firstName: user.firstName,
       lastName: user.lastName,
-      privileges: user.privileges,
+      role: user.role,
     })
   } catch (error) {
     console.error("Access denied :>> ", error)

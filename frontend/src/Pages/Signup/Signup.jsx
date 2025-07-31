@@ -14,11 +14,12 @@ import { Visibility, VisibilityOff } from "@mui/icons-material"
 import "./Signup.scss"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { QueryClient, useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { signup } from "../../api/auth"
 
 const Signup = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,7 +32,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [toastOpen, setToastOpen] = useState(false)
-  const [toastMessage, setToastMessage] = useState("")
+  const [toast, setToast] = useState({ message: "", severity: "success" })
 
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
@@ -101,15 +102,6 @@ const Signup = () => {
     }
 
     createMutation.mutate(formData)
-
-    // Reset form data after submission
-    setFormData({
-      firstName: "",
-      lastName: "",
-      codeName: "",
-      email: "",
-      password: "",
-    })
   }
 
   /**
@@ -118,11 +110,22 @@ const Signup = () => {
   const createMutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
-      QueryClient.invalidateQueries("users")
-      setToastMessage("Account created successfully")
-      setToastOpen(true)
+      queryClient.invalidateQueries("users")
+      showToast("Account created successfully")
+      
+      // Reset form data after submission
+      setFormData({
+        firstName: "",
+        lastName: "",
+        codeName: "",
+        email: "",
+        password: "",
+      })
     },
     onError: (error) => {
+      if (error.response?.status === 409) {
+        showToast("This email is already registered.", "error")
+      }
       console.error("Error while creating account:", error)
     },
   })
@@ -135,6 +138,11 @@ const Signup = () => {
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") return
     setToastOpen(false)
+  }
+
+  const showToast = (message, severity = "success") => {
+    setToast({ message, severity })
+    setToastOpen(true)
   }
 
   return (
@@ -287,10 +295,10 @@ const Signup = () => {
       >
         <Alert
           onClose={handleToastClose}
-          severity="success"
+          severity={toast.severity}
           sx={{ width: "100%" }}
         >
-          {toastMessage}
+          {toast.message}
         </Alert>
       </Snackbar>
     </section>

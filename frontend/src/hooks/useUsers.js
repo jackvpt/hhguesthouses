@@ -5,5 +5,5 @@ export const useUsers = () =>
   useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
-    select: (data) => [...data].sort((a, b) => a.code.localeCompare(b.code)),
+    select: (data) => [...data].sort((a, b) => a.codeName.localeCompare(b.codeName)),
   })

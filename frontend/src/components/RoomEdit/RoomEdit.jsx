@@ -16,6 +16,7 @@ import {
   FormControl,
   Select,
   TextField,
+  FormLabel,
 } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -108,6 +109,8 @@ const RoomEdit = ({ guestHouse }) => {
       console.error("Error updating occupancy:", error)
     },
   })
+
+  const role = localStorage.getItem("role")
 
   const houseEditMode = useSelector((state) => state.parameters.houseEditMode)
   const selectedOccupancy = useSelector(
@@ -319,9 +322,9 @@ const RoomEdit = ({ guestHouse }) => {
     return <div>Error: {errorUsers?.message || errorOccupancies?.message}</div>
 
   return (
-    <section className="room-edit is-open">
-      <div className="room-edit__row">
-        {/** OCCUPANT NAME */}
+    <section className="room-edit">
+      {/** OCCUPANT NAME */}
+      {role === "admin" && (
         <FormControl
           sx={{ m: 1, minWidth: 120 }}
           size="small"
@@ -337,16 +340,53 @@ const RoomEdit = ({ guestHouse }) => {
             onChange={handleNameChange}
           >
             {users.map((user) => (
-              <MenuItem key={user.code} value={user.code}>
-                {user.code}
+              <MenuItem key={user.codeName} value={user.codeName}>
+                {user.codeName}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
+      )}
 
-        {/** ARRIVAL DATE */}
-        <div className="room-edit__arrival-date">
-          <div className="room-edit__arrival-date-label">Arrival</div>
+      {/** ROOM NAME */}
+      <FormControl
+        className="room-edit__roomName"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <FormLabel htmlFor="select-room" className="form-label">
+          Room
+        </FormLabel>
+        <Select
+          labelId="select-room-label"
+          id="select-room"
+          value={room}
+          onChange={handleRoomChange}
+          size="small"
+          sx={{ flexGrow: 1 }}
+        >
+          {guestHouse.rooms.map((room) => (
+            <MenuItem key={room.name} value={room.name}>
+              {room.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/** ARRIVAL DATE */}
+      <div className="room-edit__arrival-date">
+        <FormControl
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <FormLabel className="form-label">Arrival</FormLabel>
           <ToggleButtonGroup
             className="room-edit__arrival-date-toggle-group"
             value={arrivalToggle}
@@ -355,25 +395,13 @@ const RoomEdit = ({ guestHouse }) => {
             aria-label="arrival date"
             size="small"
           >
-            <ToggleButton
-              value="today"
-              aria-label="today arrival"
-              size="small"
-              sx={{
-                py: 0,
-                fontSize: "0.75rem",
-              }}
-            >
+            <ToggleButton value="today" aria-label="today arrival" size="small">
               Today
             </ToggleButton>
             <ToggleButton
               value="tomorrow"
               aria-label="tomorrow arrival"
               size="small"
-              sx={{
-                py: 0,
-                fontSize: "0.75rem",
-              }}
             >
               Tomorrow
             </ToggleButton>
@@ -384,43 +412,30 @@ const RoomEdit = ({ guestHouse }) => {
             variant="outlined"
             size="small"
             disabled
-            inputProps={{ style: { textAlign: "center" } }}
             slotProps={{
               readOnly: true,
+              textAlign: "center",
+              padding: 0,
             }}
-            sx={{ width: 70 }}
+            sx={{ width: 70, marginLeft: 2 }}
           />
-        </div>
+        </FormControl>
       </div>
 
-      <div className="room-edit__row">
-        {/** ROOM NAME */}
-        <FormControl
-          sx={{ m: 1, minWidth: 120 }}
-          size="small"
-          className="room-edit__roomName"
-        >
-          <InputLabel id="demo-select-small-label">Room</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={room}
-            label="Room"
-            onChange={handleRoomChange}
-          >
-            {guestHouse.rooms.map((room) => (
-              <MenuItem key={room.name} value={room.name}>
-                {room.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/** DEPARTURE DATE */}
+      {/** DEPARTURE DATE */}
+      <FormControl
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <FormLabel htmlFor="departure-date" className="form-label" >
+          Departure
+        </FormLabel>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             className="room-edit__departure-date"
-            label="Departure date"
             value={departureDate}
             onChange={handleDepartureDateChange}
             format="dd/MM/yyyy"
@@ -433,7 +448,8 @@ const RoomEdit = ({ guestHouse }) => {
             }}
           />
         </LocalizationProvider>
-      </div>
+      </FormControl>
+
       <Alert
         severity={dataHasErrors() ? "error" : "success"}
         sx={{
