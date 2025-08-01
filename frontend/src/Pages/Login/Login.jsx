@@ -116,8 +116,9 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
+      showToast(`Login successful. Welcome ${data.firstName}!`)
       localStorage.setItem("token", data.token)
-      
+
       dispatch({
         type: "user/setUser",
         payload: {
@@ -128,8 +129,10 @@ const Login = () => {
           role: data.role,
         },
       })
-      showToast(`Login successful. Welcome ${data.firstName}!`)
-      navigate("/display")
+      // Wait for 2 seconds before navigating to the display page
+      setTimeout(() => {
+        navigate("/display")
+      }, 2000)
     },
     onError: (error) => {
       console.error("Error while logging in:", error)
@@ -153,7 +156,6 @@ const Login = () => {
 
   return (
     <section className="login">
-
       <h1>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>
@@ -254,7 +256,7 @@ const Login = () => {
           {toast.message}
         </Alert>
       </Snackbar>
-            <FormControl>
+      <FormControl>
         <Button
           variant="contained"
           color="primary"

@@ -1,11 +1,13 @@
-import "./styles/_index.scss" 
+import "./styles/_index.scss"
 import App from './App.jsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Provider } from "react-redux"
-import { store } from "./store/store.js"
+import { PersistGate } from "redux-persist/integration/react"
+
+import { store, persistor } from "./store/store.js"
 
 /**
  * Initializes a new QueryClient instance for React Query.
@@ -16,10 +18,12 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </PersistGate>
     </Provider>
   </StrictMode>
 )

@@ -36,8 +36,6 @@ const GuestHouseCard = ({ guestHouse }) => {
   const editAllowed =
     role === "guest" || role === "admin" || role === "super-admin"
 
-  console.log("editAllowed :>> ", editAllowed)
-
   const handleToggleEdit = () => {
     dispatch({
       type: "parameters/setHouseEditMode",

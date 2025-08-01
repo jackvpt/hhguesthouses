@@ -10,8 +10,15 @@
   background-color: $primary-color-2;
   padding: 10px;
 
-  &__button{
+  &__button {
     cursor: pointer;
+    color:$text-color-1;
+
+
+
+    &:hover {
+      color:$secondary-color-3;
+    }
   }
 
   &__date {
@@ -25,8 +32,9 @@
       font-weight: bold;
     }
 
-    &-range{
-        font: size 0.75rem;
+    &-range {
+      font: size 0.75rem;
+      color:$primary-color-4;
     }
   }
 }

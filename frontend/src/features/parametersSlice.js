@@ -23,6 +23,7 @@ const parametersSlice = createSlice({
       current.setDate(current.getDate() - 7)
 
       state.referenceDate = current.toISOString()
+      state.weekNumber = getWeekNumber(current)
       state.weekRange = getWeekRangeFromDate(current)
     },
     nextWeek: (state) => {
