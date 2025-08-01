@@ -16,7 +16,6 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { login } from "../../api/auth"
 import { useDispatch } from "react-redux"
-import { setUser } from "../../features/userSlice"
 
 const Login = () => {
   const navigate = useNavigate()
@@ -118,17 +117,17 @@ const Login = () => {
     mutationFn: login,
     onSuccess: (data) => {
       localStorage.setItem("token", data.token)
-      console.log("data :>> ", data)
-
-      dispatch(
-        setUser({
+      
+      dispatch({
+        type: "user/setUser",
+        payload: {
           userId: data.userId,
           firstName: data.firstName,
           lastName: data.lastName,
           codeName: data.codeName,
           role: data.role,
-        })
-      )
+        },
+      })
       showToast(`Login successful. Welcome ${data.firstName}!`)
       navigate("/display")
     },
@@ -154,40 +153,7 @@ const Login = () => {
 
   return (
     <section className="login">
-      <FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() => setFormData({email:"jacques.verpoest@heliholland.nl",password:"Guesthouses.1"})}
-        >
-          JVP superAdmin
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() => setFormData({email:"jp.gallot@heliholland.nl",password:"Guesthouses.1"})}
-        >
-          JPG admin
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() => setFormData({email:"arie.slagter@heliholland.nl",password:"Guesthouses.1"})}
-        >
-          ARI guest
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() => setFormData({email:"ian.scott@heliholland.nl",password:"Guesthouses.1"})}
-        >
-          IAN manager
-        </Button>
-      </FormControl>
+
       <h1>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>
@@ -244,7 +210,6 @@ const Login = () => {
               </IconButton>
             </InputAdornment>
           }
-          label="Password"
         />
         <p className="signup__helpertext">
           Must be at least 8 chars, 1 uppercase, 1 lowercase, 1 number & 1
@@ -289,6 +254,60 @@ const Login = () => {
           {toast.message}
         </Alert>
       </Snackbar>
+            <FormControl>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() =>
+            setFormData({
+              email: "jacques.verpoest@heliholland.nl",
+              password: "Guesthouses.1",
+            })
+          }
+        >
+          JVP superAdmin
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() =>
+            setFormData({
+              email: "jp.gallot@heliholland.nl",
+              password: "Guesthouses.1",
+            })
+          }
+        >
+          JPG admin
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() =>
+            setFormData({
+              email: "arie.slagter@heliholland.nl",
+              password: "Guesthouses.1",
+            })
+          }
+        >
+          ARI guest
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() =>
+            setFormData({
+              email: "ian.scott@heliholland.nl",
+              password: "Guesthouses.1",
+            })
+          }
+        >
+          IAN manager
+        </Button>
+      </FormControl>
     </section>
   )
 }

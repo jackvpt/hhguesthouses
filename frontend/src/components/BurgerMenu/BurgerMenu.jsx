@@ -1,8 +1,10 @@
 // BurgerMenu.jsx
 import { useState } from "react"
-import { IconButton, Drawer, List, ListItem, ListItemText } from "@mui/material"
+import { IconButton, Drawer, List, ListItem, ListItemText, ListItemButton } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 
 const darkTheme = createTheme({
   palette: {
@@ -11,6 +13,10 @@ const darkTheme = createTheme({
 })
 
 export default function BurgerMenu() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  // State to control the drawer open/close
   const [open, setOpen] = useState(false)
 
   const toggleDrawer = (state) => () => {
@@ -18,9 +24,12 @@ export default function BurgerMenu() {
   }
 
   const handleLogOut = () => {
-    
+    navigate("/login")
+    localStorage.removeItem("token")
+    dispatch({ type: "user/clearUser" })
+    dispatch({ type: "parameters/reset" })
+    setOpen(false)
   }
-
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -35,9 +44,9 @@ export default function BurgerMenu() {
 
       <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
         <List sx={{ width: "100%" }}>
-          <ListItem button>
-            <ListItemText primary="Log out" onClick={handleLogOut}/>
-          </ListItem>
+          <ListItemButton onClick={handleLogOut}>
+            <ListItemText primary="Log out" />
+          </ListItemButton>
         </List>
       </Drawer>
     </ThemeProvider>

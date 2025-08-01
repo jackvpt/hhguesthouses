@@ -43,6 +43,7 @@ const parametersSlice = createSlice({
     setSelectedOccupancy: (state, action) => {
       state.selectedOccupancy = action.payload
     },
+    reset: () => initialState,
   },
 })
 

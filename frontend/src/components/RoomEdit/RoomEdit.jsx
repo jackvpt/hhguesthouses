@@ -53,6 +53,8 @@ const RoomEdit = ({ guestHouse }) => {
   const dispatch = useDispatch()
 
   const user = useSelector((state) => state.user)
+  const role = useSelector((state) => state.user.role)
+  const codeNameSelectionAllowed = role === "admin" || role === "super-admin"
 
   // React Query: Fetch occupancies
   const {
@@ -327,8 +329,7 @@ const RoomEdit = ({ guestHouse }) => {
   return (
     <section className="room-edit">
       {/** CODE NAME */}
-      {user.role === "admin" ||
-        (user.role === "superAdmin" && (
+      {codeNameSelectionAllowed && (
         <FormControl
           sx={{
             display: "flex",
@@ -337,23 +338,23 @@ const RoomEdit = ({ guestHouse }) => {
           }}
         >
           <FormLabel className="form-label">Guest</FormLabel>
-            <Select
-              className="room-edit__select"
-              labelId="select-name"
-              id="select-name"
-              value={codeName}
-              onChange={handleNameChange}
-              size="small"
-              fullWidth
-            >
-              {users.map((user) => (
-                <MenuItem key={user.codeName} value={user.codeName}>
-                  {user.codeName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ))}
+          <Select
+            className="room-edit__select"
+            labelId="select-name"
+            id="select-name"
+            value={codeName}
+            onChange={handleNameChange}
+            size="small"
+            fullWidth
+          >
+            {users.map((user) => (
+              <MenuItem key={user.codeName} value={user.codeName}>
+                {user.codeName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
 
       {/** ARRIVAL DATE */}
       <div className="room-edit__arrival-date">

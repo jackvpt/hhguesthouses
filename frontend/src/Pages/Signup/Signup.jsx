@@ -225,7 +225,7 @@ const Signup = () => {
           <MenuItem value="guest">Guest</MenuItem>
           <MenuItem value="manager">Manager</MenuItem>
           <MenuItem value="admin">Admin</MenuItem>
-          <MenuItem value="superAdmin">Super admin</MenuItem>
+          <MenuItem value="super-admin">Super admin</MenuItem>
         </Select>
       </FormControl>
 

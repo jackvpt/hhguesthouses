@@ -6,7 +6,6 @@ const BASE_URL =
 export const signup = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/signup`, userData)
-    console.log('userData :>> ', userData);
     return response.data
   } catch (error) {
     console.error(error)

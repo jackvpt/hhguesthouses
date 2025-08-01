@@ -32,6 +32,12 @@ const GuestHouseCard = ({ guestHouse }) => {
   const houseEditName = useSelector((state) => state.parameters.houseEditName)
   const isEditMode = houseEditName === guestHouse.name
 
+  const role = useSelector((state) => state.user.role)
+  const editAllowed =
+    role === "guest" || role === "admin" || role === "super-admin"
+
+  console.log("editAllowed :>> ", editAllowed)
+
   const handleToggleEdit = () => {
     dispatch({
       type: "parameters/setHouseEditMode",
@@ -51,21 +57,26 @@ const GuestHouseCard = ({ guestHouse }) => {
     <section className="guest-house-card">
       <div className="guest-house-card__header">
         <h2>{guestHouse.name}</h2>
-        <IconButton
-          className="guest-house-card__header-icon"
-          aria-label={isEditMode ? "close edit" : "open edit"}
-          onClick={handleToggleEdit}
-        >
-          <FontAwesomeIcon
-            icon={isEditMode ? faSquareCaretUp : faSquarePlus}
-            size="xl"
-          />
-        </IconButton>
+
+        {editAllowed && (
+          <IconButton
+            className="guest-house-card__header-icon"
+            aria-label={isEditMode ? "close edit" : "open edit"}
+            onClick={handleToggleEdit}
+          >
+            <FontAwesomeIcon
+              icon={isEditMode ? faSquareCaretUp : faSquarePlus}
+              size="xl"
+            />
+          </IconButton>
+        )}
       </div>
 
-      <div className={`guest-house-card__edit ${isEditMode ? "is-open" : ""}`}>
-        <RoomEdit guestHouse={guestHouse} />
-      </div>
+      {isEditMode && (
+        <div className="guest-house-card__edit is-open">
+          <RoomEdit guestHouse={guestHouse} />
+        </div>
+      )}
 
       <div className="guest-house-card__calendar">
         <Calendar guestHouse={guestHouse} />

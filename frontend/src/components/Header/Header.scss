@@ -7,6 +7,49 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
+  position:relative;
+
+  h1{
+    position:absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .header__right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    &-role{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100%;
+      aspect-ratio: 1;
+      padding:10px;
+    }
+
+    .guest{
+      background-color:$text-color-1;
+      color:$primary-color-1
+    }
+
+    .manager{
+      background-color:#01b121;
+    }
+
+    .admin{
+      background-color:#e09947;
+    }
+    .super-admin{
+      background-color:#6088d8;
+    }
+  }
+
+ 
 
   @include responsive-tablet {
     padding: 15px 30px;
