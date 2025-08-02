@@ -13,9 +13,9 @@ const Header = () => {
       <BurgerMenu />
       <h1>HH Guest Houses</h1>
       <div className="header__right">
-        <p>
+        <div className="header__right-userName">
           {user.firstName} {user.lastName}
-        </p>
+        </div>
         {user.role && (
           <div className={`header__right-role ${user.role}`}>
             <FontAwesomeIcon className={user.role} icon={faUser} size="lg" />

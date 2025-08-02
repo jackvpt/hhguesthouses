@@ -17,6 +17,12 @@ $text-color-1: #fff;
 $text-color-2: #000;
 $text-color-3: #2c2c2c;
 
+$guest-background-color: $text-color-1;
+$guest-color: $primary-color-1;
+$manager-background-color: $secondary-color-1;
+$admin-background-color: #e09947;
+$super-admin-background-color: $secondary-color-3;
+
 
 /* Responsive */
 $breakpoints: (

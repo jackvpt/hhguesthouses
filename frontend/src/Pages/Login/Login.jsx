@@ -29,10 +29,10 @@ const Login = () => {
     password: "",
   })
   const [emailError, setEmailError] = useState("")
-  const [passwordError, setPasswordError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [toast, setToast] = useState({ message: "", severity: "success" })
   const [toastOpen, setToastOpen] = useState(false)
+  const [loginError, setLoginError] = useState(false)
 
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
@@ -52,8 +52,6 @@ const Login = () => {
       case "email":
         isValidEmail(value)
         break
-      case "password":
-        isValidPassword(value)
     }
   }
 
@@ -73,26 +71,8 @@ const Login = () => {
     return true
   }
 
-  const isValidPassword = (password) => {
-    if (!password) {
-      setPasswordError("Password is required.")
-      return false
-    }
-
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
-    if (!passwordRegex.test(password)) {
-      setPasswordError("Invalid password format.")
-      return false
-    }
-
-    setPasswordError("")
-    return true
-  }
-
   const isFormValid = () => {
-    if (isValidEmail(formData.email) && isValidPassword(formData.password))
-      return true
+    if (isValidEmail(formData.email)) return true
     return false
   }
 
@@ -100,14 +80,8 @@ const Login = () => {
     if (!isFormValid()) {
       return
     }
-
+    setLoginError(false)
     loginMutation.mutate(formData)
-
-    //Reset form data after submission
-    setFormData({
-      email: "",
-      password: "",
-    })
   }
 
   /**
@@ -119,6 +93,12 @@ const Login = () => {
       showToast(`Login successful. Welcome ${data.firstName}!`)
       localStorage.setItem("token", data.token)
 
+      //Reset form data after submission
+      setFormData({
+        email: "",
+        password: "",
+      })
+
       dispatch({
         type: "user/setUser",
         payload: {
@@ -129,6 +109,7 @@ const Login = () => {
           role: data.role,
         },
       })
+
       // Wait for 2 seconds before navigating to the display page
       setTimeout(() => {
         navigate("/display")
@@ -136,6 +117,7 @@ const Login = () => {
     },
     onError: (error) => {
       console.error("Error while logging in:", error)
+      if (error.message === "UserID/Password incorrect") setLoginError(true)
     },
   })
 
@@ -184,7 +166,6 @@ const Login = () => {
         fullWidth
         variant="outlined"
         className="signup__outlinedinput"
-        error={Boolean(passwordError)}
       >
         <FormLabel htmlFor="password" required className="signup__formlabel">
           Password
@@ -197,7 +178,6 @@ const Login = () => {
           type={showPassword ? "text" : "password"}
           value={formData.password}
           onChange={handleInputChange}
-          onBlur={handleInputBlur}
           required
           autoComplete="new-password"
           endAdornment={
@@ -213,12 +193,9 @@ const Login = () => {
             </InputAdornment>
           }
         />
-        <p className="signup__helpertext">
-          Must be at least 8 chars, 1 uppercase, 1 lowercase, 1 number & 1
-          special character.
-        </p>
-        {passwordError && <p className="signup__error">{passwordError}</p>}
       </FormControl>
+
+
 
       <Button
         variant="contained"
@@ -240,6 +217,12 @@ const Login = () => {
           Sign up
         </p>
       </div>
+
+            {loginError && (
+        <Alert className="login__error" severity="error" sx={{ width: "100%" }}>
+          User email and/or password incorrect
+        </Alert>
+      )}
 
       {/* Toast notification for success messages */}
       <Snackbar

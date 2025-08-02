@@ -20,7 +20,7 @@ export default function Router() {
       <Header />
       <main>
         <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="display" element={<Display />} />
           <Route path="signup" element={<Signup />} />

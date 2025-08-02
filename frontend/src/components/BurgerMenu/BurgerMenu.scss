@@ -1,0 +1,8 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.menu-icon {
+  &:hover {
+    color: $secondary-color-3;
+  }
+}
