@@ -79,7 +79,9 @@ const RoomEdit = ({ guestHouse }) => {
       queryClient.invalidateQueries("occupancies")
       setToastMessage("Occupancy added successfully")
       setToastOpen(true)
-      handleCancelClick()
+      setTimeout(() => {
+        handleCancelClick()
+      }, 1000)
     },
     onError: (error) => {
       console.error("Error while submitting occupancy:", error)
@@ -154,7 +156,7 @@ const RoomEdit = ({ guestHouse }) => {
   const isDateInOccupancies = (date) => {
     return occupancies.some((occ) => {
       const arrival = new Date(occ.arrivalDate)
-      const departure = new Date(occ.departureDate)
+      const departure = addDays(new Date(occ.departureDate), -1) // Include the departure day
       return (
         date >= arrival &&
         date <= departure &&

@@ -1,8 +1,42 @@
 @use "../../styles/utils/variables" as *;
 @use "../../styles/utils/mixins" as *;
 
-.menu-icon {
-  &:hover {
-    color: $secondary-color-3;
+.burger-menu {
+  &__icon {
+    &:hover {
+      color: $secondary-color-3;
+    }
+  }
+
+  &__account {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+
+    .guest {
+      background-color: $guest-background-color;
+      color: $guest-color;
+    }
+
+    .manager {
+      background-color: $manager-background-color;
+    }
+
+    .admin {
+      background-color: $admin-background-color;
+    }
+    .super-admin {
+      background-color: $super-admin-background-color;
+    }
+  }
+
+  &__name {
+    color: $primary-color-3;
+  }
+
+  &__role{
+    padding:5px 10px;
+    font-size:0.7rem;
+    border-radius: 15px;
   }
 }

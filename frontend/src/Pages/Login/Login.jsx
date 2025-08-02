@@ -195,8 +195,6 @@ const Login = () => {
         />
       </FormControl>
 
-
-
       <Button
         variant="contained"
         color="primary"
@@ -218,7 +216,7 @@ const Login = () => {
         </p>
       </div>
 
-            {loginError && (
+      {loginError && (
         <Alert className="login__error" severity="error" sx={{ width: "100%" }}>
           User email and/or password incorrect
         </Alert>

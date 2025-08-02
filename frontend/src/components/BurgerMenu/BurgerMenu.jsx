@@ -1,11 +1,12 @@
 import "./BurgerMenu.scss"
-import {  useState } from "react"
+import { useState } from "react"
 import {
   IconButton,
   Drawer,
   List,
   ListItemText,
   ListItemButton,
+  ListItem,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
@@ -42,18 +43,24 @@ export default function BurgerMenu() {
   return (
     <ThemeProvider theme={darkTheme}>
       <section className="burger-menu">
-        <IconButton className="menu-icon"
+        <IconButton
+          className="burger-menu__icon"
           edge="start"
           color="inherit"
           aria-label="menu"
           onClick={toggleDrawer(true)}
         >
-          <MenuIcon  fontSize="large" />
+          <MenuIcon fontSize="large" />
         </IconButton>
 
         <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
           <List sx={{ width: "100%", padding: 2 }}>
-            <ListItemText primary={`${user.firstName} ${user.lastName} | ${convertRole(user.role)}`} />
+            <ListItem className="burger-menu__account">
+              <p className="burger-menu__name">{`${user.firstName} ${user.lastName}`}</p>
+              <div className={`burger-menu__role ${user.role}`}>{`${convertRole(
+                user.role
+              )}`}</div>
+            </ListItem>
 
             <ListItemButton onClick={handleLogOut}>
               <ListItemText primary="Log out" />
