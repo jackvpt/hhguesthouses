@@ -37,14 +37,13 @@ exports.signup = async (req, res) => {
     })
   }
 
-
   try {
     // Check if email already exists
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(409).json({ error: "Email is already in use." })
     }
-    console.log('code :>> ', codeName);
+    console.log("code :>> ", codeName)
 
     // Create the User
     const newUser = new User({
@@ -72,7 +71,7 @@ exports.signup = async (req, res) => {
       user: newUser,
     })
   } catch (error) {
-    console.log('error/message :>> ', error.message);
+    console.log("error/message :>> ", error.message)
     res.status(500).json({
       error: error.message || "Error creating user.",
     })
@@ -144,5 +143,39 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ message: "User and Auth deleted" })
   } catch (error) {
     res.status(500).json({ error: error.message })
+  }
+}
+
+/** VALIDATE token */
+exports.validate = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" })
+    }
+
+    const token = authHeader.split(" ")[1]
+
+    const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
+
+    // Check if user exists
+    const user = await User.findById(decoded.userId)
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid token: user not found" })
+    }
+
+    // Return user data
+    res.status(200).json({
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      codeName: user.codeName,
+      role: user.role,
+    })
+  } catch (error) {
+    console.error("Token validation failed:", error.message)
+    return res.status(401).json({ message: "Invalid or expired token" })
   }
 }

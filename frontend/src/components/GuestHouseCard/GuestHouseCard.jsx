@@ -17,6 +17,7 @@ import Calendar from "../Calendar/Calendar"
 
 // 👉 Styles
 import "./GuestHouseCard.scss"
+import { Collapse } from "@mui/material"
 
 /**
  * GuestHouseCard component.
@@ -70,11 +71,11 @@ const GuestHouseCard = ({ guestHouse }) => {
         )}
       </div>
 
-      {isEditMode && (
-        <div className="guest-house-card__edit is-open">
+      <Collapse in={isEditMode}>
+        <div>
           <RoomEdit guestHouse={guestHouse} />
         </div>
-      )}
+      </Collapse>
 
       <div className="guest-house-card__calendar">
         <Calendar guestHouse={guestHouse} />

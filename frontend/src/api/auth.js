@@ -22,3 +22,20 @@ export const login = async (userData) => {
     throw error.response?.data || error
   }
 }
+
+export const validateToken = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`${BASE_URL}/validate`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while validating token:", error);
+    // Important : rejeter l'erreur pour que useQuery déclenche onError
+    throw error;
+  }
+};
+

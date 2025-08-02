@@ -11,6 +11,10 @@
 }
 .week-selection__button {
   cursor: pointer;
+  color: #fff;
+}
+.week-selection__button:hover {
+  color: #6088d8;
 }
 .week-selection__date {
   display: flex;
@@ -24,4 +28,5 @@
 }
 .week-selection__date-range {
   font: size 0.75rem;
+  color: #d4d4d4;
 }/*# sourceMappingURL=WeekSelection.css.map */

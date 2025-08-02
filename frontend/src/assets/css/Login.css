@@ -15,9 +15,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
   padding: 30px 30px 30px 20px;
   gap: 15px;
-  min-width: 350px;
   background-color: #2c2c2c;
   border-radius: 10px;
 }
@@ -53,6 +53,23 @@
 .login__noaccount .login__signin:hover {
   cursor: pointer;
   color: #6088d8;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.login .login__error {
+  animation: shake 1s ease;
 }
 .login__textfield .MuiInputBase-input {
   color: #fff;
@@ -99,7 +116,7 @@
 }
 @media all and (min-width: 768px) {
   .login {
-    min-width: 500px;
+    max-width: 500px;
     gap: 20px;
   }
 }

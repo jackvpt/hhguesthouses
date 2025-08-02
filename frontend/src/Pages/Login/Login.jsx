@@ -93,12 +93,6 @@ const Login = () => {
       showToast(`Login successful. Welcome ${data.firstName}!`)
       localStorage.setItem("token", data.token)
 
-      //Reset form data after submission
-      setFormData({
-        email: "",
-        password: "",
-      })
-
       dispatch({
         type: "user/setUser",
         payload: {
@@ -110,6 +104,12 @@ const Login = () => {
         },
       })
 
+      //Reset form data after submission
+      setFormData({
+        email: "",
+        password: "",
+      })
+      
       // Wait for 2 seconds before navigating to the display page
       setTimeout(() => {
         navigate("/display")
@@ -205,15 +205,15 @@ const Login = () => {
         Log in
       </Button>
       <div className="login__noaccount">
-        <p>Don't have an account ?</p>
-        <p
+        <p>Don't have an account ? Contact the administrator</p>
+        {/* <p
           className="login__signin"
           onClick={() => {
             navigate("/signup")
           }}
         >
           Sign up
-        </p>
+        </p> */}
       </div>
 
       {loginError && (

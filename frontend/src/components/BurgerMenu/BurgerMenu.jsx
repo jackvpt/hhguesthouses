@@ -61,6 +61,11 @@ export default function BurgerMenu() {
                 user.role
               )}`}</div>
             </ListItem>
+            {user.role === "super-admin" && (
+              <ListItemButton onClick={()=>navigate("/signup")}>
+                <ListItemText primary="Sign up" />
+              </ListItemButton>
+            )}
 
             <ListItemButton onClick={handleLogOut}>
               <ListItemText primary="Log out" />

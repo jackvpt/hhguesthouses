@@ -9,31 +9,22 @@
   padding: 10px;
   border-bottom: 1px solid #fff;
 }
-.room-edit__row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+.room-edit .form-label {
+  width: 60px;
 }
-.room-edit__occupantName {
-  flex: 1;
+@media all and (min-width: 768px) {
+  .room-edit .form-label {
+    width: 70px;
+  }
 }
-.room-edit__arrival-date {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-.room-edit__arrival-date-label {
-  color: #2c2c2c;
+@media all and (min-width: 1024px) {
+  .room-edit .form-label {
+    width: 80px;
+  }
 }
 .room-edit__arrival-date-toggle-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 .room-edit__arrival-date-toggle-group .MuiToggleButton-root.Mui-selected {
   background-color: #6088d8;

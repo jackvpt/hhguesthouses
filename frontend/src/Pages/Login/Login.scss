@@ -16,9 +16,10 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width:100%;
   padding: 30px 30px 30px 20px;
   gap: 15px;
-  min-width: 350px;
+  
   background-color: $primary-color-2;
   border-radius: 10px;
 
@@ -150,8 +151,7 @@
   }
 
   @include responsive-tablet {
-    min-width: 500px;
-
+    max-width: 500px;
     gap: 20px;
   }
 

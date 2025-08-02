@@ -25,6 +25,20 @@
   margin-top: 10px;
   margin-bottom: 20px;
 }
+.signup__select .MuiSelect-select {
+  color: #fff;
+  border: 1px solid #fff;
+}
+.signup__select .MuiSelect-select:hover {
+  border-color: #6088d8 !important;
+}
+.signup__select .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: gray;
+  transition: border-color 0.3s;
+}
+.signup__select .MuiSelect-icon {
+  color: #fff;
+}
 .signup .signup__formlabel {
   color: #fff;
   font-size: 1.2rem;

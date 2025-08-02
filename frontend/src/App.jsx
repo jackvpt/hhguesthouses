@@ -4,6 +4,7 @@ import { fetchAllGuestHouses } from "./api/guesthouses"
 import { fetchAllOccupancies } from "./api/occupancies"
 import { fetchAllUsers } from "./api/users"
 
+
 function App() {
   useQuery({
     queryKey: ["guestHouses"],
@@ -14,13 +15,12 @@ function App() {
     queryKey: ["occupancies"],
     queryFn: fetchAllOccupancies,
   })
-
   useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
-      select: (data) =>
-    [...data].sort((a, b) => a.code.localeCompare(b.code)),
+    select: (data) => [...data].sort((a, b) => a.code.localeCompare(b.code)),
   })
+
 
   return (
     <>
@@ -31,4 +31,3 @@ function App() {
 }
 
 export default App
-

@@ -6,6 +6,50 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
+  position: relative;
+}
+header h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+header .header__right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+header .header__right-userName {
+  display: none;
+  font-size: 0.8rem;
+}
+@media all and (min-width: 768px) {
+  header .header__right-userName {
+    display: flex;
+  }
+}
+header .header__right-role {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  aspect-ratio: 1;
+  padding: 10px;
+}
+header .header__right .guest {
+  background-color: #fff;
+  color: #000;
+}
+header .header__right .manager {
+  background-color: #01b121;
+}
+header .header__right .admin {
+  background-color: #e09947;
+}
+header .header__right .super-admin {
+  background-color: #6088d8;
 }
 @media all and (min-width: 768px) {
   header {

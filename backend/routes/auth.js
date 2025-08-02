@@ -8,5 +8,6 @@ const authCtrl = require("../controllers/auth")
 /** Set routes */
 router.post("/signup", authCtrl.signup)
 router.post("/login", authCtrl.login)
+router.get("/validate", authCtrl.validate)
 
 module.exports = router

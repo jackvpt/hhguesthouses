@@ -22,12 +22,4 @@
 }
 .guest-house-card__header .guest-house-card__header-icon:hover {
   color: #6088d8;
-}
-.guest-house-card__edit {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.5s ease;
-}
-.guest-house-card__edit.is-open {
-  max-height: 500px;
 }/*# sourceMappingURL=GuestHouseCard.css.map */
