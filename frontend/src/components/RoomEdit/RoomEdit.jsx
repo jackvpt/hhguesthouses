@@ -139,14 +139,14 @@ const RoomEdit = ({ guestHouse }) => {
   /**
    * Initialize form fields based on selected occupancy or default values.
    */
-  // useEffect(() => {
-  //   setCodeName(selectedOccupancy?.occupantCode || user.codeName)
-  //   setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
-  //   setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
-  //   setDepartureDate(
-  //     new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
-  //   )
-  // }, [selectedOccupancy, users, guestHouse.rooms])
+  useEffect(() => {
+    setCodeName(selectedOccupancy?.occupantCode || user.codeName)
+    setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
+    setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
+    setDepartureDate(
+      new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
+    )
+  }, [selectedOccupancy, users, guestHouse.rooms])
 
   /**
    * Check if the given date overlaps with an existing occupancy.
