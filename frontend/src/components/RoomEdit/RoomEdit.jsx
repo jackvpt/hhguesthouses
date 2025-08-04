@@ -81,7 +81,7 @@ const RoomEdit = ({ guestHouse }) => {
       setToastOpen(true)
       setTimeout(() => {
         handleCancelClick()
-      }, 1000)
+      }, 2000)
     },
     onError: (error) => {
       console.error("Error while submitting occupancy:", error)
@@ -97,7 +97,9 @@ const RoomEdit = ({ guestHouse }) => {
       queryClient.invalidateQueries("occupancies")
       setToastMessage("Occupancy deleted successfully")
       setToastOpen(true)
-      handleCancelClick()
+            setTimeout(() => {
+        handleCancelClick()
+      }, 2000)
     },
     onError: (error) => {
       console.error("Error deleting occupancy:", error)
@@ -113,8 +115,9 @@ const RoomEdit = ({ guestHouse }) => {
       queryClient.invalidateQueries("occupancies")
       setToastMessage("Occupancy updated successfully")
       setToastOpen(true)
-      handleCancelClick()
-    },
+      setTimeout(() => {
+        handleCancelClick()
+      }, 2000)    },
     onError: (error) => {
       console.error("Error updating occupancy:", error)
     },
@@ -158,7 +161,7 @@ const RoomEdit = ({ guestHouse }) => {
       const occ = occupancies[i]
 
       // Exclude selectedOccupancy
-      if (occ === selectedOccupancy) {
+      if (occ._id === selectedOccupancy?._id) {
         continue
       }
 
@@ -171,13 +174,6 @@ const RoomEdit = ({ guestHouse }) => {
         occ.house === guestHouse.name &&
         occ.room === room
       ) {
-        console.log(
-          "arrival, departure,occ.house,occ.name :>> ",
-          arrival,
-          departure,
-          occ.house,
-          occ.room
-        )
         return true
       }
     }

@@ -18,9 +18,8 @@
   align-items: center;
   padding: 30px 30px 30px 20px;
   gap: 15px;
-  min-width: 350px;
+  width:100%;
   background-color: $primary-color-2;
-  border-radius: 10px;
 
   h2 {
     margin-top: 10px;
@@ -164,12 +163,14 @@
   }
 
   @include responsive-tablet {
+      border-radius: 10px;
+width:auto;
     min-width: 500px;
-
     gap: 20px;
   }
-
+  
   @include responsive-desktop {
+    min-width: 700px;
     gap: 25px;
   }
 }

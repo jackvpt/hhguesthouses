@@ -40,6 +40,11 @@ export default function BurgerMenu() {
     setOpen(false)
   }
 
+  const handleSignUp = () => {
+    navigate("/signup")
+    setOpen(false)
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <section className="burger-menu">
@@ -62,7 +67,7 @@ export default function BurgerMenu() {
               )}`}</div>
             </ListItem>
             {user.role === "super-admin" && (
-              <ListItemButton onClick={()=>navigate("/signup")}>
+              <ListItemButton onClick={handleSignUp}>
                 <ListItemText primary="Sign up" />
               </ListItemButton>
             )}
