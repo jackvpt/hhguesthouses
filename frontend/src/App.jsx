@@ -4,8 +4,8 @@ import { fetchAllGuestHouses } from "./api/guesthouses"
 import { fetchAllOccupancies } from "./api/occupancies"
 import { fetchAllUsers } from "./api/users"
 
-
 function App() {
+  // ✅ Charge tes données
   useQuery({
     queryKey: ["guestHouses"],
     queryFn: fetchAllGuestHouses,
@@ -15,19 +15,14 @@ function App() {
     queryKey: ["occupancies"],
     queryFn: fetchAllOccupancies,
   })
+
   useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
     select: (data) => [...data].sort((a, b) => a.code.localeCompare(b.code)),
   })
 
-
-  return (
-    <>
-      {/* Main router handling all application routes */}
-      <Router />
-    </>
-  )
+  return <Router />
 }
 
 export default App

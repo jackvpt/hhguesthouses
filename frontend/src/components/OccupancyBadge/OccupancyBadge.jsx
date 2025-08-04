@@ -1,11 +1,14 @@
 import "./OccupancyBadge.scss"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 const OccupancyBadge = ({ occupancy, guestHouse,isToday }) => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)  
+  const isEditable = user.codeName === occupancy?.occupantCode || user.role === "admin" || user.role === "super-admin"
 
   const handleClick = () => {
-    if (!occupancy) return
+    if (!isEditable) return
+
     dispatch({
       type: "parameters/setHouseEditMode",
       payload: "modify",
@@ -22,7 +25,7 @@ const OccupancyBadge = ({ occupancy, guestHouse,isToday }) => {
 
   return (
     <div
-      className={`occupancy-badge ${occupancy ? "occupied" : ""} ${isToday ? "istoday":""}`}
+      className={`occupancy-badge ${isEditable && occupancy ? "clickable" : ""} ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
       onClick={handleClick}
     >
       {occupancy?.occupantCode}

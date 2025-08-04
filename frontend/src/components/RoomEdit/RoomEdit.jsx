@@ -139,14 +139,14 @@ const RoomEdit = ({ guestHouse }) => {
   /**
    * Initialize form fields based on selected occupancy or default values.
    */
-  useEffect(() => {
-    setCodeName(selectedOccupancy?.occupantCode || user.codeName)
-    setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
-    setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
-    setDepartureDate(
-      new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
-    )
-  }, [selectedOccupancy, users, guestHouse.rooms])
+  // useEffect(() => {
+  //   setCodeName(selectedOccupancy?.occupantCode || user.codeName)
+  //   setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
+  //   setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
+  //   setDepartureDate(
+  //     new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
+  //   )
+  // }, [selectedOccupancy, users, guestHouse.rooms])
 
   /**
    * Check if the given date overlaps with an existing occupancy.
@@ -154,16 +154,35 @@ const RoomEdit = ({ guestHouse }) => {
    * @returns {boolean} True if the date conflicts, false otherwise.
    */
   const isDateInOccupancies = (date) => {
-    return occupancies.some((occ) => {
+    for (let i = 0; i < occupancies.length; i++) {
+      const occ = occupancies[i]
+
+      // Exclude selectedOccupancy
+      if (occ === selectedOccupancy) {
+        continue
+      }
+
       const arrival = new Date(occ.arrivalDate)
-      const departure = addDays(new Date(occ.departureDate), -1) // Include the departure day
-      return (
+      const departure = addDays(new Date(occ.departureDate), -1) // Inclure le jour de départ
+
+      if (
         date >= arrival &&
         date <= departure &&
         occ.house === guestHouse.name &&
         occ.room === room
-      )
-    })
+      ) {
+        console.log(
+          "arrival, departure,occ.house,occ.name :>> ",
+          arrival,
+          departure,
+          occ.house,
+          occ.room
+        )
+        return true
+      }
+    }
+
+    return false
   }
 
   /**

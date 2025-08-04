@@ -19,7 +19,9 @@ const userSlice = createSlice({
       state.codeName = action.payload.codeName
       state.role = action.payload.role
     },
-    clearUser: () => initialState,
+    clearUser: () => {
+      return { ...initialState }
+    },
   },
 })
 

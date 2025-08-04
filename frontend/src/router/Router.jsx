@@ -16,6 +16,7 @@ import { useSelector } from "react-redux"
  * @returns {JSX.Element} The main Router component for the application.
  */
 export default function Router() {
+  
   const isAuthenticated = useSelector((state) => state.user.userId !== null)
   
   return (
