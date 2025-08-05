@@ -13,6 +13,9 @@
 
 .occupied {
   background-color: #c71717;
+}
+
+.clickable {
   cursor: pointer;
 }
 

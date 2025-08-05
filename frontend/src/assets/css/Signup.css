@@ -17,9 +17,8 @@
   align-items: center;
   padding: 30px 30px 30px 20px;
   gap: 15px;
-  min-width: 350px;
+  width: 100%;
   background-color: #2c2c2c;
-  border-radius: 10px;
 }
 .signup h2 {
   margin-top: 10px;
@@ -117,12 +116,15 @@
 }
 @media all and (min-width: 768px) {
   .signup {
+    border-radius: 10px;
+    width: auto;
     min-width: 500px;
     gap: 20px;
   }
 }
 @media all and (min-width: 1024px) {
   .signup {
+    min-width: 700px;
     gap: 25px;
   }
 }/*# sourceMappingURL=Signup.css.map */

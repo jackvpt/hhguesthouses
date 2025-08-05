@@ -1,8 +1,8 @@
 import { Button } from "@mui/material"
-import "./Error.scss"
+import "./Error404.scss"
 import { useNavigate } from "react-router-dom"
 
-const Error = () => {
+const Error404 = () => {
     const navigate=useNavigate()
   return (
     <section className="error">
@@ -17,4 +17,4 @@ const Error = () => {
   )
 }
 
-export default Error
+export default Error404
