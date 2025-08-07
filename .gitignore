@@ -25,3 +25,7 @@ dist-ssr
 
 # Dev Tools
 /devTools/
+
+# Environment variables
+frontend/.env
+backend/.env
