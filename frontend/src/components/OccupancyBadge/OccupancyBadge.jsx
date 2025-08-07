@@ -1,10 +1,20 @@
+import { Tooltip } from "@mui/material"
 import "./OccupancyBadge.scss"
 import { useDispatch, useSelector } from "react-redux"
+import { useUsers } from "../../hooks/useUsers"
 
-const OccupancyBadge = ({ occupancy, guestHouse,isToday }) => {
+const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)  
-  const isEditable = user.codeName === occupancy?.occupantCode || user.role === "admin" || user.role === "super-admin"
+
+  // React Query: Fetch users
+  const { data: users, isLoadingUsers, errorUsers } = useUsers()
+
+  const user = useSelector((state) => state.user)
+
+  const ownOccupancy = user.codeName === occupancy?.occupantCode
+
+  const isEditable =
+    ownOccupancy || user.role === "admin" || user.role === "super-admin"
 
   const handleClick = () => {
     if (!isEditable) return
@@ -23,13 +33,29 @@ const OccupancyBadge = ({ occupancy, guestHouse,isToday }) => {
     })
   }
 
+  if (isLoadingUsers) {
+    return null
+  }
+
+  if (errorUsers) {
+    return null
+  }
+
+  const occupantName = users.find(
+    (user) => user.codeName === occupancy?.occupantCode
+  )
+
   return (
-    <div
-      className={`occupancy-badge ${isEditable && occupancy ? "clickable" : ""} ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
-      onClick={handleClick}
-    >
-      {occupancy?.occupantCode}
-    </div>
+    <Tooltip title={`${occupantName?.firstName} ${occupantName?.lastName}`}>
+      <div
+        className={`occupancy-badge ${
+          isEditable && occupancy ? "clickable" : ""
+        } ${ownOccupancy ? "own-occupancy" : ""} ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
+        onClick={handleClick}
+      >
+        {occupancy?.occupantCode}
+      </div>
+    </Tooltip>
   )
 }
 

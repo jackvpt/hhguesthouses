@@ -10,10 +10,15 @@
   padding: 5px 10px;
   min-width: 44px;
   min-height: 24px;
+  cursor: default;
 }
 
 .occupied {
   background-color: $secondary-color-2;
+}
+
+.own-occupancy {
+  background-color: $secondary-color-3;
 }
 
 .clickable {

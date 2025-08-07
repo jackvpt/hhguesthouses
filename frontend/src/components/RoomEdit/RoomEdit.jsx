@@ -11,7 +11,6 @@ import {
   Snackbar,
   ToggleButton,
   ToggleButtonGroup,
-  InputLabel,
   MenuItem,
   FormControl,
   Select,
@@ -366,7 +365,7 @@ const RoomEdit = ({ guestHouse }) => {
           >
             {users.map((user) => (
               <MenuItem key={user.codeName} value={user.codeName}>
-                {user.codeName}
+                {user.codeName} - {user.firstName} {user.lastName}
               </MenuItem>
             ))}
           </Select>
