@@ -1,7 +1,7 @@
 import axios from "axios"
+import { API_URL } from "./apiURL"
 
-const BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3000/api/auth"
+const BASE_URL = API_URL
 
 export const signup = async (userData) => {
   try {
