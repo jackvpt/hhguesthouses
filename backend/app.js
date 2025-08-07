@@ -41,15 +41,15 @@ app.use((req, res, next) => {
 })
 
 /** Guest Houses routes */
-app.use("/api/guesthouses", rateLimiter[1], guestHousesRoutes)
+app.use("/guesthouses", rateLimiter[1], guestHousesRoutes)
 
 /** Occupancies routes */
-app.use("/api/occupancies", rateLimiter[1], occupanciesRoutes)
+app.use("/occupancies", rateLimiter[1], occupanciesRoutes)
 
 /** Users routes */
-app.use("/api/users", rateLimiter[1], usersRoutes)
+app.use("/users", rateLimiter[1], usersRoutes)
 
 /** Auth routes */
-app.use("/api/auth", rateLimiter[1], authRoutes)
+app.use("/auth", rateLimiter[1], authRoutes)
 
 module.exports = app

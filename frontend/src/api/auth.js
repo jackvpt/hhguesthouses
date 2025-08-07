@@ -1,7 +1,7 @@
 import axios from "axios"
 import { API_URL } from "./apiURL"
 
-const BASE_URL = API_URL
+const BASE_URL = `${API_URL}/auth`
 
 export const signup = async (userData) => {
   try {
