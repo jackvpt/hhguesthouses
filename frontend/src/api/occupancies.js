@@ -1,13 +1,12 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:3000/api/occupancies"
+const BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3000/api"
 
 export const fetchAllOccupancies = async () => {
   try {
-    const response = await fetch(BASE_URL)
-    if (!response.ok) throw new Error("API request failed")
-    const data = await response.json()
-    return data
+    const response = await axios.get(`${BASE_URL}/occupancies`)
+    return response.data
   } catch (error) {
     console.error(`Error fetching occupancy data from API: ${error.message}`)
     throw error
