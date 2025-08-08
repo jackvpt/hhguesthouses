@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <header>
-      <BurgerMenu />
+      {user.userId && <BurgerMenu />}
       <div className="header__center">
         <h1>HH Guest Houses</h1>
         <h2>Luxury mansions in Den Helder</h2>

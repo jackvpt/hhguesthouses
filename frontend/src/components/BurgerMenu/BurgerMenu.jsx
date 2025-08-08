@@ -7,6 +7,7 @@ import {
   ListItemText,
   ListItemButton,
   ListItem,
+  Divider,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
@@ -66,6 +67,7 @@ export default function BurgerMenu() {
                 user.role
               )}`}</div>
             </ListItem>
+            <Divider />
             {user.role === "super-admin" && (
               <ListItemButton onClick={handleSignUp}>
                 <ListItemText primary="Sign up" />
@@ -75,8 +77,10 @@ export default function BurgerMenu() {
             <ListItemButton onClick={handleLogOut}>
               <ListItemText primary="Log out" />
             </ListItemButton>
-
-            <ListItem className="burger-menu__account"><p className="burger-menu__name">Version : {__APP_VERSION__} </p></ListItem>
+            <Divider />
+            <ListItem className="burger-menu__account">
+              <p className="burger-menu__name">Version : {__APP_VERSION__} </p>
+            </ListItem>
           </List>
         </Drawer>
       </section>

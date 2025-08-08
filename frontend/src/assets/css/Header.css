@@ -11,6 +11,11 @@ header {
   width: 100%;
   margin: 0 auto;
 }
+@media all and (min-width: 1024px) {
+  header {
+    height: 120px;
+  }
+}
 header .header__center {
   display: flex;
   flex-direction: column;
@@ -30,11 +35,16 @@ header .header__center h1 {
 header .header__center h2 {
   font-family: "Luxurious Script", cursive !important;
   font-weight: 400;
-  font-size: 2.2rem;
+  font-size: 1.9rem;
 }
 @media all and (min-width: 768px) {
   header .header__center h2 {
     font-size: 2.8rem;
+  }
+}
+@media all and (min-width: 1024px) {
+  header .header__center h2 {
+    font-size: 4rem;
   }
 }
 header .header__right {
