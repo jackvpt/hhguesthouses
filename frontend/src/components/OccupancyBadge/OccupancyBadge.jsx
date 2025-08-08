@@ -46,7 +46,13 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
   )
 
   return (
-    <Tooltip title={`${occupantName?.firstName} ${occupantName?.lastName}`}>
+    <Tooltip componentsProps={{
+    tooltip: {
+      sx: {
+        fontSize: "1rem",
+      },
+    },
+  }} className="occupancy-badge" title={`${occupantName?.firstName} ${occupantName?.lastName}`}>
       <div
         className={`occupancy-badge ${
           isEditable && occupancy ? "clickable" : ""
