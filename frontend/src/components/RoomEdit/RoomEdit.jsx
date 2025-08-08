@@ -479,7 +479,7 @@ const RoomEdit = ({ guestHouse }) => {
         sx={{
           p: 0.5,
           py: 0,
-          fontSize: "0.75rem",
+          fontSize: "1rem",
           alignItems: "center",
           lineHeight: 1,
         }}

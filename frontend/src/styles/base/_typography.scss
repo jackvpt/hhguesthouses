@@ -2,19 +2,22 @@
 @use "../utils/mixins" as *;
 
 * {
-  font-family: $font_body !important;
-  font-size: 12px;
-  font-weight: 500;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  font-family: $font_body !important;
+  font-size: 10px;
+  font-weight: 400;
 
   @include responsive-tablet {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   @include responsive-desktop {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 

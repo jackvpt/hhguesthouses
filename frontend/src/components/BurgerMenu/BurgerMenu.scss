@@ -1,7 +1,7 @@
 @use "../../styles/utils/variables" as *;
 @use "../../styles/utils/mixins" as *;
 
-.burger-menu {
+.burger-menu {  
   &__icon {
     &:hover {
       color: $secondary-color-3;
@@ -34,9 +34,9 @@
     color: $primary-color-3;
   }
 
-  &__role{
-    padding:5px 10px;
-    font-size:0.7rem;
+  &__role {
+    padding: 5px 10px;
+    font-size: 0.7rem;
     border-radius: 15px;
   }
 }
