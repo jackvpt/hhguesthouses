@@ -16,10 +16,10 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  margin-top: 20px;
+  width:100%;
   padding: 30px 30px 30px 20px;
   gap: 15px;
-
   background-color: $primary-color-2;
 
   .signup__formlabel {

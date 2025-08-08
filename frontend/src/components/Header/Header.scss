@@ -9,10 +9,29 @@ header {
   padding: 10px 20px;
   position: relative;
 
-  h1 {
+  .header__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+
+    h1 {
+      font-size: 1.8rem;
+      @include responsive-tablet {
+        font-size: 2rem;
+      }
+    }
+
+    h2 {
+      font-family: $font_luxury !important;
+      font-size: 1.6rem;
+
+      @include responsive-tablet {
+        font-size: 2rem;
+      }
+    }
   }
 
   .header__right {
@@ -24,7 +43,7 @@ header {
 
     &-userName {
       display: none;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
 
       @include responsive-tablet {
         display: flex;

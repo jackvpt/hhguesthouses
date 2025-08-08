@@ -13,6 +13,7 @@
   position: relative;
 }
 .guest-house-card__header h2 {
+  font-size: 1.8rem;
   margin: 0;
 }
 .guest-house-card__header .guest-house-card__header-icon {

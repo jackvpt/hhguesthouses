@@ -8,11 +8,14 @@
   table-layout: fixed;
 }
 .calendar__days {
-  font-size: 1.25rem;
+  padding: 10px 0;
+}
+.calendar__days-name {
+  font-size: 1.1rem;
   font-weight: bold;
 }
 .calendar__days-date {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: normal;
   height: 15px;
 }

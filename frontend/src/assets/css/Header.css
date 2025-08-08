@@ -8,10 +8,30 @@ header {
   padding: 10px 20px;
   position: relative;
 }
-header h1 {
+header .header__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+header .header__center h1 {
+  font-size: 1.8rem;
+}
+@media all and (min-width: 768px) {
+  header .header__center h1 {
+    font-size: 2rem;
+  }
+}
+header .header__center h2 {
+  font-family: "Luxurious Script", cursive !important;
+  font-size: 1.6rem;
+}
+@media all and (min-width: 768px) {
+  header .header__center h2 {
+    font-size: 2rem;
+  }
 }
 header .header__right {
   display: flex;
@@ -22,7 +42,7 @@ header .header__right {
 }
 header .header__right-userName {
   display: none;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 @media all and (min-width: 768px) {
   header .header__right-userName {

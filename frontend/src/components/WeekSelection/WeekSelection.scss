@@ -12,12 +12,10 @@
 
   &__button {
     cursor: pointer;
-    color:$text-color-1;
-
-
+    color: $text-color-1;
 
     &:hover {
-      color:$secondary-color-3;
+      color: $secondary-color-3;
     }
   }
 
@@ -28,13 +26,13 @@
     justify-content: space-between;
 
     &-weekNumber {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: bold;
     }
 
     &-range {
-      font: size 0.75rem;
-      color:$primary-color-4;
+      font-size: 1.2rem;
+      color: $primary-color-4;
     }
   }
 }

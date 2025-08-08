@@ -11,7 +11,10 @@ const Header = () => {
   return (
     <header>
       <BurgerMenu />
-      <h1>HH Guest Houses</h1>
+      <div className="header__center">
+        <h1>HH Guest Houses</h1>
+        <h2>Luxury mansions in Den Helder</h2>
+      </div>
       <div className="header__right">
         <div className="header__right-userName">
           {user.firstName} {user.lastName}

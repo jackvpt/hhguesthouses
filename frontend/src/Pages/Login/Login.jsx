@@ -21,6 +21,8 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -138,7 +140,7 @@ const Login = () => {
 
   return (
     <section className="login">
-      <h1>LOGIN</h1>
+      <h1 onClick={() => setShortcutsOpen((prev) => !prev)}>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>
         <FormLabel htmlFor="email" required className="signup__formlabel">
@@ -237,11 +239,12 @@ const Login = () => {
           {toast.message}
         </Alert>
       </Snackbar>
-      <FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
+      {shortcutsOpen && (
+        <FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
           onClick={() =>
             setFormData({
               email: "jacques.verpoest@heliholland.nl",
@@ -249,7 +252,7 @@ const Login = () => {
             })
           }
         >
-          JVP superAdmin
+          JVP superAdmin 
         </Button>
         <Button
           variant="contained"
@@ -290,7 +293,7 @@ const Login = () => {
         >
           IAN manager
         </Button>
-      </FormControl>
+      </FormControl>)}
     </section>
   )
 }
