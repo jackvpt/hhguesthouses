@@ -10,11 +10,14 @@
   }
 
   &__days {
-    font-size: 1.25rem;
-    font-weight: bold;
+    padding:10px 0;
+    &-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
 
     &-date {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       font-weight: normal;
       height: 15px;
     }

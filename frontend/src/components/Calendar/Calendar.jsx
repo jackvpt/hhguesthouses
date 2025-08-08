@@ -67,7 +67,7 @@ const Calendar = ({ guestHouse }) => {
                   }
                   key={day}
                 >
-                  <p>{day}</p>
+                  <p className="calendar__days-name">{day}</p>
                   <p className="calendar__days-date">
                     {formatDateToDDMM(date)}
                   </p>
