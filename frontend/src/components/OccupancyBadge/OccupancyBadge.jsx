@@ -46,17 +46,24 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
   )
 
   return (
-    <Tooltip componentsProps={{
-    tooltip: {
-      sx: {
-        fontSize: "1rem",
-      },
-    },
-  }} className="occupancy-badge" title={`${occupantName?.firstName} ${occupantName?.lastName}`}>
+    <Tooltip
+      disableHoverListener={!occupancy}
+      title={
+        occupancy ? `${occupantName?.firstName} ${occupantName?.lastName}` : ""
+      }
+      componentsProps={{
+        tooltip: {
+          sx: { fontSize: "1rem" },
+        },
+      }}
+      className="occupancy-badge"
+    >
       <div
         className={`occupancy-badge ${
           isEditable && occupancy ? "clickable" : ""
-        } ${ownOccupancy ? "own-occupancy" : ""} ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
+        } ${ownOccupancy ? "own-occupancy" : ""} ${
+          occupancy ? "occupied" : ""
+        } ${isToday ? "istoday" : ""}`}
         onClick={handleClick}
       >
         {occupancy?.occupantCode}

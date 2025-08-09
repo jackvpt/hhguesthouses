@@ -6,9 +6,21 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  position:relative;
   background-color: $primary-color-2;
   padding: 10px;
+
+  &__center{
+    display: flex;
+    flex-direction: row;
+    align-items: space-between;
+    gap:30px;
+  }
+
+  &__right{
+    position: absolute;
+    right: 10px;
+  }
 
   &__button {
     cursor: pointer;
@@ -34,5 +46,9 @@
       font-size: 1.2rem;
       color: $primary-color-4;
     }
+  }
+
+  &__today  {
+    color:$text-color-1;
   }
 }

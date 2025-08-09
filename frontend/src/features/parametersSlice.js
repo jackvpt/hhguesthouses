@@ -18,10 +18,15 @@ const parametersSlice = createSlice({
   name: "parameters",
   initialState,
   reducers: {
+    currentWeek:(state) =>{
+      const current = new Date()
+      state.referenceDate = current.toISOString()
+      state.weekNumber = getWeekNumber(current)
+      state.weekRange = getWeekRangeFromDate(current)
+    },
     previousWeek: (state) => {
       const current = new Date(state.referenceDate)
       current.setDate(current.getDate() - 7)
-
       state.referenceDate = current.toISOString()
       state.weekNumber = getWeekNumber(current)
       state.weekRange = getWeekRangeFromDate(current)
@@ -49,6 +54,7 @@ const parametersSlice = createSlice({
 })
 
 export const {
+  currentWeek,
   previousWeek,
   nextWeek,
   setHouseEditMode,
