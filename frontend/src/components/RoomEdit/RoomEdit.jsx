@@ -35,6 +35,7 @@ import {
 } from "../../api/occupancies"
 import { useUsers } from "../../hooks/useUsers"
 import { useOccupancies } from "../../hooks/useOccupancies.js"
+import { enGB } from "date-fns/locale"
 
 /**
  * Component for editing room occupancy details.
@@ -428,7 +429,7 @@ const RoomEdit = ({ guestHouse }) => {
         <FormLabel htmlFor="departure-date" className="form-label">
           Departure
         </FormLabel>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
           <DatePicker
             className="room-edit__departure-date"
             value={departureDate}

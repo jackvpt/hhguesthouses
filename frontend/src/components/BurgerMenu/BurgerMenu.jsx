@@ -78,8 +78,8 @@ export default function BurgerMenu() {
               <ListItemText primary="Log out" />
             </ListItemButton>
             <Divider />
-            <ListItem className="burger-menu__account">
-              <p className="burger-menu__name">Version : {__APP_VERSION__} </p>
+            <ListItem>
+              <p className="burger-menu__version">Software version : {__APP_VERSION__} </p>
             </ListItem>
           </List>
         </Drawer>

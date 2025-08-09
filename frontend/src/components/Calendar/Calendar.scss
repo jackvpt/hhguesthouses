@@ -4,13 +4,35 @@
 .calendar {
   padding: 10px 15px;
 
+  &__room {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    &-name{
+      font-size: 1.2rem;
+    }
+
+    &-info {
+      position: absolute;
+      right: 0;
+
+      &-icon {
+        color: $secondary-color-3;
+      }
+    }
+  }
+
   table {
     width: 100%;
     table-layout: fixed;
   }
 
   &__days {
-    padding:10px 0;
+    padding: 10px 0;
     &-name {
       font-size: 1.1rem;
       font-weight: bold;

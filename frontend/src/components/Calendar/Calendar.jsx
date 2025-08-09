@@ -4,6 +4,9 @@ import OccupancyBadge from "../OccupancyBadge/OccupancyBadge"
 import { formatDateToDDMM } from "../../utils/dateTools"
 import { useQuery } from "@tanstack/react-query"
 import { fetchAllOccupancies } from "../../api/occupancies"
+import { IconButton, Tooltip } from "@mui/material"
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const addDays = (date, days) => {
   const result = new Date(date)
@@ -80,7 +83,29 @@ const Calendar = ({ guestHouse }) => {
         <tbody>
           {rooms.map((room) => (
             <tr key={room.name}>
-              <th>{room.name}</th>
+              <th>
+                <div className="calendar__room">
+                  <div className="calendar__room-name">{room.name}</div>
+                  <div className="calendar__room-info">
+                    <Tooltip
+                      title={room.description}
+                      componentsProps={{
+                        tooltip: {
+                          sx: { fontSize: "1rem" },
+                        },
+                      }}
+                    >
+                      <IconButton>
+                        <FontAwesomeIcon
+                          icon={faCircleInfo}
+                          size="xs"
+                          className="calendar__room-info-icon"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </div>
+              </th>
               {days.map((day, dayIndex) => {
                 const date = addDays(firstDayOfWeek, dayIndex)
                 const isToday =

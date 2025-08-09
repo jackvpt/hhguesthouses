@@ -8,24 +8,23 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-color: $primary-color-1; /* le fond prend toute la largeur */
-  color: $text-color-1;
+  background-color: rgb(19, 19, 24);
 }
 
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: $primary-color-1;
+  color: $text-color-1;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centre horizontalement le contenu */
-  width: 100%;
-  max-width: 1440px;   /* largeur maximale du contenu */
-  margin: 0 auto;      /* centre dans la page */
+  align-items: center;
   flex: 1;
 
   @include responsive-desktop {

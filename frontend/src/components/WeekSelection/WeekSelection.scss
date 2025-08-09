@@ -6,18 +6,18 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  position:relative;
+  position: relative;
   background-color: $primary-color-2;
   padding: 10px;
 
-  &__center{
+  &__center {
     display: flex;
     flex-direction: row;
     align-items: space-between;
-    gap:30px;
+    gap: 30px;
   }
 
-  &__right{
+  &__right {
     position: absolute;
     right: 10px;
   }
@@ -48,7 +48,10 @@
     }
   }
 
-  &__today  {
-    color:$text-color-1;
+  &__today {
+    color: $text-color-1;
+    &:hover {
+      color: $secondary-color-3;
+    }
   }
 }
