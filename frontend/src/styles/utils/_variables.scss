@@ -3,8 +3,9 @@ $font_body: "Roboto", sans-serif !default;
 $font_luxury: "Luxurious Script", cursive !default;
 
 // /* Colors */
-$primary-color-1: #000;
-$primary-color-2: #2c2c2c;
+$background-color: #000;
+$primary-color-1: #181818;
+$primary-color-2: #1e1e20;
 $primary-color-3: #a1a1a1;
 $primary-color-4: #d4d4d4;
 
@@ -17,6 +18,8 @@ $secondary-color-5: #004be0;
 $text-color-1: #fff;
 $text-color-2: #000;
 $text-color-3: #2c2c2c;
+
+$border-color-1:#262528;
 
 $guest-background-color: $text-color-1;
 $guest-color: $primary-color-1;

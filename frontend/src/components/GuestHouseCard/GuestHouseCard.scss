@@ -3,6 +3,7 @@
 
 .guest-house-card {
   background-color: $primary-color-2;
+  border: 1px solid $border-color-1;
 
   &__header {
     display: flex;
@@ -11,7 +12,7 @@
     justify-content: center;
     padding: 10px;
     border-bottom: 1px solid $text-color-1;
-    position:relative;
+    position: relative;
 
     h2 {
       font-size: 1.8rem;
@@ -20,14 +21,12 @@
 
     .guest-house-card__header-icon {
       color: $text-color-1;
-      position:absolute;
-      right:10px;
+      position: absolute;
+      right: 10px;
     }
 
     .guest-house-card__header-icon:hover {
       color: $secondary-color-3;
     }
   }
-
-
 }
