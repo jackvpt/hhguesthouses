@@ -19,8 +19,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,
       refetchOnMount: true,
-      staleTime: 60000, // data is considered fresh for 1 minute
-      refetchInterval: 15000, // refetch every 15 seconds },
+      staleTime: 60000, // Data is considered fresh for 1 minute
     },
   },
 })

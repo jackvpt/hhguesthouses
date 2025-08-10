@@ -18,6 +18,7 @@ function App() {
     {
       queryKey: ["occupancies"],
       queryFn: fetchAllOccupancies,
+      refetchInterval: 15000, // Refetch every 15 seconds
     }
   )
 
