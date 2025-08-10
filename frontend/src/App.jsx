@@ -5,8 +5,20 @@ import { fetchAllOccupancies } from "./api/occupancies"
 import { fetchAllUsers } from "./api/users"
 import Loader from "./components/Loader/Loader"
 import Error from "./components/Error/Error"
+import { useDispatch } from "react-redux"
+import { clearUser } from "./features/userSlice"
 
 function App() {
+  const dispatch = useDispatch()
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+  console.log("Token :>> ", token)
+
+  if (!token) {
+    console.log("No token. Clearing user stored")
+    dispatch(clearUser())
+  }
+
+
   const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } = useQuery(
     {
       queryKey: ["guestHouses"],
