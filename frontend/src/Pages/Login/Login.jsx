@@ -111,11 +111,8 @@ const Login = () => {
         email: "",
         password: "",
       })
-      
-      // Wait for 2 seconds before navigating to the display page
-      setTimeout(() => {
-        navigate("/display")
-      }, 2000)
+
+      navigate("/display")
     },
     onError: (error) => {
       console.error("Error while logging in:", error)
@@ -245,55 +242,56 @@ const Login = () => {
             variant="contained"
             color="primary"
             size="small"
-          onClick={() =>
-            setFormData({
-              email: "jacques.verpoest@heliholland.nl",
-              password: "Guesthouses.1",
-            })
-          }
-        >
-          JVP superAdmin 
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() =>
-            setFormData({
-              email: "jp.gallot@heliholland.nl",
-              password: "Guesthouses.1",
-            })
-          }
-        >
-          JPG admin
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() =>
-            setFormData({
-              email: "arie.slagter@heliholland.nl",
-              password: "Guesthouses.1",
-            })
-          }
-        >
-          ARI guest
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={() =>
-            setFormData({
-              email: "ian.scott@heliholland.nl",
-              password: "Guesthouses.1",
-            })
-          }
-        >
-          IAN manager
-        </Button>
-      </FormControl>)}
+            onClick={() =>
+              setFormData({
+                email: "jacques.verpoest@heliholland.nl",
+                password: "Guesthouses.1",
+              })
+            }
+          >
+            JVP superAdmin
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() =>
+              setFormData({
+                email: "jp.gallot@heliholland.nl",
+                password: "Guesthouses.1",
+              })
+            }
+          >
+            JPG admin
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() =>
+              setFormData({
+                email: "arie.slagter@heliholland.nl",
+                password: "Guesthouses.1",
+              })
+            }
+          >
+            ARI guest
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() =>
+              setFormData({
+                email: "ian.scott@heliholland.nl",
+                password: "Guesthouses.1",
+              })
+            }
+          >
+            IAN manager
+          </Button>
+        </FormControl>
+      )}
     </section>
   )
 }

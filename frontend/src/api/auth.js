@@ -23,33 +23,9 @@ export const login = async (userData) => {
   }
 }
 
-export const validateToken = async () => {
-  const token = localStorage.getItem("token")
-  if (!token) throw new Error("No token found")
-
-  try {
-    const response = await axios.get(`${BASE_URL}/validate`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    // Si on arrive ici, la requête a réussi
-    console.log("response.data :>> ", response.data)
-    return response.data
-  } catch (error) {
-    console.log(error)
-    // On peut personnaliser le message d'erreur ou re-throw
-    if (axios.isAxiosError(error)) {
-      // Par exemple, erreur 401 = token invalide
-      if (error.response?.status === 401) {
-        throw new Error("Token invalide ou expiré")
-      }
-      // Autres erreurs API
-      throw new Error(
-        error.response?.data?.message || "Erreur lors de la validation du token"
-      )
-    }
-    // Erreur hors Axios (ex: réseau)
-    throw error
-  }
+export async function validateToken(token) {
+  const { data } = await axios.get(`${BASE_URL}/validate`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  return data
 }

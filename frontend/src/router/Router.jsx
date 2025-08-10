@@ -7,6 +7,8 @@ import Login from "../Pages/Login/Login"
 import { useDispatch, useSelector } from "react-redux"
 import Error404 from "../Pages/Error404/Error404"
 import { clearUser } from "../features/userSlice"
+import { useAuthToken } from "../hooks/useAuthToken"
+import Loader from "../components/Loader/Loader"
 
 /**
  * Application router component using React Router v6.
@@ -22,11 +24,14 @@ export default function Router() {
   if (!token) {
     dispatch(clearUser())
   }
+  const { isLoading } = useAuthToken({ checkInterval: 300000 }) // Vérifie toutes les 5 min
 
   const isAuthenticated = useSelector((state) => state.user.userId !== null)
-
+  if (isLoading && token) {
+    return <Loader />
+  }
   return (
-    <BrowserRouter>
+    <>
       <Header />
       <main>
         <Routes>
@@ -47,6 +52,6 @@ export default function Router() {
         </Routes>
       </main>
       <Footer />
-    </BrowserRouter>
+    </>
   )
 }
