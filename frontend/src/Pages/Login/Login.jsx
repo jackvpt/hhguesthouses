@@ -2,7 +2,9 @@ import "./Login.scss"
 import {
   Alert,
   Button,
+  Checkbox,
   FormControl,
+  FormControlLabel,
   FormLabel,
   IconButton,
   InputAdornment,
@@ -35,6 +37,7 @@ const Login = () => {
   const [toast, setToast] = useState({ message: "", severity: "success" })
   const [toastOpen, setToastOpen] = useState(false)
   const [loginError, setLoginError] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
 
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
@@ -93,7 +96,11 @@ const Login = () => {
     mutationFn: login,
     onSuccess: (data) => {
       showToast(`Login successful. Welcome ${data.firstName}!`)
-      localStorage.setItem("token", data.token)
+      if (rememberMe) {
+        localStorage.setItem("token", data.token)
+      } else {
+        sessionStorage.setItem("token", data.token)
+      }
 
       dispatch({
         type: "user/setUser",
@@ -203,16 +210,23 @@ const Login = () => {
       >
         Log in
       </Button>
+
+      <FormControlLabel
+        className="login__checkbox"
+        control={
+          <Checkbox
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+        }
+        sx={{
+          justifyContent: "flex-start",
+        }}
+        label="Remember me"
+      />
+
       <div className="login__noaccount">
         <p>Don't have an account ? Contact the administrator</p>
-        {/* <p
-          className="login__signin"
-          onClick={() => {
-            navigate("/signup")
-          }}
-        >
-          Sign up
-        </p> */}
       </div>
 
       {loginError && (

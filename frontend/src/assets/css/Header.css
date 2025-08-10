@@ -74,7 +74,7 @@ header .header__right-role {
 }
 header .header__right .guest {
   background-color: #fff;
-  color: #000;
+  color: #181818;
 }
 header .header__right .manager {
   background-color: #01b121;

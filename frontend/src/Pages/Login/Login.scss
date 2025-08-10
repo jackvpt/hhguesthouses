@@ -17,7 +17,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-top: 20px;
-  width:100%;
+  width: 100%;
   padding: 30px 30px 30px 20px;
   gap: 15px;
   background-color: $primary-color-2;
@@ -161,6 +161,29 @@
     // Focused border color
     &.Mui-focused .MuiOutlinedInput-notchedOutline {
       border-color: $secondary-color-3;
+    }
+  }
+
+  &__checkbox {
+
+    /* Color when unchecked */
+    .MuiCheckbox-root {
+      color: #1976d2;
+    }
+
+    /* Color when checked */
+    .MuiCheckbox-root.Mui-checked {
+      color: #1976d2;
+    }
+
+    /* Size of the checkbox icon */
+    .MuiCheckbox-root .MuiSvgIcon-root {
+      font-size: 1.8rem;
+    }
+
+    /* Style of the "Remember me" text */
+    .MuiFormControlLabel-label {
+      color: $text-color-1;
     }
   }
 

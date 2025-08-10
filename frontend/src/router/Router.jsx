@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Display from "../Pages/Display/Display"
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
@@ -24,12 +24,14 @@ export default function Router() {
   if (!token) {
     dispatch(clearUser())
   }
-  const { isLoading } = useAuthToken({ checkInterval: 300000 }) // Vérifie toutes les 5 min
+  const { isLoading } = useAuthToken()
 
   const isAuthenticated = useSelector((state) => state.user.userId !== null)
-  if (isLoading && token) {
+  
+  if (isLoading) {
     return <Loader />
   }
+
   return (
     <>
       <Header />

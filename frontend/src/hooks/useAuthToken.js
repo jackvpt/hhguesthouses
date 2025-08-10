@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setUser, clearUser } from "../features/userSlice";
 import { validateToken } from "../api/auth";
 
-export function useAuthToken({ checkInterval = 300000 } = {}) {
+export function useAuthToken() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ export function useAuthToken({ checkInterval = 300000 } = {}) {
     queryFn: () => validateToken(token),
     enabled: !!token,
     retry: false,
-    refetchInterval: checkInterval,
+    refetchInterval: 30000,
     onSuccess: (data) => {
       if (data.valid) {
         dispatch(setUser(data.user));

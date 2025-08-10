@@ -5,9 +5,20 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  background-color: #2c2c2c;
+  position: relative;
+  background-color: #1e1e20;
   padding: 10px;
+  border: 1px solid #262528;
+}
+.week-selection__center {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  gap: 30px;
+}
+.week-selection__right {
+  position: absolute;
+  right: 10px;
 }
 .week-selection__button {
   cursor: pointer;
@@ -29,4 +40,10 @@
 .week-selection__date-range {
   font-size: 1.2rem;
   color: #d4d4d4;
+}
+.week-selection__today {
+  color: #fff;
+}
+.week-selection__today:hover {
+  color: #6088d8;
 }/*# sourceMappingURL=WeekSelection.css.map */
