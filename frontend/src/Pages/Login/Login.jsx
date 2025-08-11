@@ -23,8 +23,6 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [shortcutsOpen, setShortcutsOpen] = useState(false)
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -144,7 +142,7 @@ const Login = () => {
 
   return (
     <section className="login">
-      <h1 onClick={() => setShortcutsOpen((prev) => !prev)}>LOGIN</h1>
+      <h1>LOGIN</h1>
       {/* EMAIL */}
       <FormControl fullWidth>
         <FormLabel htmlFor="email" required className="signup__formlabel">
@@ -250,62 +248,6 @@ const Login = () => {
           {toast.message}
         </Alert>
       </Snackbar>
-      {shortcutsOpen && (
-        <FormControl>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() =>
-              setFormData({
-                email: "jacques.verpoest@heliholland.nl",
-                password: "Guesthouses.1",
-              })
-            }
-          >
-            JVP superAdmin
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() =>
-              setFormData({
-                email: "jp.gallot@heliholland.nl",
-                password: "Guesthouses.1",
-              })
-            }
-          >
-            JPG admin
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() =>
-              setFormData({
-                email: "arie.slagter@heliholland.nl",
-                password: "Guesthouses.1",
-              })
-            }
-          >
-            ARI guest
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() =>
-              setFormData({
-                email: "ian.scott@heliholland.nl",
-                password: "Guesthouses.1",
-              })
-            }
-          >
-            IAN manager
-          </Button>
-        </FormControl>
-      )}
     </section>
   )
 }

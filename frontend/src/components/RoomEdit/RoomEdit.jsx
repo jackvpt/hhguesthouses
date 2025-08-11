@@ -35,7 +35,7 @@ import {
 } from "../../api/occupancies"
 import { useUsers } from "../../hooks/useUsers"
 import { useOccupancies } from "../../hooks/useOccupancies.js"
-import { enGB } from "date-fns/locale"
+import { ar, enGB } from "date-fns/locale"
 
 /**
  * Component for editing room occupancy details.
@@ -54,7 +54,7 @@ const RoomEdit = ({ guestHouse }) => {
 
   const user = useSelector((state) => state.user)
   const role = useSelector((state) => state.user.role)
-  const codeNameSelectionAllowed = role === "admin" || role === "super-admin"
+  const isAdmin = role === "admin" || role === "super-admin"
 
   // React Query: Fetch occupancies
   const {
@@ -97,7 +97,7 @@ const RoomEdit = ({ guestHouse }) => {
       queryClient.invalidateQueries("occupancies")
       setToastMessage("Occupancy deleted successfully")
       setToastOpen(true)
-            setTimeout(() => {
+      setTimeout(() => {
         handleCancelClick()
       }, 2000)
     },
@@ -117,7 +117,8 @@ const RoomEdit = ({ guestHouse }) => {
       setToastOpen(true)
       setTimeout(() => {
         handleCancelClick()
-      }, 2000)    },
+      }, 2000)
+    },
     onError: (error) => {
       console.error("Error updating occupancy:", error)
     },
@@ -227,6 +228,19 @@ const RoomEdit = ({ guestHouse }) => {
         payload: {
           ...selectedOccupancy,
           room: event.target.value,
+        },
+      })
+    }
+  }
+
+  const handleArrivalSelectDateChange = (newValue) => {
+    setArrivalDate(newValue)
+    if (houseEditMode === "modify") {
+      dispatch({
+        type: "parameters/setSelectedOccupancy",
+        payload: {
+          ...selectedOccupancy,
+          arrivalDate: newValue,
         },
       })
     }
@@ -345,78 +359,117 @@ const RoomEdit = ({ guestHouse }) => {
 
   return (
     <section className="room-edit">
-      {/** CODE NAME */}
-      {codeNameSelectionAllowed && (
-        <FormControl
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <FormLabel className="form-label">Guest</FormLabel>
-          <Select
-            className="room-edit__select"
-            labelId="select-name"
-            id="select-name"
-            value={codeName}
-            onChange={handleNameChange}
-            size="small"
-            fullWidth
+      {isAdmin && (
+        <>
+          {/** CODE NAME */}
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            {users.map((user) => (
-              <MenuItem key={user.codeName} value={user.codeName}>
-                {user.codeName} - {user.firstName} {user.lastName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <FormLabel className="form-label">Guest</FormLabel>
+            <Select
+              className="room-edit__select"
+              labelId="select-name"
+              id="select-name"
+              value={codeName}
+              onChange={handleNameChange}
+              size="small"
+              fullWidth
+            >
+              {users.map((user) => (
+                <MenuItem key={user.codeName} value={user.codeName}>
+                  {user.codeName} - {user.firstName} {user.lastName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          
+          {/** ARRIVAL SELECT DATE */}
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <FormLabel htmlFor="arrival-select-date" className="form-label">
+              Arrival
+            </FormLabel>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={enGB}
+            >
+              <DatePicker
+                className="room-edit__departure-date"
+                value={arrivalDate}
+                onChange={handleArrivalSelectDateChange}
+                format="dd/MM/yyyy"
+                size="small"
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    className: "room-edit__departure-date-textfield",
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </FormControl>
+        </>
       )}
 
-      {/** ARRIVAL DATE */}
-      <div className="room-edit__arrival-date">
-        <FormControl
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <FormLabel className="form-label">Arrival</FormLabel>
-          <ToggleButtonGroup
-            className="room-edit__arrival-date-toggle-group"
-            value={arrivalToggle}
-            exclusive
-            onChange={handleArrivalDateChange}
-            aria-label="arrival date"
-            size="small"
+      {!isAdmin && (
+        // 📅 ARRIVAL DATE TOGGLE
+        <div className="room-edit__arrival-date">
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            <ToggleButton value="today" aria-label="today arrival" size="small">
-              Today
-            </ToggleButton>
-            <ToggleButton
-              value="tomorrow"
-              aria-label="tomorrow arrival"
+            <FormLabel className="form-label">Arrival</FormLabel>
+            <ToggleButtonGroup
+              className="room-edit__arrival-date-toggle-group"
+              value={arrivalToggle}
+              exclusive
+              onChange={handleArrivalDateChange}
+              aria-label="arrival date"
               size="small"
             >
-              Tomorrow
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <TextField
-            id="outlined-basic"
-            value={formatDateToDDMM(arrivalDate)}
-            variant="outlined"
-            size="small"
-            disabled
-            slotProps={{
-              readOnly: true,
-              textAlign: "center",
-              padding: 0,
-            }}
-            sx={{ width: 70, marginLeft: 2 }}
-          />
-        </FormControl>
-      </div>
+              <ToggleButton
+                value="today"
+                aria-label="today arrival"
+                size="small"
+              >
+                Today
+              </ToggleButton>
+              <ToggleButton
+                value="tomorrow"
+                aria-label="tomorrow arrival"
+                size="small"
+              >
+                Tomorrow
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <TextField
+              id="outlined-basic"
+              value={formatDateToDDMM(arrivalDate)}
+              variant="outlined"
+              size="small"
+              disabled
+              slotProps={{
+                readOnly: true,
+                textAlign: "center",
+                padding: 0,
+              }}
+              sx={{ width: 70, marginLeft: 2 }}
+            />
+          </FormControl>
+        </div>
+      )}
 
       {/** DEPARTURE DATE */}
       <FormControl
