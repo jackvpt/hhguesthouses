@@ -5,9 +5,20 @@ import { fetchAllOccupancies } from "./api/occupancies"
 import { fetchAllUsers } from "./api/users"
 import Loader from "./components/Loader/Loader"
 import Error from "./components/Error/Error"
+import { useDispatch } from "react-redux"
+import { clearUser } from "./features/userSlice"
+import { useAuthToken } from "./hooks/useAuthToken"
 
 
 function App() {
+    const dispatch = useDispatch()
+
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+  if (!token) {
+    dispatch(clearUser())
+  }
+  const { isAuthLoading } = useAuthToken()
+
   const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } = useQuery(
     {
       queryKey: ["guestHouses"],
@@ -28,7 +39,7 @@ function App() {
     queryFn: fetchAllUsers,
   })
 
-  if (isLoadingGuestHouses || isLoadingOccupancies || isLoadingUsers) {
+  if (isAuthLoading || isLoadingGuestHouses || isLoadingOccupancies || isLoadingUsers) {
     return <Loader />
   }
 

@@ -4,10 +4,8 @@ import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
 import Signup from "../Pages/Signup/Signup"
 import Login from "../Pages/Login/Login"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import Error404 from "../Pages/Error404/Error404"
-import { clearUser } from "../features/userSlice"
-import { useAuthToken } from "../hooks/useAuthToken"
 import Loader from "../components/Loader/Loader"
 
 /**
@@ -18,19 +16,7 @@ import Loader from "../components/Loader/Loader"
  * @returns {JSX.Element} The main Router component for the application.
  */
 export default function Router() {
-  const dispatch = useDispatch()
-
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
-  if (!token) {
-    dispatch(clearUser())
-  }
-  const { isLoading } = useAuthToken()
-
   const isAuthenticated = useSelector((state) => state.user.userId !== null)
-  
-  if (isLoading) {
-    return <Loader />
-  }
 
   return (
     <>
