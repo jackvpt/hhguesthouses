@@ -22,15 +22,16 @@ import { signup } from "../../api/auth"
 const Signup = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-
-  const [formData, setFormData] = useState({
+  const initialState = {
     firstName: "",
     lastName: "",
     codeName: "",
     role:"guest",
-    email: "",
-    password: "",
-  })
+    email: "@heliholland.nl",
+    password: "Guesthouses.1",
+  }
+
+  const [formData, setFormData] = useState(initialState)
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -117,14 +118,7 @@ const Signup = () => {
       showToast("Account created successfully")
 
       // Reset form data after submission
-      setFormData({
-        firstName: "",
-        lastName: "",
-        codeName: "",
-        role: "guest",
-        email: "",
-        password: "",
-      })
+      setFormData(initialState)
     },
     onError: (error) => {
       if (error.response?.status === 409) {
