@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["parameters", "user"], // Seul 'user' est persistant, 'parameters' reste volatile
+  whitelist: [ "user"], // Seul 'user' est persistant, 'parameters' reste volatile
 }
 
 // 🔄 3️⃣ Crée le reducer persistant

@@ -27,21 +27,22 @@
   cursor: pointer;
 }
 
-.BAK{
+.bak {
   background: linear-gradient(
-    to right,
-    red,
-    orange,
-    yellow,
-    green,
-    blue,
-    indigo,
-    violet
+    hotpink 12.5%,
+    red 0 25%,
+    orange 0 37.5%,
+    yellow 0 50%,
+    green 0 62.5%,
+    darkturquoise 0 75%,
+    blue 0 87.5%,
+    indigo 0
   );
+  color: black;
 }
 
 .istoday {
-  position:relative;
+  position: relative;
   border-left: 1px solid $text-color-1;
   border-right: 1px solid $text-color-1;
 
@@ -56,14 +57,14 @@
   }
 
   &::after {
-    content: ""; 
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: blue; 
-    opacity: 0.3; 
+    background-color: blue;
+    opacity: 0.3;
     pointer-events: none; // Not to block clicks
   }
 }

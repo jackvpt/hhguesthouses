@@ -59,7 +59,7 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
       className="occupancy-badge"
     >
       <div
-        className={`occupancy-badge ${occupancy?.occupantCode} ${
+        className={`occupancy-badge ${occupancy?.occupantCode?.toLowerCase() || ""} ${
           isEditable && occupancy ? "clickable" : ""
         } ${ownOccupancy ? "own-occupancy" : ""} ${
           occupancy ? "occupied" : ""

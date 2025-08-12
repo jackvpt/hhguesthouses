@@ -106,6 +106,7 @@ const Login = () => {
           userId: data.userId,
           firstName: data.firstName,
           lastName: data.lastName,
+          email: data.email,
           codeName: data.codeName,
           role: data.role,
         },

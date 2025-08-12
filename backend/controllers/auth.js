@@ -110,7 +110,7 @@ exports.login = async (req, res) => {
       `${user.firstName} ${user.lastName} - ${user.role}`
     )
 
-     await createLog(req.body.email, "SUCCESS LOGIN");
+     await createLog(req.body.email, "Logged in");
 
     res.status(200).json({
       userId: user._id,
@@ -124,6 +124,7 @@ exports.login = async (req, res) => {
       ),
       firstName: user.firstName,
       lastName: user.lastName,
+      email: user.email,
       codeName: user.codeName,
       role: user.role,
     })

@@ -4,6 +4,7 @@ const initialState = {
   userId: null,
   firstName: null,
   lastName: null,
+  email: null,
   codeName: null,
   role: null,
 }
@@ -16,6 +17,7 @@ const userSlice = createSlice({
       state.userId = action.payload.userId
       state.firstName = action.payload.firstName
       state.lastName = action.payload.lastName
+      state.email = action.payload.email
       state.codeName = action.payload.codeName
       state.role = action.payload.role
     },

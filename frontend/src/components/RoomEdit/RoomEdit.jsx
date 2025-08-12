@@ -35,7 +35,7 @@ import {
 } from "../../api/occupancies"
 import { useUsers } from "../../hooks/useUsers"
 import { useOccupancies } from "../../hooks/useOccupancies.js"
-import { ar, enGB } from "date-fns/locale"
+import { enGB } from "date-fns/locale"
 
 /**
  * Component for editing room occupancy details.
