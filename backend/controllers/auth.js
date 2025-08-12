@@ -108,6 +108,9 @@ exports.login = async (req, res) => {
       "Access granted :>> ",
       `${user.firstName} ${user.lastName} - ${user.role}`
     )
+
+     await createLog(req.body.email, "SUCCESS LOGIN");
+     
     res.status(200).json({
       userId: user._id,
       token: jwt.sign(
