@@ -3,6 +3,7 @@ const User = require("../models/User")
 const Auth = require("../models/Auth")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const createLog = require("../utils/Logger")
 
 /** Check password validity */
 const isValidPassword = (password) => {
@@ -110,7 +111,7 @@ exports.login = async (req, res) => {
     )
 
      await createLog(req.body.email, "SUCCESS LOGIN");
-     
+
     res.status(200).json({
       userId: user._id,
       token: jwt.sign(
