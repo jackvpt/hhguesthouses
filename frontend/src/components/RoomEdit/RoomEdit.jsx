@@ -146,7 +146,12 @@ const RoomEdit = ({ guestHouse }) => {
   useEffect(() => {
     setCodeName(selectedOccupancy?.occupantCode || user.codeName)
     setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
-    setArrivalDate(selectedOccupancy?.arrivalDate || new Date())
+    
+    const date = selectedOccupancy?.arrivalDate
+      ? new Date(selectedOccupancy.arrivalDate)
+      : new Date()
+    setArrivalDate(date)
+
     setDepartureDate(
       new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
     )
@@ -234,6 +239,7 @@ const RoomEdit = ({ guestHouse }) => {
   }
 
   const handleArrivalSelectDateChange = (newValue) => {
+    if (newValue === null) return
     setArrivalDate(newValue)
     if (houseEditMode === "modify") {
       dispatch({
@@ -386,7 +392,7 @@ const RoomEdit = ({ guestHouse }) => {
               ))}
             </Select>
           </FormControl>
-          
+
           {/** ARRIVAL SELECT DATE */}
           <FormControl
             sx={{
