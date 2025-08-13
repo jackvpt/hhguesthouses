@@ -26,8 +26,7 @@
 .clickable {
   cursor: pointer;
 }
-
-.bak {
+.bak-0 {
   background: linear-gradient(
     hotpink 12.5%,
     red 0 25%,
@@ -39,6 +38,22 @@
     indigo 0
   );
   color: black;
+}
+
+.bak {
+  background: linear-gradient(90deg, pink, rgb(255, 116, 116), pink);
+  color: black;
+      background-size: 200% 100%;
+  animation: sweep 3s linear infinite;
+}
+
+@keyframes sweep {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .istoday {

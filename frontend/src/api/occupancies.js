@@ -16,7 +16,16 @@ export const fetchAllOccupancies = async () => {
 
 export const postOccupancy = async (occupancyData) => {
   try {
-    const { data } = await axios.post(BASE_URL, occupancyData)
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+
+    const { data } = await axios.post(BASE_URL, occupancyData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+
     return data
   } catch (error) {
     console.error("Error posting occupancy:", error.message)
@@ -26,7 +35,15 @@ export const postOccupancy = async (occupancyData) => {
 
 export const deleteOccupancy = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`)
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+
+    const response = await axios.delete(`${BASE_URL}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
     return response.data
   } catch (error) {
     console.error("Error deleting occupancy :", error.message)
@@ -36,7 +53,15 @@ export const deleteOccupancy = async (id) => {
 
 export const updateOccupancy = async ({ id, updatedData }) => {
   try {
-    const { data } = await axios.put(`${BASE_URL}/${id}`, updatedData)
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+
+    const { data } = await axios.put(`${BASE_URL}/${id}`, updatedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
     return data
   } catch (error) {
     console.error("Error updating occupancy:", error.message)

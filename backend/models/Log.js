@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const LogSchema = mongoose.Schema({
   email: String,
   action: String,
+  remarks: String,
   date: { type: Date, default: Date.now }
 })
 
