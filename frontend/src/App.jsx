@@ -8,10 +8,10 @@ import Error from "./components/Error/Error"
 import { useDispatch } from "react-redux"
 import { clearUser } from "./features/userSlice"
 import { useAuthToken } from "./hooks/useAuthToken"
-
+import { fetchAllLogs } from "./api/logs"
 
 function App() {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
   if (!token) {
@@ -39,11 +39,22 @@ function App() {
     queryFn: fetchAllUsers,
   })
 
-  if (isAuthLoading || isLoadingGuestHouses || isLoadingOccupancies || isLoadingUsers) {
+  const { isLoading: isLoadingLogs, error: errorLogs } = useQuery({
+    queryKey: ["logs"],
+    queryFn: fetchAllLogs,
+  })
+
+  if (
+    isAuthLoading ||
+    isLoadingGuestHouses ||
+    isLoadingOccupancies ||
+    isLoadingUsers ||
+    isLoadingLogs
+  ) {
     return <Loader />
   }
 
-  if (errorGuestHouses || errorOccupancies || errorUsers) {
+  if (errorGuestHouses || errorOccupancies || errorUsers || errorLogs) {
     return (
       <Error
         message={[

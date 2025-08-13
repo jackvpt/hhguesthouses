@@ -9,6 +9,7 @@ const guestHousesRoutes = require("./routes/guesthouses")
 const occupanciesRoutes = require("./routes/occupancies")
 const usersRoutes = require("./routes/users")
 const authRoutes = require("./routes/auth")
+const logsRoutes = require("./routes/logs")
 
 /** Create an express application */
 const app = express()
@@ -51,5 +52,8 @@ app.use("/users", rateLimiter[1], usersRoutes)
 
 /** Auth routes */
 app.use("/auth", rateLimiter[1], authRoutes)
+
+/** Log routes */
+app.use("/logs", rateLimiter[1], logsRoutes)
 
 module.exports = app

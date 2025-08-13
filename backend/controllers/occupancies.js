@@ -23,7 +23,7 @@ exports.getAllOccupancies = async (req, res) => {
 
 /** POST New Occupancy */
 exports.createOccupancy = async (req, res) => {
-  const user = getUserFromToken(req.headers.authorization)
+  const user = await getUserFromToken(req.headers.authorization)
 
   const occupancyObject = req.body
 
@@ -53,7 +53,7 @@ exports.createOccupancy = async (req, res) => {
 
 /** DELETE One Occupancy */
 exports.deleteOccupancy = async (req, res) => {
-  const user = getUserFromToken(req.headers.authorization)
+  const user =await getUserFromToken(req.headers.authorization)
 
   try {
     const occupancy = await Occupancy.findById(req.params.id)
@@ -81,7 +81,7 @@ exports.deleteOccupancy = async (req, res) => {
 
 /** PUT Update Occupancy */
 exports.updateOccupancy = async (req, res) => {
-  const user = getUserFromToken(req.headers.authorization)
+  const user = await getUserFromToken(req.headers.authorization)
 
   try {
     const occupancyObject = req.body
