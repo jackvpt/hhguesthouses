@@ -110,7 +110,7 @@ exports.login = async (req, res) => {
       `${user.firstName} ${user.lastName} - ${user.role}`
     )
 
-     await createLog(req.body.email, "Logged in");
+    await createLog(req.body.email, "Logged in")
 
     res.status(200).json({
       userId: user._id,
@@ -170,6 +170,8 @@ exports.validate = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid token: user not found" })
     }
+
+    await createLog(user.email, "Token validated")
 
     // Return user data
     res.status(200).json({

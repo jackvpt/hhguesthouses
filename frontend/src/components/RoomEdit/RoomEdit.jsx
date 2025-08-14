@@ -136,7 +136,7 @@ const RoomEdit = ({ guestHouse }) => {
   const [room, setRoom] = useState(
     selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
   )
-  const [arrivalToggle, setArrivalToggle] = useState("today")
+  const [toggleArrivalDate, setToggleArrivalDate] = useState("today")
   const [arrivalDate, setArrivalDate] = useState(new Date())
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
 
@@ -146,7 +146,7 @@ const RoomEdit = ({ guestHouse }) => {
   useEffect(() => {
     setCodeName(selectedOccupancy?.occupantCode || user.codeName)
     setRoom(selectedOccupancy?.room || guestHouse.rooms[0]?.name || "")
-    
+
     const date = selectedOccupancy?.arrivalDate
       ? new Date(selectedOccupancy.arrivalDate)
       : new Date()
@@ -157,51 +157,28 @@ const RoomEdit = ({ guestHouse }) => {
     )
   }, [selectedOccupancy, users, guestHouse.rooms])
 
-  /**
-   * Check if the given date overlaps with an existing occupancy.
-   * @param {Date} date - The date to check.
-   * @returns {boolean} True if the date conflicts, false otherwise.
-   */
-  const isDateInOccupancies = (date) => {
-    for (let i = 0; i < occupancies.length; i++) {
-      const occ = occupancies[i]
-
-      // Exclude selectedOccupancy
-      if (occ._id === selectedOccupancy?._id) {
-        continue
-      }
-
-      const arrival = new Date(occ.arrivalDate)
-      const departure = addDays(new Date(occ.departureDate), -1) // Inclure le jour de départ
-
-      if (
-        date >= arrival &&
-        date <= departure &&
-        occ.house === guestHouse.name &&
-        occ.room === room
-      ) {
-        return true
-      }
+  const isRoomAvailable = () => {
+    const normalize = (d) => {
+      const nd = new Date(d)
+      nd.setHours(0, 0, 0, 0) // Set midnight to normalize date
+      return nd
     }
 
-    return false
-  }
+    const reqStart = normalize(arrivalDate)
+    const reqEnd = normalize(departureDate)
 
-  /**
-   * Check if form data contains any errors.
-   * @returns {boolean} True if there are errors, false otherwise.
-   */
-  const dataHasErrors = () => {
-    const arrivalConflict = isDateInOccupancies(
-      arrivalToggle === "today"
-        ? new Date()
-        : arrivalToggle === "tomorrow"
-        ? addDays(new Date(), 1)
-        : arrivalToggle
+    const sameRoomOccupancies = occupancies.filter(
+      (occ) => occ.house === guestHouse.name && occ.room === room
     )
-    const departureConflict = isDateInOccupancies(departureDate)
 
-    return arrivalConflict || departureConflict
+    const overlap = sameRoomOccupancies.some((occ) => {
+      const occStart = normalize(occ.arrivalDate)
+      const occEnd = normalize(occ.departureDate)
+
+      return reqStart < occEnd && reqEnd > occStart
+    })
+
+    return !overlap // True if room is available
   }
 
   /**
@@ -257,9 +234,9 @@ const RoomEdit = ({ guestHouse }) => {
    * @param {React.MouseEvent<HTMLElement>} event
    * @param {string} newValue
    */
-  const handleArrivalDateChange = (event, newValue) => {
+  const handleToggleArrivalDate = (event, newValue) => {
     if (newValue !== null) {
-      setArrivalToggle(newValue)
+      setToggleArrivalDate(newValue)
       const newArrivalDate = convertArrivalDate(newValue)
       setArrivalDate(newArrivalDate)
       if (houseEditMode === "modify") {
@@ -439,9 +416,9 @@ const RoomEdit = ({ guestHouse }) => {
             <FormLabel className="form-label">Arrival</FormLabel>
             <ToggleButtonGroup
               className="room-edit__arrival-date-toggle-group"
-              value={arrivalToggle}
+              value={toggleArrivalDate}
               exclusive
-              onChange={handleArrivalDateChange}
+              onChange={handleToggleArrivalDate}
               aria-label="arrival date"
               size="small"
             >
@@ -535,7 +512,7 @@ const RoomEdit = ({ guestHouse }) => {
       </FormControl>
 
       <Alert
-        severity={dataHasErrors() ? "error" : "success"}
+        severity={isRoomAvailable() ? "success" : "error"}
         sx={{
           p: 0.5,
           py: 0,
@@ -544,15 +521,15 @@ const RoomEdit = ({ guestHouse }) => {
           lineHeight: 1,
         }}
       >
-        {dataHasErrors()
-          ? "Room not available at these dates."
-          : `Room ${room} is available from ${
-              arrivalToggle === "today"
+        {isRoomAvailable()
+          ? `Room ${room} is available from ${
+              toggleArrivalDate === "today"
                 ? "today"
-                : arrivalToggle === "tomorrow"
+                : toggleArrivalDate === "tomorrow"
                 ? "tomorrow"
-                : arrivalToggle
-            } to ${formatDateToDDMM(departureDate)}.`}
+                : toggleArrivalDate
+            } to ${formatDateToDDMM(departureDate)}.`
+          : "Room not available at these dates."}{" "}
       </Alert>
 
       {/** BUTTONS */}
@@ -590,7 +567,7 @@ const RoomEdit = ({ guestHouse }) => {
             className="btn_add"
             sx={{ m: 1, minWidth: 120 }}
             variant="contained"
-            disabled={dataHasErrors()}
+            disabled={!isRoomAvailable()}
             onClick={handleAddClick}
           >
             Add
