@@ -59,14 +59,16 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
       className="occupancy-badge"
     >
       <div
-        className={`occupancy-badge ${occupancy?.occupantCode?.toLowerCase() || ""} ${
-          isEditable && occupancy ? "clickable" : ""
-        } ${ownOccupancy ? "own-occupancy" : ""} ${
-          occupancy ? "occupied" : ""
-        } ${isToday ? "istoday" : ""}`}
+        className={`occupancy-badge ${
+          occupancy?.occupantCode?.toLowerCase() || ""
+        } ${isEditable && occupancy ? "clickable" : ""} ${
+          ownOccupancy ? "own-occupancy" : ""
+        } ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
         onClick={handleClick}
       >
-        {occupancy?.occupantCode}
+        <div className="occupancy-badge__morning"></div>
+        <div className="occupancy-badge__day">{occupancy?.occupantCode}</div>
+        <div className="occupancy-badge__night"></div>
       </div>
     </Tooltip>
   )

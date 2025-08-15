@@ -3,15 +3,29 @@
 
 .occupancy-badge {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
   background-color: $secondary-color-1;
-  padding: 5px 2px;
-  min-height: 36px;
+  height: 36px;
   cursor: default;
 
   .MuiTooltip-tooltip {
     font-size: 0.9rem;
+  }
+
+  &__morning {
+    flex: 1;
+    height: 100%;
+  }
+
+  &__day {
+    padding: 5px 0;
+    flex: 2;
+    text-align: center;
+  }
+
+  &__night {
+    flex: 1;
   }
 }
 
@@ -43,7 +57,7 @@
 .bak {
   background: linear-gradient(90deg, pink, rgb(255, 116, 116), pink);
   color: black;
-      background-size: 200% 100%;
+  background-size: 200% 100%;
   animation: sweep 3s linear infinite;
 }
 

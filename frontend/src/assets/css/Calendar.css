@@ -6,17 +6,16 @@
 .calendar__room {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
   width: 100%;
 }
 .calendar__room-name {
-  font-size: 1.2rem;
+  text-align: center;
+  flex: 8;
 }
 .calendar__room-info {
-  position: absolute;
-  right: 0;
+  flex: 2;
 }
 .calendar__room-info-icon {
   color: #6088d8;

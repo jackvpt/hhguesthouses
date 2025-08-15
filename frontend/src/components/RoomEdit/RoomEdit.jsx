@@ -159,9 +159,9 @@ const RoomEdit = ({ guestHouse }) => {
 
   const isRoomAvailable = () => {
     const normalize = (d) => {
-      const nd = new Date(d)
-      nd.setHours(0, 0, 0, 0) // Set midnight to normalize date
-      return nd
+      const newDate = new Date(d)
+      newDate.setHours(0, 0, 0, 0) // Set midnight to normalize date
+      return newDate
     }
 
     const reqStart = normalize(arrivalDate)
@@ -471,6 +471,7 @@ const RoomEdit = ({ guestHouse }) => {
             value={departureDate}
             onChange={handleDepartureDateChange}
             format="dd/MM/yyyy"
+            minDate={addDays(arrivalDate, 1)}
             size="small"
             slotProps={{
               textField: {
