@@ -45,7 +45,6 @@ export default function BurgerMenu() {
   const user = useSelector((state) => state.user)
   const { data: logs, isLoading, error } = useLogs()
 
-
   const handleLanguageChange = (lang) => {
     dispatch(setLanguage(lang))
   }
@@ -120,6 +119,7 @@ export default function BurgerMenu() {
               <ListItemButton onClick={() => handleLanguageChange("en")}>
                 <ListItemText primary="English" />
               </ListItemButton>
+
               <ListItemButton onClick={() => handleLanguageChange("nl")}>
                 <ListItemText primary="Nederlands" />
               </ListItemButton>
