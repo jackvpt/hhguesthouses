@@ -35,7 +35,7 @@ const darkTheme = createTheme({
 })
 
 export default function BurgerMenu() {
-    const { data: logs, isLoading, error } = useLogs()
+  const { data: logs, isLoading, error } = useLogs()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -131,31 +131,39 @@ export default function BurgerMenu() {
         </section>
       </ThemeProvider>
 
-      <Dialog open={modalOpen} onClose={handleModalClose} maxWidth="md" fullWidth>
+      <Dialog
+        open={modalOpen}
+        onClose={handleModalClose}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>Log Details</DialogTitle>
         <DialogContent>
-      <TableContainer component={Paper}>
-        <TableBody>
-          <TableHead>
-            <TableRow>
-              <TableCell>Email</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {logs.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell>{new Date(log.date).toLocaleString()}</TableCell>
-                <TableCell>{log.email}</TableCell>
-                <TableCell>{log.action}</TableCell>
-                <TableCell>{log.remarks}</TableCell>
-
-              </TableRow>
-            ))}
-          </TableBody>
-        </TableBody>
-      </TableContainer>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {logs
+                  .sort((a, b) => new Date(b.date) - new Date(a.date))
+                  .map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell>
+                        {new Date(log.date).toLocaleString()}
+                      </TableCell>
+                      <TableCell>{log.email}</TableCell>
+                      <TableCell>{log.action}</TableCell>
+                      <TableCell>{log.remarks}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleModalClose} color="primary">

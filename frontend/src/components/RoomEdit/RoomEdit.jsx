@@ -16,6 +16,11 @@ import {
   Select,
   TextField,
   FormLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -139,6 +144,8 @@ const RoomEdit = ({ guestHouse }) => {
   const [toggleArrivalDate, setToggleArrivalDate] = useState("today")
   const [arrivalDate, setArrivalDate] = useState(new Date())
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
+
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   /**
    * Initialize form fields based on selected occupancy or default values.
@@ -323,7 +330,7 @@ const RoomEdit = ({ guestHouse }) => {
   }
 
   const handleDeleteClick = () => {
-    deleteMutation.mutate(selectedOccupancy._id)
+    setConfirmOpen(true)
   }
 
   /**
@@ -334,6 +341,12 @@ const RoomEdit = ({ guestHouse }) => {
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") return
     setToastOpen(false)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteMutation.mutate(selectedOccupancy._id)
+
+    setConfirmOpen(false)
   }
 
   if (isLoadingUsers || isLoadingOccupancies) return <div>Loading...</div>
@@ -590,6 +603,35 @@ const RoomEdit = ({ guestHouse }) => {
           {toastMessage}
         </Alert>
       </Snackbar>
+
+      {/** Modal Dialog Box */}
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        aria-labelledby="confirm-dialog-title"
+      >
+        <DialogTitle id="confirm-dialog-title">
+          Confirmer la suppression
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this occupancy? This action cannot
+            be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </section>
   )
 }
