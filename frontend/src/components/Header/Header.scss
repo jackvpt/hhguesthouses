@@ -26,6 +26,23 @@ header {
     left: 50%;
     transform: translateX(-50%);
 
+    &-title{
+      display:flex;
+      flex-direction: row;
+      gap:30px;
+      justify-content: space-between;
+      align-items: baseline;
+
+      .header__logo{
+        display:none;
+
+        @include responsive-tablet {
+          display:block;
+          width:2.5rem;
+        }
+      }
+    }
+
     h1 {
       font-size: 1.8rem;
       @include responsive-tablet {

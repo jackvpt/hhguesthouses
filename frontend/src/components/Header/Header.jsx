@@ -12,7 +12,15 @@ const Header = () => {
     <header>
       {user.userId && <BurgerMenu />}
       <div className="header__center">
-        <h1>HH Guest Houses</h1>
+        <div className="header__center-title">
+          <img
+            src="/public/logo-hh.png"
+            alt="HH Guest Houses Logo"
+            className="header__logo"
+            width={48}
+          />
+          <h1>HH Guest Houses</h1>
+        </div>
         <h2>Luxury mansions in Den Helder</h2>
       </div>
       <div className="header__right">

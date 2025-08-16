@@ -122,15 +122,19 @@ export default function BurgerMenu() {
               </ListItemButton>
               <Divider />
               <ListItem>
-                <p className="burger-menu__version">
-                  Software version : {__APP_VERSION__}{" "}
-                </p>
+                <div className="burger-menu__version">
+                  <img src="/logo-hh.png" alt="HH Guest Houses Logo" width={16} />
+                  <p>
+                    Software version : {__APP_VERSION__}
+                  </p>
+                </div>
               </ListItem>
             </List>
           </Drawer>
         </section>
       </ThemeProvider>
 
+      {/** Modal for viewing logs */}
       <Dialog
         open={modalOpen}
         onClose={handleModalClose}
