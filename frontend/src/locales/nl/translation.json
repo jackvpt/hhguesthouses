@@ -1,0 +1,43 @@
+{
+  "common": {
+    "from": "van",
+    "to": "Tot"
+  },
+  "actions": {
+    "add": "Toevoegen",
+    "cancel": "Annuleren",
+    "modify": "Wijzigen",
+    "delete": "Verwijderen"
+  },
+  "luxury_mansion": "Luxe villa's in Den Helder",
+  "dates": {
+    "week": "Week",
+    "today": "Vandaag",
+    "tomorrow": "Morgen",
+    "days_abbreviated": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
+  },
+  "burger-menu": {
+    "signup": "Aanmelden",
+    "view-log": "Bekijk log",
+    "log-out": "Uitloggen",
+    "software-version": "Softwareversie"
+  },
+  "occupancy": {
+    "guest": "Gast",
+    "arrival": "Aankomst",
+    "departure": "Vertrek",
+    "room": "Kamer",
+    "room-not-available": "Kamer niet beschikbaar op deze data"
+  },
+  "delete-action": {
+    "title": "Bevestig verwijderen",
+    "message": "Bezetting succesvol verwijderd",
+    "confirm-message": "Weet u zeker dat u deze bezetting wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
+  },
+  "add-action": {
+    "message": "Bezetting succesvol toegevoegd"
+  },
+  "modify-action": {
+    "message": "Bezetting succesvol gewijzigd"
+  }
+}

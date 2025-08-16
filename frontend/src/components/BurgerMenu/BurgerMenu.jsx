@@ -20,6 +20,10 @@ import {
   TableCell,
   Table,
   TableBody,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
@@ -27,6 +31,7 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { convertRole } from "../../utils/stringTools"
 import { useLogs } from "../../hooks/useLogs"
+import { setLanguage } from "../../features/parametersSlice"
 
 const darkTheme = createTheme({
   palette: {
@@ -35,11 +40,15 @@ const darkTheme = createTheme({
 })
 
 export default function BurgerMenu() {
-  const { data: logs, isLoading, error } = useLogs()
-
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = useSelector((state) => state.user)
+  const { data: logs, isLoading, error } = useLogs()
+
+
+  const handleLanguageChange = (lang) => {
+    dispatch(setLanguage(lang))
+  }
 
   // State to control the drawer open/close
   const [open, setOpen] = useState(false)
@@ -106,6 +115,15 @@ export default function BurgerMenu() {
                 >{`${convertRole(user.role)}`}</div>
               </ListItem>
               <Divider />
+
+              {/* 🔽 Language selector */}
+              <ListItemButton onClick={() => handleLanguageChange("en")}>
+                <ListItemText primary="English" />
+              </ListItemButton>
+              <ListItemButton onClick={() => handleLanguageChange("nl")}>
+                <ListItemText primary="Nederlands" />
+              </ListItemButton>
+
               {user.role === "super-admin" && (
                 <>
                   <ListItemButton onClick={handleSignUp}>
@@ -123,10 +141,12 @@ export default function BurgerMenu() {
               <Divider />
               <ListItem>
                 <div className="burger-menu__version">
-                  <img src="/logo-hh.png" alt="HH Guest Houses Logo" width={16} />
-                  <p>
-                    Software version : {__APP_VERSION__}
-                  </p>
+                  <img
+                    src="/logo-hh.png"
+                    alt="HH Guest Houses Logo"
+                    width={16}
+                  />
+                  <p>Software version : {__APP_VERSION__}</p>
                 </div>
               </ListItem>
             </List>

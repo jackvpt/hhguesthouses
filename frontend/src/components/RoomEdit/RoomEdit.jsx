@@ -611,7 +611,7 @@ const RoomEdit = ({ guestHouse }) => {
         aria-labelledby="confirm-dialog-title"
       >
         <DialogTitle id="confirm-dialog-title">
-          Confirmer la suppression
+          Confirm delete
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

@@ -1,0 +1,43 @@
+{
+  "common": {
+    "from": "From",
+    "to": "To"
+  },
+  "actions": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "modify": "Modify",
+    "delete": "Delete"
+  },
+  "luxury_mansion": "Luxury Mansions in Den Helder",
+  "dates": {
+    "week": "Week",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "days_abbreviated": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  },
+  "burger-menu": {
+    "signup": "Sign Up",
+    "view-log": "View log",
+    "log-out": "Log out",
+    "software-version": "Software version"
+  },
+  "occupancy": {
+    "guest": "Guest",
+    "arrival": "Arrival",
+    "departure": "Departure",
+    "room": "Room",
+    "room-not-available": "Room not available at these dates"
+  },
+  "delete-action": {
+    "title": "Confirm delete",
+    "message": "Occupancy deleted successfully",
+    "confirm-message": "Are you sure you want to delete this occupancy? This action cannot be undone."
+  },
+  "add-action": {
+    "message": "Occupancy added successfully"
+  },
+  "modify-action": {
+    "message": "Occupancy modified successfully"
+  }
+}

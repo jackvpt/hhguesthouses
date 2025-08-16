@@ -5,13 +5,21 @@ import { fetchAllOccupancies } from "./api/occupancies"
 import { fetchAllUsers } from "./api/users"
 import Loader from "./components/Loader/Loader"
 import Error from "./components/Error/Error"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { clearUser } from "./features/userSlice"
 import { useAuthToken } from "./hooks/useAuthToken"
 import { fetchAllLogs } from "./api/logs"
+import { useEffect } from "react"
+import i18n from "./i18n"
 
 function App() {
   const dispatch = useDispatch()
+
+    const language = useSelector((state) => state.parameters.language);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
 
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
   if (!token) {

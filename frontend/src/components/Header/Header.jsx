@@ -14,7 +14,7 @@ const Header = () => {
       <div className="header__center">
         <div className="header__center-title">
           <img
-            src="/public/logo-hh.png"
+            src="/logo-hh.png"
             alt="HH Guest Houses Logo"
             className="header__logo"
             width={48}

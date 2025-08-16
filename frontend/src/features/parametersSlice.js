@@ -12,13 +12,15 @@ const initialState = {
   houseEditMode: null,
   houseEditName: null,
   selectedOccupancy: null,
+
+  language: "en",
 }
 
 const parametersSlice = createSlice({
   name: "parameters",
   initialState,
   reducers: {
-    currentWeek:(state) =>{
+    currentWeek: (state) => {
       const current = new Date()
       state.referenceDate = current.toISOString()
       state.weekNumber = getWeekNumber(current)
@@ -49,6 +51,11 @@ const parametersSlice = createSlice({
     setSelectedOccupancy: (state, action) => {
       state.selectedOccupancy = action.payload
     },
+
+    setLanguage: (state, action) => {
+      state.language = action.payload
+    },
+
     reset: () => initialState,
   },
 })
@@ -60,6 +67,7 @@ export const {
   setHouseEditMode,
   setHouseEditName,
   setSelectedOccupancy,
+  setLanguage,
 } = parametersSlice.actions
 
 export default parametersSlice.reducer
