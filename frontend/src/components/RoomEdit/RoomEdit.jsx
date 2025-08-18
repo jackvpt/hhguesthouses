@@ -85,7 +85,7 @@ const RoomEdit = ({ guestHouse }) => {
     mutationFn: postOccupancy,
     onSuccess: () => {
       queryClient.invalidateQueries("occupancies")
-      setToastMessage("Occupancy added successfully")
+      setToastMessage(t("room-edit.occupancy-added"))
       setToastOpen(true)
       setTimeout(() => {
         handleCancelClick()
@@ -103,7 +103,7 @@ const RoomEdit = ({ guestHouse }) => {
     mutationFn: deleteOccupancy,
     onSuccess: () => {
       queryClient.invalidateQueries("occupancies")
-      setToastMessage("Occupancy deleted successfully")
+      setToastMessage(t("room-edit.occupancy-deleted"))
       setToastOpen(true)
       setTimeout(() => {
         handleCancelClick()
@@ -121,7 +121,7 @@ const RoomEdit = ({ guestHouse }) => {
     mutationFn: updateOccupancy,
     onSuccess: () => {
       queryClient.invalidateQueries("occupancies")
-      setToastMessage("Occupancy updated successfully")
+      setToastMessage(t("room-edit.occupancy-updated"))
       setToastOpen(true)
       setTimeout(() => {
         handleCancelClick()
@@ -348,7 +348,6 @@ const RoomEdit = ({ guestHouse }) => {
 
   const handleConfirmDelete = () => {
     deleteMutation.mutate(selectedOccupancy._id)
-
     setConfirmOpen(false)
   }
 
@@ -539,7 +538,9 @@ const RoomEdit = ({ guestHouse }) => {
         }}
       >
         {isRoomAvailable()
-          ? `${t("room-edit.room")} ${room} ${t("common-words.is-available")} ${t("common-words.from")} ${
+          ? `${t("room-edit.room")} ${room} ${t(
+              "common-words.is-available"
+            )} ${t("common-words.from")} ${
               toggleArrivalDate === "today"
                 ? t("dates.today")
                 : toggleArrivalDate === "tomorrow"

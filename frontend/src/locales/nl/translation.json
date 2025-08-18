@@ -2,8 +2,8 @@
   "common-words": {
     "from": "van",
     "to": "tot",
-    "is-available": "is beschikbaar"
-
+    "is-available": "is beschikbaar",
+    "welcome": "Welkom"
   },
   "actions": {
     "add": "Toevoegen",
@@ -57,7 +57,8 @@
     "login": "Inloggen",
     "remember-me": "Onthoud mij",
     "no-account": "Heeft u geen account? Neem contact op met de beheerder",
-    "password-incorrect": "E-mailadres en/of wachtwoord onjuist"
+    "password-incorrect": "E-mailadres en/of wachtwoord onjuist",
+    "login-successfull": "Inloggen succesvol"
   },
   "room-edit":{
     "occupancy-added": "Bezetting succesvol toegevoegd",

@@ -19,6 +19,7 @@ import { useMutation } from "@tanstack/react-query"
 import { login } from "../../api/auth"
 import { useDispatch } from "react-redux"
 import { useTranslation } from "react-i18next"
+import { setLanguage } from "../../features/parametersSlice"
 
 const Login = () => {
   const navigate = useNavigate()
@@ -96,12 +97,9 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      showToast(`Login successful. Welcome ${data.firstName}!`)
-      if (rememberMe) {
-        localStorage.setItem("token", data.token)
-      } else {
-        sessionStorage.setItem("token", data.token)
-      }
+      showToast(`${t("login.login-successfull")}. ${t("common-words.welcome")} ${data.firstName}!`)
+      sessionStorage.setItem("token", data.token)
+      if (rememberMe) localStorage.setItem("token", data.token)
 
       dispatch({
         type: "user/setUser",
@@ -115,6 +113,7 @@ const Login = () => {
           settings: data.settings,
         },
       })
+      dispatch(setLanguage(data.settings.preferredLanguage))
 
       //Reset form data after submission
       setFormData({

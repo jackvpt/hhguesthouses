@@ -1,15 +1,16 @@
 // hooks/useAuthToken.js
-import { useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setUser, clearUser } from "../features/userSlice";
-import { validateToken } from "../api/auth";
+import { useQuery } from "@tanstack/react-query"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { setUser, clearUser } from "../features/userSlice"
+import { validateToken } from "../api/auth"
+import { setLanguage } from "../features/parametersSlice"
 
 export function useAuthToken() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
 
   return useQuery({
     queryKey: ["token", token],
@@ -19,15 +20,16 @@ export function useAuthToken() {
     refetchInterval: 30000,
     onSuccess: (data) => {
       if (data.valid) {
-        dispatch(setUser(data.user));
+        dispatch(setUser(data.user))
+        dispatch(setLanguage(data.user.settings.preferredLanguage))
       } else {
-        dispatch(clearUser());
-        navigate("/login", { replace: true });
+        dispatch(clearUser())
+        navigate("/login", { replace: true })
       }
     },
     onError: () => {
-      dispatch(clearUser());
-      navigate("/login", { replace: true });
+      dispatch(clearUser())
+      navigate("/login", { replace: true })
     },
-  });
+  })
 }

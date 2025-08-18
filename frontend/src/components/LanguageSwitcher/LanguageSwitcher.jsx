@@ -2,17 +2,37 @@ import { useDispatch, useSelector } from "react-redux"
 import { Select, MenuItem } from "@mui/material"
 import { NL, GB } from "country-flag-icons/react/3x2"
 import { setLanguage } from "../../features/parametersSlice"
+import { useUpdateUser } from "../../hooks/useUpdateUser"
 
 const LanguageSwitcher = () => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
   const lang = useSelector((state) => state.parameters.language)
+  const updateUserMutation = useUpdateUser()
+
+  const handleLanguageChange = (event) => {
+    const newLanguage = event.target.value
+    dispatch(setLanguage(newLanguage))
+    if (user?.userId) {
+    updateUserMutation.mutate({
+      id: user.userId,
+      updatedData: {
+        ...user, 
+        settings: {
+          ...user.settings, 
+          preferredLanguage: newLanguage, 
+        },
+      },
+    })
+  }
+  }
 
   return (
     <Select
       value={lang}
-      onChange={(e) => dispatch(setLanguage(e.target.value))}
+      onChange={handleLanguageChange}
       size="small"
-      IconComponent={null} 
+      IconComponent={null}
       renderValue={(value) => {
         switch (value) {
           case "en":

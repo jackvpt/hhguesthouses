@@ -13,3 +13,21 @@ export const fetchAllUsers = async () => {
     throw error
   }
 }
+
+export const updateUser = async ({ id, updatedData }) => {
+  try {
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+
+    const { data } = await axios.put(`${BASE_URL}/${id}`, updatedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    return data
+  } catch (error) {
+    console.error("Error updating user:", error.message)
+    throw error
+  }
+}

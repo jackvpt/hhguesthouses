@@ -2,7 +2,8 @@
   "common-words": {
     "from": "From",
     "to": "To",
-    "is-available": "is available"
+    "is-available": "is available",
+    "welcome": "Welcome"
   },
   "actions": {
     "add": "Add",
@@ -51,14 +52,15 @@
   "modify-action": {
     "message": "Occupancy modified successfully"
   },
-  "login":{
-    "password":"Password",
-    "login":"Log in",
-    "remember-me":"Remember me",
-    "no-account":"Don't have an account? Contact the administrator",
-    "password-incorrect":"User email and/or password incorrect"
+  "login": {
+    "password": "Password",
+    "login": "Log in",
+    "remember-me": "Remember me",
+    "no-account": "Don't have an account? Contact the administrator",
+    "password-incorrect": "User email and/or password incorrect",
+    "login-successfull": "Login successfull"
   },
-  "room-edit":{
+  "room-edit": {
     "occupancy-added": "Occupancy added successfully",
     "occupancy-deleted": "Occupancy deleted successfully",
     "occupancy-updated": "Occupancy updated successfully",

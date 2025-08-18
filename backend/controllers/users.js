@@ -3,6 +3,8 @@ const User = require("../models/User")
 const Auth = require("../models/Auth")
 
 const bcrypt = require("bcrypt")
+const { getUserFromToken } = require("../utils/authTools")
+const createLog = require("../utils/Logger")
 
 /** Check password validity */
 const isValidPassword = (password) => {
@@ -33,9 +35,17 @@ exports.getAllUsers = async (req, res) => {
 
 /** CREATE new User + Auth */
 exports.createUser = async (req, res) => {
-  const { firstName, lastName, codeName, email, password, privileges } = req.body
+  const { firstName, lastName, codeName, email, password, privileges } =
+    req.body
 
-  if (!firstName || !lastName || !codeName || !email || !password || !privileges) {
+  if (
+    !firstName ||
+    !lastName ||
+    !codeName ||
+    !email ||
+    !password ||
+    !privileges
+  ) {
     return res.status(400).json({ error: "All fields are required." })
   }
 
@@ -55,7 +65,13 @@ exports.createUser = async (req, res) => {
 
   try {
     // Create the User
-    const newUser = new User({ firstName, lastName, codeName, email, privileges })
+    const newUser = new User({
+      firstName,
+      lastName,
+      codeName,
+      email,
+      privileges,
+    })
     await newUser.save()
 
     // Hash the password
@@ -77,5 +93,31 @@ exports.createUser = async (req, res) => {
     res.status(500).json({
       error: error.message || "Error creating user.",
     })
+  }
+}
+
+/** PUT Update User */
+exports.updateUser = async (req, res) => {
+  try {
+    const userObject = req.body
+    userObject.updatedAt = new Date()
+    const user = await getUserFromToken(req.headers.authorization)
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { ...userObject, _id: req.params.id },
+      { new: true }
+    )
+
+    
+    const logString = [`Preferred language ${updatedUser.settings.preferredLanguage}`,""]
+    await createLog(user.email, "User updated", logString.join(" | "))
+    console.log("OK");
+
+    res.status(200).json(updatedUser)
+    console.log(
+      `User updated: ${updatedUser._id} - ${updatedUser.firstName} - ${updatedUser.lastName}`
+    )
+  } catch (error) {
+    res.status(401).json({ error })
   }
 }

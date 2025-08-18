@@ -7,5 +7,5 @@ const usersCtrl = require("../controllers/users")
 
 /** Set routes */
 router.get("/", usersCtrl.getAllUsers)
-
+router.put("/:id",multer().none(), usersCtrl.updateUser)
 module.exports = router
