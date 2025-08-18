@@ -7,6 +7,7 @@ import { fetchAllOccupancies } from "../../api/occupancies"
 import { IconButton, Tooltip } from "@mui/material"
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTranslation } from "react-i18next"
 
 const addDays = (date, days) => {
   const result = new Date(date)
@@ -24,14 +25,16 @@ const Calendar = ({ guestHouse }) => {
     queryFn: fetchAllOccupancies,
   })
 
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    const { t } = useTranslation()
+
+const days = t("dates.days_abbreviated", { returnObjects: true });
   const rooms = guestHouse.rooms
 
   const firstDayOfWeek = new Date(
     useSelector((state) => state.parameters.weekRange.monday)
   )
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
+  if (isLoading) return <div>{t("actions.loading")}</div>
+  if (error) return <div>{t("actions.error")} {error.message}</div>
 
   const checkOccupancy = (guestHouse, roomName, date) => {
     const target = new Date(date)

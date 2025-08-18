@@ -1,15 +1,25 @@
 {
-  "common": {
+  "common-words": {
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "is-available": "is available"
   },
   "actions": {
     "add": "Add",
     "cancel": "Cancel",
     "modify": "Modify",
-    "delete": "Delete"
+    "delete": "Delete",
+    "loading": "Loading...",
+    "Error": "Error"
   },
-  "luxury_mansion": "Luxury Mansions in Den Helder",
+  "messages": {
+    "something-went-wrong": "Something went wrong!",
+    "luxury-mansions": "Luxury Mansions in Den Helder",
+    "page-not-found": "Page not found",
+    "oops": "Oops... Something went wrong",
+    "sorry": "Sorry for the inconvenience",
+    "go-to-homepage": "Go to homepage"
+  },
   "dates": {
     "week": "Week",
     "today": "Today",
@@ -17,6 +27,7 @@
     "days_abbreviated": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "burger-menu": {
+    "language": "Language",
     "signup": "Sign Up",
     "view-log": "View log",
     "log-out": "Log out",
@@ -39,5 +50,22 @@
   },
   "modify-action": {
     "message": "Occupancy modified successfully"
+  },
+  "login":{
+    "password":"Password",
+    "login":"Log in",
+    "remember-me":"Remember me",
+    "no-account":"Don't have an account? Contact the administrator",
+    "password-incorrect":"User email and/or password incorrect"
+  },
+  "room-edit":{
+    "occupancy-added": "Occupancy added successfully",
+    "occupancy-deleted": "Occupancy deleted successfully",
+    "occupancy-updated": "Occupancy updated successfully",
+    "guest": "Guest",
+    "arrival": "Arrival",
+    "departure": "Departure",
+    "room": "Room",
+    "room-not-available": "Room not available at these dates"
   }
 }

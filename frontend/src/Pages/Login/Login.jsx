@@ -18,10 +18,13 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { login } from "../../api/auth"
 import { useDispatch } from "react-redux"
+import { useTranslation } from "react-i18next"
 
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -109,6 +112,7 @@ const Login = () => {
           email: data.email,
           codeName: data.codeName,
           role: data.role,
+          settings: data.settings,
         },
       })
 
@@ -173,7 +177,7 @@ const Login = () => {
         className="signup__outlinedinput"
       >
         <FormLabel htmlFor="password" required className="signup__formlabel">
-          Password
+          {t("login.password")}
         </FormLabel>
         <OutlinedInput
           sx={{ marginLeft: "10px" }}
@@ -221,16 +225,16 @@ const Login = () => {
         sx={{
           justifyContent: "flex-start",
         }}
-        label="Remember me"
+        label={t("login.remember-me")}
       />
 
       <div className="login__noaccount">
-        <p>Don't have an account ? Contact the administrator</p>
+        <p>{t("login.no-account")}</p>
       </div>
 
       {loginError && (
         <Alert className="login__error" severity="error" sx={{ width: "100%" }}>
-          User email and/or password incorrect
+          {t("login.password-incorrect")}
         </Alert>
       )}
 

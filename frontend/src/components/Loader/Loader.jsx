@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import "./Loader.scss"
 
 /**
@@ -7,13 +8,14 @@ import "./Loader.scss"
  * @returns {JSX.Element} The Loader component.
  */
 const Loader = () => {
+  const { t } = useTranslation()
   return (
     <section className="loader">
       <div className="loader__modal">
         <div className="loader__container">
           <div className="loader__spinner"></div>
           <div className="loader__text">
-            Loading...
+            {t("actions.loading")}
           </div>
         </div>
       </div>

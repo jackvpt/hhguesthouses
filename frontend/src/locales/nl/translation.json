@@ -1,15 +1,26 @@
 {
-  "common": {
+  "common-words": {
     "from": "van",
-    "to": "Tot"
+    "to": "tot",
+    "is-available": "is beschikbaar"
+
   },
   "actions": {
     "add": "Toevoegen",
     "cancel": "Annuleren",
     "modify": "Wijzigen",
-    "delete": "Verwijderen"
+    "delete": "Verwijderen",
+    "loading": "Laden...",
+    "Error": "Fout"
   },
-  "luxury_mansion": "Luxe villa's in Den Helder",
+  "messages": {
+    "something-went-wrong": "Er is iets misgegaan!",
+    "luxury-mansions": "Luxe villa's in Den Helder",
+    "page-not-found": "Pagina niet gevonden",
+    "oops": "Oops... Er is iets misgegaan",
+    "sorry": "Sorry voor het ongemak",
+    "go-to-homepage": "Ga naar de homepage"
+  },
   "dates": {
     "week": "Week",
     "today": "Vandaag",
@@ -17,6 +28,7 @@
     "days_abbreviated": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
   },
   "burger-menu": {
+    "language": "Taal",
     "signup": "Aanmelden",
     "view-log": "Bekijk log",
     "log-out": "Uitloggen",
@@ -39,5 +51,22 @@
   },
   "modify-action": {
     "message": "Bezetting succesvol gewijzigd"
+  },
+  "login": {
+    "password": "Wachtwoord",
+    "login": "Inloggen",
+    "remember-me": "Onthoud mij",
+    "no-account": "Heeft u geen account? Neem contact op met de beheerder",
+    "password-incorrect": "E-mailadres en/of wachtwoord onjuist"
+  },
+  "room-edit":{
+    "occupancy-added": "Bezetting succesvol toegevoegd",
+    "occupancy-deleted": "Bezetting succesvol verwijderd",
+    "occupancy-updated": "Bezetting succesvol gewijzigd",
+    "guest": "Gast",
+    "arrival": "Aankomst",
+    "departure": "Vertrek",
+    "room": "Kamer",
+    "room-not-available": "Kamer niet beschikbaar op deze data"
   }
 }

@@ -9,6 +9,13 @@ const UserSchema = mongoose.Schema({
   codeName: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   role: { type: String, default: "guest" }, // e.g., "guest", "manager", "admin", "super-admin"
+  settings: {
+    preferredLanguage: {
+      type: String,
+      enum: ["en", "nl"], // extensible
+      default: "nl",
+    },
+  },
   createdAt: { type: Date, default: Date.now },
 })
 

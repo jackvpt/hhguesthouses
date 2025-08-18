@@ -15,11 +15,11 @@ import i18n from "./i18n"
 function App() {
   const dispatch = useDispatch()
 
-    const language = useSelector((state) => state.parameters.language);
+  const language = useSelector((state) => state.parameters.language)
 
   useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+    i18n.changeLanguage(language)
+  }, [language])
 
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
   if (!token) {

@@ -13,7 +13,7 @@ const initialState = {
   houseEditName: null,
   selectedOccupancy: null,
 
-  language: "en",
+  language: "nl",
 }
 
 const parametersSlice = createSlice({

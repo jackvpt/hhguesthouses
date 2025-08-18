@@ -41,6 +41,7 @@ import {
 import { useUsers } from "../../hooks/useUsers"
 import { useOccupancies } from "../../hooks/useOccupancies.js"
 import { enGB } from "date-fns/locale"
+import { useTranslation } from "react-i18next"
 
 /**
  * Component for editing room occupancy details.
@@ -56,6 +57,8 @@ import { enGB } from "date-fns/locale"
 const RoomEdit = ({ guestHouse }) => {
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
+
+  const { t } = useTranslation()
 
   const user = useSelector((state) => state.user)
   const role = useSelector((state) => state.user.role)
@@ -365,7 +368,7 @@ const RoomEdit = ({ guestHouse }) => {
               alignItems: "center",
             }}
           >
-            <FormLabel className="form-label">Guest</FormLabel>
+            <FormLabel className="form-label">{t("room-edit.guest")}</FormLabel>
             <Select
               className="room-edit__select"
               labelId="select-name"
@@ -392,7 +395,7 @@ const RoomEdit = ({ guestHouse }) => {
             }}
           >
             <FormLabel htmlFor="arrival-select-date" className="form-label">
-              Arrival
+              {t("room-edit.arrival")}
             </FormLabel>
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
@@ -426,7 +429,7 @@ const RoomEdit = ({ guestHouse }) => {
               alignItems: "center",
             }}
           >
-            <FormLabel className="form-label">Arrival</FormLabel>
+            <FormLabel className="form-label">{t("room-edit.guest")}</FormLabel>
             <ToggleButtonGroup
               className="room-edit__arrival-date-toggle-group"
               value={toggleArrivalDate}
@@ -440,14 +443,14 @@ const RoomEdit = ({ guestHouse }) => {
                 aria-label="today arrival"
                 size="small"
               >
-                Today
+                {t("dates.today")}
               </ToggleButton>
               <ToggleButton
                 value="tomorrow"
                 aria-label="tomorrow arrival"
                 size="small"
               >
-                Tomorrow
+                {t("dates.tomorrow")}
               </ToggleButton>
             </ToggleButtonGroup>
             <TextField
@@ -476,7 +479,7 @@ const RoomEdit = ({ guestHouse }) => {
         }}
       >
         <FormLabel htmlFor="departure-date" className="form-label">
-          Departure
+          {t("room-edit.departure")}
         </FormLabel>
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
           <DatePicker
@@ -507,7 +510,7 @@ const RoomEdit = ({ guestHouse }) => {
         }}
       >
         <FormLabel htmlFor="select-room" className="form-label">
-          Room
+          {t("room-edit.room")}
         </FormLabel>
         <Select
           labelId="select-room-label"
@@ -536,14 +539,14 @@ const RoomEdit = ({ guestHouse }) => {
         }}
       >
         {isRoomAvailable()
-          ? `Room ${room} is available from ${
+          ? `${t("room-edit.room")} ${room} ${t("common-words.is-available")} ${t("common-words.from")} ${
               toggleArrivalDate === "today"
-                ? "today"
+                ? t("dates.today")
                 : toggleArrivalDate === "tomorrow"
-                ? "tomorrow"
+                ? t("dates.tomorrow")
                 : toggleArrivalDate
-            } to ${formatDateToDDMM(departureDate)}.`
-          : "Room not available at these dates."}{" "}
+            } ${t("common-words.to")} ${formatDateToDDMM(departureDate)}.`
+          : t("room-edit.room-not-available")}
       </Alert>
 
       {/** BUTTONS */}
@@ -554,7 +557,7 @@ const RoomEdit = ({ guestHouse }) => {
           variant="contained"
           onClick={handleCancelClick}
         >
-          Cancel
+          {t("actions.cancel")}
         </Button>
         {houseEditMode === "modify" && (
           <Button
@@ -563,7 +566,7 @@ const RoomEdit = ({ guestHouse }) => {
             variant="contained"
             onClick={handleModifyClick}
           >
-            Modify
+            {t("actions.modify")}
           </Button>
         )}
         {houseEditMode === "modify" && (
@@ -573,7 +576,7 @@ const RoomEdit = ({ guestHouse }) => {
             variant="contained"
             onClick={handleDeleteClick}
           >
-            Delete
+            {t("actions.delete")}
           </Button>
         )}
         {houseEditMode === "add" && (
@@ -584,7 +587,7 @@ const RoomEdit = ({ guestHouse }) => {
             disabled={!isRoomAvailable()}
             onClick={handleAddClick}
           >
-            Add
+            {t("actions.add")}
           </Button>
         )}
       </div>
@@ -611,24 +614,23 @@ const RoomEdit = ({ guestHouse }) => {
         aria-labelledby="confirm-dialog-title"
       >
         <DialogTitle id="confirm-dialog-title">
-          Confirm delete
+          {t("delete-action.title")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this occupancy? This action cannot
-            be undone.
+            {t("delete-action.confirm-message")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmOpen(false)} color="primary">
-            Cancel
+            {t("actions.cancel")}
           </Button>
           <Button
             onClick={handleConfirmDelete}
             color="error"
             variant="contained"
           >
-            Delete
+            {t("actions.delete")}
           </Button>
         </DialogActions>
       </Dialog>

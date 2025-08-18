@@ -20,10 +20,6 @@ import {
   TableCell,
   Table,
   TableBody,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
@@ -31,7 +27,9 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { convertRole } from "../../utils/stringTools"
 import { useLogs } from "../../hooks/useLogs"
-import { setLanguage } from "../../features/parametersSlice"
+import { useTranslation } from "react-i18next"
+import { useUsers } from "../../hooks/useUsers"
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 
 const darkTheme = createTheme({
   palette: {
@@ -43,16 +41,19 @@ export default function BurgerMenu() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = useSelector((state) => state.user)
-  const { data: logs, isLoading, error } = useLogs()
-
-  const handleLanguageChange = (lang) => {
-    dispatch(setLanguage(lang))
-  }
+  const { data: logs, isLoadingLogs, errorLogs } = useLogs()
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    error: errorUsers,
+  } = useUsers()
 
   // State to control the drawer open/close
   const [open, setOpen] = useState(false)
 
   const [modalOpen, setModalOpen] = useState(false)
+
+  const { t } = useTranslation()
 
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
@@ -74,15 +75,15 @@ export default function BurgerMenu() {
     setOpen(false)
   }
 
-  if (isLoading) {
+  if (isLoadingLogs || isLoadingUsers) {
     return <Loader />
   }
 
-  if (error) {
+  if (errorLogs || errorUsers) {
     return (
       <Error
         message={[
-          "An error occurred while loading log data.",
+          "An error occurred while loading data.",
           "Please check your network connection.",
           "If the problem persists, contact support.",
           "We apologize for the inconvenience.",
@@ -107,36 +108,47 @@ export default function BurgerMenu() {
 
           <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
             <List sx={{ width: "100%", padding: 2 }}>
-              <ListItem className="burger-menu__account">
-                <p className="burger-menu__name">{`${user.firstName} ${user.lastName}`}</p>
-                <div
-                  className={`burger-menu__role ${user.role}`}
-                >{`${convertRole(user.role)}`}</div>
+              {user.userId  && (
+                <>
+                  <ListItem className="burger-menu__account">
+                    <p className="burger-menu__name">{`${user.firstName} ${user.lastName}`}</p>
+                    <div
+                      className={`burger-menu__role ${user.role}`}
+                    >{`${convertRole(user.role)}`}</div>
+                  </ListItem>
+                  <Divider />
+                </>
+              )}
+
+              <ListItem
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <ListItemText
+                  primary={`${t("burger-menu.language")}:`}
+                  sx={{ flex: "0 0 auto" }}
+                />
+                <LanguageSwitcher />
               </ListItem>
-              <Divider />
-
-              {/* 🔽 Language selector */}
-              <ListItemButton onClick={() => handleLanguageChange("en")}>
-                <ListItemText primary="English" />
-              </ListItemButton>
-
-              <ListItemButton onClick={() => handleLanguageChange("nl")}>
-                <ListItemText primary="Nederlands" />
-              </ListItemButton>
 
               {user.role === "super-admin" && (
                 <>
-                  <ListItemButton onClick={handleSignUp}>
-                    <ListItemText primary="Sign up" />
+                  <ListItemButton onClick={handleSignUp} size="small">
+                    <ListItemText primary={t("burger-menu.signup")} />
                   </ListItemButton>
                   <ListItemButton onClick={handleModalOpen}>
-                    <ListItemText primary="View log" />
+                    <ListItemText primary={t("burger-menu.view-log")} />
                   </ListItemButton>
                 </>
               )}
 
               <ListItemButton onClick={handleLogOut}>
-                <ListItemText primary="Log out" />
+                <ListItemText primary={t("burger-menu.log-out")} />
               </ListItemButton>
               <Divider />
               <ListItem>
@@ -146,7 +158,9 @@ export default function BurgerMenu() {
                     alt="HH Guest Houses Logo"
                     width={16}
                   />
-                  <p>Software version : {__APP_VERSION__}</p>
+                  <p>
+                    {t("burger-menu.software-version")}: {__APP_VERSION__}
+                  </p>
                 </div>
               </ListItem>
             </List>
@@ -167,24 +181,31 @@ export default function BurgerMenu() {
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center">Date</TableCell>
+                  <TableCell align="center">User name</TableCell>
+                  <TableCell align="center">Action</TableCell>
+                  <TableCell align="center">Remarks</TableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {logs
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
-                  .map((log) => (
-                    <TableRow key={log.id}>
-                      <TableCell>
-                        {new Date(log.date).toLocaleString()}
-                      </TableCell>
-                      <TableCell>{log.email}</TableCell>
-                      <TableCell>{log.action}</TableCell>
-                      <TableCell>{log.remarks}</TableCell>
-                    </TableRow>
-                  ))}
+                  .map((log) => {
+                    const user = users.find((u) => u.email === log.email)
+                    return (
+                      <TableRow key={log.id}>
+                        <TableCell>
+                          {new Date(log.date).toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          {user.firstName} {user.lastName}
+                        </TableCell>
+                        <TableCell>{log.action}</TableCell>
+                        <TableCell>{log.remarks}</TableCell>
+                      </TableRow>
+                    )
+                  })}
               </TableBody>
             </Table>
           </TableContainer>

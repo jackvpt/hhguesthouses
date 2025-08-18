@@ -127,6 +127,7 @@ exports.login = async (req, res) => {
       email: user.email,
       codeName: user.codeName,
       role: user.role,
+      settings: user.settings,
     })
   } catch (error) {
     console.error("Access denied :>> ", error)

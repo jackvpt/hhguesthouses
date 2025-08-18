@@ -4,13 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import BurgerMenu from "../BurgerMenu/BurgerMenu"
 import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 
 const Header = () => {
   const user = useSelector((state) => state.user)
 
+  const { t } = useTranslation()
+
   return (
     <header>
-      {user.userId && <BurgerMenu />}
+      <BurgerMenu />
       <div className="header__center">
         <div className="header__center-title">
           <img
@@ -19,11 +23,14 @@ const Header = () => {
             className="header__logo"
             width={48}
           />
-          <h1>HH Guest Houses</h1>
+          <h1>GUEST HOUSES</h1>
         </div>
-        <h2>Luxury mansions in Den Helder</h2>
+        <h2>{t("messages.luxury-mansions")}</h2>
       </div>
       <div className="header__right">
+        <div className="header__right-language-switcher">
+          <LanguageSwitcher />
+        </div>
         <div className="header__right-userName">
           {user.firstName} {user.lastName}
         </div>

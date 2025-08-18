@@ -26,19 +26,18 @@ header {
     left: 50%;
     transform: translateX(-50%);
 
-    &-title{
-      display:flex;
+    &-title {
+      display: flex;
       flex-direction: row;
-      gap:30px;
+      gap: 10px;
       justify-content: space-between;
       align-items: baseline;
 
-      .header__logo{
-        display:none;
+      .header__logo {
+        width: 2.5rem;
 
         @include responsive-tablet {
-          display:block;
-          width:2.5rem;
+          width: 3.5rem;
         }
       }
     }
@@ -70,6 +69,14 @@ header {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+
+    &-language-switcher {
+      display: none;
+
+      @include responsive-tablet {
+        display: flex;
+      }
+    }
 
     &-userName {
       display: none;
