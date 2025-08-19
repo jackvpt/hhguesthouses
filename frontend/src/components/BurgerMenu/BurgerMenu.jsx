@@ -103,12 +103,12 @@ export default function BurgerMenu() {
             aria-label="menu"
             onClick={toggleDrawer(true)}
           >
-            <MenuIcon fontSize="large" />
+            <MenuIcon sx={{ fontSize: "3rem" }} />
           </IconButton>
 
           <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
             <List sx={{ width: "100%", padding: 2 }}>
-              {user.userId  && (
+              {user.userId && (
                 <>
                   <ListItem className="burger-menu__account">
                     <p className="burger-menu__name">{`${user.firstName} ${user.lastName}`}</p>

@@ -108,10 +108,8 @@ exports.updateUser = async (req, res) => {
       { new: true }
     )
 
-    
-    const logString = [`Preferred language ${updatedUser.settings.preferredLanguage}`,""]
-    await createLog(user.email, "User updated", logString.join(" | "))
-    console.log("OK");
+    await createLog(user.email, "User updated",  `Preferred language ${updatedUser.settings.preferredLanguage}`)
+    console.log("OK")
 
     res.status(200).json(updatedUser)
     console.log(

@@ -25,16 +25,22 @@ const Calendar = ({ guestHouse }) => {
     queryFn: fetchAllOccupancies,
   })
 
-    const { t } = useTranslation()
+  const { t } = useTranslation()
+  const lang = useSelector((state) => state.parameters.language)
 
-const days = t("dates.days_abbreviated", { returnObjects: true });
+  const days = t("dates.days_abbreviated", { returnObjects: true })
   const rooms = guestHouse.rooms
 
   const firstDayOfWeek = new Date(
     useSelector((state) => state.parameters.weekRange.monday)
   )
   if (isLoading) return <div>{t("actions.loading")}</div>
-  if (error) return <div>{t("actions.error")} {error.message}</div>
+  if (error)
+    return (
+      <div>
+        {t("actions.error")} {error.message}
+      </div>
+    )
 
   const checkOccupancy = (guestHouse, roomName, date) => {
     const target = new Date(date)
@@ -84,52 +90,57 @@ const days = t("dates.days_abbreviated", { returnObjects: true });
         </thead>
 
         <tbody>
-          {rooms.map((room) => (
-            <tr key={room.name}>
-              <th>
-                <div className="calendar__room">
-                  <div className="calendar__room-name">{room.name}</div>
-                  <div className="calendar__room-info">
-                    <Tooltip
-                      title={room.description}
-                      componentsProps={{
-                        tooltip: {
-                          sx: { fontSize: "1rem" },
-                        },
-                      }}
-                    >
-                      <IconButton>
-                        <FontAwesomeIcon
-                          icon={faCircleInfo}
-                          size="xs"
-                          className="calendar__room-info-icon"
-                        />
-                      </IconButton>
-                    </Tooltip>
+          {rooms.map((room) => {
+            const description =
+              room.description.find((desc) => desc.language === lang)?.text ||
+              ""
+            return (
+              <tr key={room.name}>
+                <th>
+                  <div className="calendar__room">
+                    <div className="calendar__room-name">{room.name}</div>
+                    <div className="calendar__room-info">
+                      <Tooltip
+                        title={description}
+                        componentsProps={{
+                          tooltip: {
+                            sx: { fontSize: "1rem" },
+                          },
+                        }}
+                      >
+                        <IconButton>
+                          <FontAwesomeIcon
+                            icon={faCircleInfo}
+                            size="xs"
+                            className="calendar__room-info-icon"
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
                   </div>
-                </div>
-              </th>
-              {days.map((day, dayIndex) => {
-                const date = addDays(firstDayOfWeek, dayIndex)
-                const isToday =
-                  date.toDateString() === new Date().toDateString()
-                const occupancy = checkOccupancy(
-                  guestHouse.name,
-                  room.name,
-                  date
-                )
-                return (
-                  <td key={dayIndex}>
-                    <OccupancyBadge
-                      guestHouse={guestHouse}
-                      occupancy={occupancy}
-                      isToday={isToday}
-                    />
-                  </td>
-                )
-              })}
-            </tr>
-          ))}
+                </th>
+                {days.map((day, dayIndex) => {
+                  const date = addDays(firstDayOfWeek, dayIndex)
+                  const isToday =
+                    date.toDateString() === new Date().toDateString()
+                  const occupancy = checkOccupancy(
+                    guestHouse.name,
+                    room.name,
+                    date
+                  )
+                  return (
+                    <td key={dayIndex}>
+                      <OccupancyBadge
+                        guestHouse={guestHouse}
+                        occupancy={occupancy}
+                        isToday={isToday}
+                      />
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
