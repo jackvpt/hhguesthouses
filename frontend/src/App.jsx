@@ -12,21 +12,45 @@ import { fetchAllLogs } from "./api/logs"
 import { useEffect } from "react"
 import i18n from "./i18n"
 
+/**
+ * Main application component.
+ *
+ * Handles:
+ * - User authentication token validation
+ * - Language selection via Redux
+ * - Fetching all necessary data with React Query:
+ *   - Guest houses
+ *   - Occupancies
+ *   - Users
+ *   - Logs
+ * - Displaying loading or error screens while fetching
+ * - Rendering the main router once data is ready
+ *
+ * @component
+ * @returns {JSX.Element} The rendered app component
+ */
 function App() {
   const dispatch = useDispatch()
 
+  // Get the selected language from Redux parameters
   const language = useSelector((state) => state.parameters.language)
 
+  // Change i18n language whenever Redux language state changes
   useEffect(() => {
     i18n.changeLanguage(language)
   }, [language])
 
+  // Retrieve token from localStorage or sessionStorage
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
   if (!token) {
+    // Clear user state if no valid token found
     dispatch(clearUser())
   }
+
+  // Custom hook to verify auth token validity
   const { isAuthLoading } = useAuthToken()
 
+  // Fetch guest houses
   const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } = useQuery(
     {
       queryKey: ["guestHouses"],
@@ -34,6 +58,7 @@ function App() {
     }
   )
 
+  // Fetch occupancies and refresh every 15 seconds
   const { isLoading: isLoadingOccupancies, error: errorOccupancies } = useQuery(
     {
       queryKey: ["occupancies"],
@@ -42,16 +67,19 @@ function App() {
     }
   )
 
+  // Fetch all users
   const { isLoading: isLoadingUsers, error: errorUsers } = useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
   })
 
+  // Fetch logs
   const { isLoading: isLoadingLogs, error: errorLogs } = useQuery({
     queryKey: ["logs"],
     queryFn: fetchAllLogs,
   })
 
+  // Show loader if any query or auth check is still loading
   if (
     isAuthLoading ||
     isLoadingGuestHouses ||
@@ -62,6 +90,7 @@ function App() {
     return <Loader />
   }
 
+  // Show error page if any query failed
   if (errorGuestHouses || errorOccupancies || errorUsers || errorLogs) {
     return (
       <Error
@@ -75,6 +104,7 @@ function App() {
     )
   }
 
+  // All data loaded successfully, render main router
   return <Router />
 }
 

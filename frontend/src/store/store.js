@@ -1,34 +1,63 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { persistStore, persistReducer } from "redux-persist"
-import storage from "redux-persist/lib/storage" // localStorage par défaut
+import storage from "redux-persist/lib/storage" // defaults to localStorage
 
 import parametersSlice from "../features/parametersSlice"
 import userSlice from "../features/userSlice"
 
-// 🗂️ 1️⃣ Combine tes reducers
+/**
+ * Root reducer combining all slices of the Redux store.
+ *
+ * @category Redux
+ * @constant
+ */
 const rootReducer = combineReducers({
-  parameters: parametersSlice,
-  user: userSlice,
+  parameters: parametersSlice, // Volatile state, not persisted
+  user: userSlice,             // User state, will be persisted
 })
 
-// 🗝️ 2️⃣ Configure le persist
+/**
+ * Configuration object for redux-persist.
+ *
+ * @category Redux
+ * @constant
+ * @type {object}
+ * @property {string} key - Key for storage.
+ * @property {object} storage - Storage engine (localStorage).
+ * @property {string[]} whitelist - Slices of state to persist.
+ */
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: [ "user"], // Seul 'user' est persistant, 'parameters' reste volatile
+  whitelist: ["user"], // Only 'user' slice is persisted
 }
 
-// 🔄 3️⃣ Crée le reducer persistant
+/**
+ * Creates a persisted reducer with the configuration and root reducer.
+ *
+ * @category Redux
+ * @constant
+ */
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-// ⚙️ 4️⃣ Configure le store RTK
+/**
+ * Configures the Redux store with Redux Toolkit.
+ *
+ * @category Redux
+ * @returns {import('@reduxjs/toolkit').EnhancedStore} The configured Redux store.
+ */
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Important pour éviter les warnings redux-persist
+      serializableCheck: false, // Disable warnings from redux-persist
     }),
 })
 
-// 🔑 5️⃣ Crée le persistor
+/**
+ * Creates the persistor to enable persisting the store.
+ *
+ * @category Redux
+ * @returns {import('redux-persist').Persistor} The persistor instance.
+ */
 export const persistor = persistStore(store)

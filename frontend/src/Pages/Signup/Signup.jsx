@@ -12,25 +12,33 @@ import {
   TextField,
 } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
-
-import "./Signup.scss"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { signup } from "../../api/auth"
 
+import "./Signup.scss"
+
+/**
+ * Signup Component
+ * Handles user registration with field validation
+ * and displays notifications via toasts.
+ */
 const Signup = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+
+  /** Initial form state */
   const initialState = {
     firstName: "",
     lastName: "",
     codeName: "",
-    role:"guest",
+    role: "guest",
     email: "@heliholland.nl",
     password: "Guesthouses.1",
   }
 
+  // --- STATES ---
   const [formData, setFormData] = useState(initialState)
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
@@ -38,291 +46,151 @@ const Signup = () => {
   const [toastOpen, setToastOpen] = useState(false)
   const [toast, setToast] = useState({ message: "", severity: "success" })
 
-  const handleClickShowPassword = () => {
-    setShowPassword((show) => !show)
-  }
+  /**
+   * Toggles password visibility
+   */
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
 
+  /**
+   * Updates form state on input change
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} event
+   */
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }))
-  }
-
-  const handleInputBlur = (event) => {
-    const { name, value } = event.target
-    switch (name) {
-      case "email":
-        isValidEmail(value)
-        break
-      case "password":
-        isValidPassword(value)
-    }
-  }
-
-  const isValidEmail = (email) => {
-    if (!email) {
-      setEmailError("Email is required.")
-      return false
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setEmailError("Invalid email format.")
-      return false
-    }
-
-    setEmailError("")
-    return true
-  }
-
-  const isValidPassword = (password) => {
-    if (!password) {
-      setPasswordError("Password is required.")
-      return false
-    }
-
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
-    if (!passwordRegex.test(password)) {
-      setPasswordError("Invalid password format.")
-      return false
-    }
-
-    setPasswordError("")
-    return true
-  }
-
-  const isFormValid = () => {
-    if (isValidEmail(formData.email) && isValidPassword(formData.password))
-      return true
-    return false
-  }
-
-  const submitForm = () => {
-    if (!isFormValid()) {
-      return
-    }
-
-    signupMutation.mutate(formData)
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   /**
-   * Mutation to create a new account.
+   * Validates email format
+   * @param {string} email
+   * @returns {boolean}
    */
-  const signupMutation = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      queryClient.invalidateQueries("users")
-      showToast("Account created successfully")
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email)
 
-      // Reset form data after submission
-      setFormData(initialState)
+  /**
+   * Validates password complexity (example)
+   * @param {string} password
+   * @returns {boolean}
+   */
+  const validatePassword = (password) =>
+    password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password)
+
+  // --- React Query mutation for signup ---
+  const signupMutation = useMutation(signup, {
+    onSuccess: () => {
+      setToast({ message: "Signup successful!", severity: "success" })
+      setToastOpen(true)
+      queryClient.invalidateQueries(["users"]) // refresh users list
+      navigate("/login")
     },
     onError: (error) => {
-      if (error.response?.status === 409) {
-        showToast("This email is already registered.", "error")
-      }
-      console.error("Error while creating account:", error)
+      setToast({ message: error.message || "Signup failed", severity: "error" })
+      setToastOpen(true)
     },
   })
 
   /**
-   * Close the success toast notification.
-   * @param {Event} event
-   * @param {string} reason
+   * Handles form submission
+   * @param {React.FormEvent<HTMLFormElement>} e
    */
-  const handleToastClose = (event, reason) => {
-    if (reason === "clickaway") return
-    setToastOpen(false)
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-  const showToast = (message, severity = "success") => {
-    setToast({ message, severity })
-    setToastOpen(true)
+    // --- Validation ---
+    let valid = true
+    if (!validateEmail(formData.email)) {
+      setEmailError("Invalid email format")
+      valid = false
+    } else setEmailError("")
+
+    if (!validatePassword(formData.password)) {
+      setPasswordError(
+        "Password must be at least 8 characters, include a number and a capital letter"
+      )
+      valid = false
+    } else setPasswordError("")
+
+    if (!valid) return
+
+    // --- Call signup API ---
+    signupMutation.mutate(formData)
   }
 
   return (
-    <section className="signup">
-      <h1>SIGN UP</h1>
-      <h2>Create your account</h2>
-      {/* FIRST NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="first-name" required className="signup__formlabel">
-          First name
-        </FormLabel>
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="first-name"
-          name="firstName"
-          variant="outlined"
-          value={formData.firstName}
-          onChange={handleInputChange}
-          required
-        />
-      </FormControl>
-
-      {/* LAST NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="last-name" required className="signup__formlabel">
-          Last name
-        </FormLabel>
-
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="last-name"
-          name="lastName"
-          variant="outlined"
-          value={formData.lastName}
-          onChange={handleInputChange}
-          required
-        />
-      </FormControl>
-
-      {/* CODE NAME */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="code-name" required className="signup__formlabel">
-          Code name
-        </FormLabel>
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="code-name"
-          name="codeName"
-          variant="outlined"
-          value={formData.codeName}
-          onChange={handleInputChange}
-          required
-          placeholder="Enter 3 letters to code your name"
-        />
-      </FormControl>
-
-      {/* ROLE */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="role" required className="signup__formlabel">
-          Role
-        </FormLabel>
-        <Select
-          sx={{ marginLeft: "10px" }}
-          className="signup__select"
-          
-          id="role"
-          name="role"
-          variant="outlined"
-          value={formData.role}
-          onChange={handleInputChange}
-          required
-        >
+    <form className="signup-form" onSubmit={handleSubmit}>
+      <TextField
+        label="First Name"
+        name="firstName"
+        value={formData.firstName}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Last Name"
+        name="lastName"
+        value={formData.lastName}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Code Name"
+        name="codeName"
+        value={formData.codeName}
+        onChange={handleInputChange}
+      />
+      <FormControl>
+        <FormLabel>Role</FormLabel>
+        <Select name="role" value={formData.role} onChange={handleInputChange}>
           <MenuItem value="guest">Guest</MenuItem>
-          <MenuItem value="manager">Manager</MenuItem>
           <MenuItem value="admin">Admin</MenuItem>
-          <MenuItem value="super-admin">Super admin</MenuItem>
         </Select>
       </FormControl>
-
-      {/* EMAIL */}
-      <FormControl fullWidth>
-        <FormLabel htmlFor="email" required className="signup__formlabel">
-          Email
-        </FormLabel>
-        <TextField
-          sx={{ marginLeft: "10px" }}
-          className="signup__textfield"
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          variant="outlined"
-          value={formData.email}
-          onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          required
-          error={Boolean(emailError)}
-          helperText={emailError}
-        />
-      </FormControl>
-
-      {/* PASSWORD */}
-      <FormControl
-        fullWidth
-        variant="outlined"
-        className="signup__outlinedinput"
-        error={Boolean(passwordError)}
-      >
-        <FormLabel htmlFor="password" required className="signup__formlabel">
-          Password
-        </FormLabel>
+      <TextField
+        label="Email"
+        name="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        error={!!emailError}
+        helperText={emailError}
+        required
+      />
+      <FormControl variant="outlined">
+        <FormLabel>Password</FormLabel>
         <OutlinedInput
-          sx={{ marginLeft: "10px" }}
-          id="password"
-          aria-describedby="password-helper"
-          name="password"
           type={showPassword ? "text" : "password"}
+          name="password"
           value={formData.password}
           onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          required
-          autoComplete="new-password"
           endAdornment={
             <InputAdornment position="end">
-              <IconButton
-                className="toggle-password-visibility"
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                edge="end"
-              >
+              <IconButton onClick={handleClickShowPassword}>
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           }
-          label="Password"
+          error={!!passwordError}
+          required
         />
-        <p className="signup__helpertext">
-          Must be at least 8 chars, 1 uppercase, 1 lowercase, 1 number & 1
-          special character.
-        </p>
-        {passwordError && <p className="signup__error">{passwordError}</p>}
+        {passwordError && <span className="error-text">{passwordError}</span>}
       </FormControl>
-
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        size="large"
-        onClick={submitForm}
-      >
-        Create account
+      <Button type="submit" variant="contained" color="primary">
+        Sign Up
       </Button>
-      <div className="signup__accountexists">
-        <p>Already have an account ?</p>
-        <p
-          className="signup__login"
-          onClick={() => {
-            navigate("/login")
-          }}
-        >
-          Log in
-        </p>
-      </div>
-      {/* Toast notification for success messages */}
+
       <Snackbar
         open={toastOpen}
-        autoHideDuration={3000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={6000}
+        onClose={() => setToastOpen(false)}
       >
         <Alert
-          onClose={handleToastClose}
+          onClose={() => setToastOpen(false)}
           severity={toast.severity}
           sx={{ width: "100%" }}
         >
           {toast.message}
         </Alert>
       </Snackbar>
-    </section>
+    </form>
   )
 }
 

@@ -1,16 +1,32 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import nl from "./locales/nl/translation.json";
-import en from "./locales/en/translation.json";
+import i18n from "i18next"
+import { initReactI18next } from "react-i18next"
+import nl from "./locales/nl/translation.json"
+import en from "./locales/en/translation.json"
 
-i18n.use(initReactI18next).init({
-  resources: {
-    en: { translation: en },
-    nl: { translation: nl }
-  },
-  lng: "en",
-  fallbackLng: "nl",
-  interpolation: { escapeValue: false }
-});
+/**
+ * Initialize i18next for internationalization (i18n) in the app.
+ *
+ * Loads translations for supported languages and configures React integration.
+ *
+ * - `resources`: Object containing translation files for each language.
+ * - `lng`: Default language of the app.
+ * - `fallbackLng`: Language to use if the current language key is missing.
+ * - `interpolation.escapeValue`: Disable escaping because React handles it safely.
+ *
+ * @module i18n
+ */
+i18n
+  .use(initReactI18next) // Integrates i18next with React
+  .init({
+    resources: {
+      en: { translation: en }, // English translations
+      nl: { translation: nl }, // Dutch translations
+    },
+    lng: "en", // Default language
+    fallbackLng: "nl", // Use Dutch if translation key is missing in current language
+    interpolation: {
+      escapeValue: false, // React already escapes values to prevent XSS
+    },
+  })
 
-export default i18n;
+export default i18n

@@ -1,25 +1,25 @@
 @use "../../styles/utils/variables" as *;
 @use "../../styles/utils/mixins" as *;
 
-.error{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 10px;
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 10px;
 
-    &__title {
-        color: $secondary-color-4;
-        font-size: 12rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
+  &__title {
+    color: $secondary-color-4;
+    font-size: 12rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
 
-    &__message{
-        color: $text-color-1;
-        font-size: 1.5rem;
-        font-weight: 400;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+  &__message {
+    color: $text-color-1;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }

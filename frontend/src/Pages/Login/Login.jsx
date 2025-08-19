@@ -1,4 +1,9 @@
+// pages/Login/Login.jsx
+
+// Import the SCSS file for this page's styles
 import "./Login.scss"
+
+// Import Material UI components for form, buttons, alerts, etc.
 import {
   Alert,
   Button,
@@ -12,21 +17,47 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material"
+
+// Import visibility icons for password field
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+
+// React Router hook to navigate programmatically
 import { useNavigate } from "react-router-dom"
+
+// React hooks
 import { useState } from "react"
+
+// React Query hook for API mutations
 import { useMutation } from "@tanstack/react-query"
+
+// Login API function
 import { login } from "../../api/auth"
+
+// Redux hook to dispatch actions
 import { useDispatch } from "react-redux"
+
+// i18n hook for translations
 import { useTranslation } from "react-i18next"
+
+// Redux action to set the preferred language
 import { setLanguage } from "../../features/parametersSlice"
 
+/**
+ * Login component
+ *
+ * Handles user login with email and password,
+ * displays errors and success notifications,
+ * and updates user info in Redux store.
+ *
+ * @component
+ * @returns {JSX.Element} Login form
+ */
 const Login = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate() // Hook to redirect the user
+  const dispatch = useDispatch() // Hook to dispatch Redux actions
+  const { t } = useTranslation() // Hook for translations
 
-  const { t } = useTranslation()
-
+  // Form state
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -34,17 +65,20 @@ const Login = () => {
     email: "",
     password: "",
   })
-  const [emailError, setEmailError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [toast, setToast] = useState({ message: "", severity: "success" })
-  const [toastOpen, setToastOpen] = useState(false)
-  const [loginError, setLoginError] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
 
+  const [emailError, setEmailError] = useState("") // Email validation error
+  const [showPassword, setShowPassword] = useState(false) // Toggle password visibility
+  const [toast, setToast] = useState({ message: "", severity: "success" }) // Toast message state
+  const [toastOpen, setToastOpen] = useState(false) // Toast visibility
+  const [loginError, setLoginError] = useState(false) // Login failure indicator
+  const [rememberMe, setRememberMe] = useState(false) // Remember me checkbox
+
+  // Toggle password visibility
   const handleClickShowPassword = () => {
     setShowPassword((show) => !show)
   }
 
+  // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setFormData((prevData) => ({
@@ -53,54 +87,64 @@ const Login = () => {
     }))
   }
 
+  // Validate input on blur
   const handleInputBlur = (event) => {
     const { name, value } = event.target
-    switch (name) {
-      case "email":
-        isValidEmail(value)
-        break
-    }
+    if (name === "email") isValidEmail(value)
   }
 
+  /**
+   * Validate email format
+   * @param {string} email
+   * @returns {boolean} True if valid, false otherwise
+   */
   const isValidEmail = (email) => {
     if (!email) {
       setEmailError("Email is required.")
       return false
     }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       setEmailError("Invalid email format.")
       return false
     }
-
     setEmailError("")
     return true
   }
 
-  const isFormValid = () => {
-    if (isValidEmail(formData.email)) return true
-    return false
-  }
+  /**
+   * Check if the form is valid
+   * @returns {boolean} True if valid
+   */
+  const isFormValid = () => isValidEmail(formData.email)
 
+  /**
+   * Submit the login form
+   */
   const submitForm = () => {
-    if (!isFormValid()) {
-      return
-    }
+    if (!isFormValid()) return
     setLoginError(false)
     loginMutation.mutate(formData)
   }
 
   /**
-   * Mutation to log in.
+   * Mutation to log in the user via API
    */
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      showToast(`${t("login.login-successfull")}. ${t("common-words.welcome")} ${data.firstName}!`)
+      // Show success toast
+      showToast(
+        `${t("login.login-successfull")}. ${t("common-words.welcome")} ${
+          data.firstName
+        }!`
+      )
+
+      // Save token in sessionStorage or localStorage if "remember me" is checked
       sessionStorage.setItem("token", data.token)
       if (rememberMe) localStorage.setItem("token", data.token)
 
+      // Update Redux user state
       dispatch({
         type: "user/setUser",
         payload: {
@@ -115,13 +159,13 @@ const Login = () => {
       })
       dispatch(setLanguage(data.settings.preferredLanguage))
 
-      //Reset form data after submission
+      // Reset form
       setFormData({
         email: "",
         password: "",
       })
 
-      navigate("/display")
+      navigate("/display") // Redirect to main page
     },
     onError: (error) => {
       console.error("Error while logging in:", error)
@@ -129,13 +173,18 @@ const Login = () => {
     },
   })
 
+  /**
+   * Display a toast notification
+   * @param {string} message
+   * @param {("success"|"error"|"info"|"warning")} severity
+   */
   const showToast = (message, severity = "success") => {
     setToast({ message, severity })
     setToastOpen(true)
   }
 
   /**
-   * Close the success toast notification.
+   * Close the toast notification
    * @param {Event} event
    * @param {string} reason
    */
@@ -147,7 +196,8 @@ const Login = () => {
   return (
     <section className="login">
       <h1>LOGIN</h1>
-      {/* EMAIL */}
+
+      {/* EMAIL FIELD */}
       <FormControl fullWidth>
         <FormLabel htmlFor="email" required className="signup__formlabel">
           Email
@@ -169,7 +219,7 @@ const Login = () => {
         />
       </FormControl>
 
-      {/* PASSWORD */}
+      {/* PASSWORD FIELD */}
       <FormControl
         fullWidth
         variant="outlined"
@@ -203,6 +253,7 @@ const Login = () => {
         />
       </FormControl>
 
+      {/* LOGIN BUTTON */}
       <Button
         variant="contained"
         color="primary"
@@ -213,6 +264,7 @@ const Login = () => {
         Log in
       </Button>
 
+      {/* REMEMBER ME CHECKBOX */}
       <FormControlLabel
         className="login__checkbox"
         control={
@@ -221,9 +273,7 @@ const Login = () => {
             onChange={(e) => setRememberMe(e.target.checked)}
           />
         }
-        sx={{
-          justifyContent: "flex-start",
-        }}
+        sx={{ justifyContent: "flex-start" }}
         label={t("login.remember-me")}
       />
 
@@ -231,13 +281,14 @@ const Login = () => {
         <p>{t("login.no-account")}</p>
       </div>
 
+      {/* LOGIN ERROR MESSAGE */}
       {loginError && (
         <Alert className="login__error" severity="error" sx={{ width: "100%" }}>
           {t("login.password-incorrect")}
         </Alert>
       )}
 
-      {/* Toast notification for success messages */}
+      {/* SUCCESS TOAST */}
       <Snackbar
         open={toastOpen}
         autoHideDuration={3000}

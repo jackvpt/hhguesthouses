@@ -1,36 +1,50 @@
 /**
- * Utility function to get the ISO week number of a given date.
- * The week starts on Monday and the first week of the year is the one containing the first Thursday.
- * @param {Date} date
- * @returns
+ * Get the ISO week number of a given date.
+ * ISO weeks start on Monday, and the first week of the year
+ * is the one containing the first Thursday.
+ *
+ * @param {Date} date - The input date.
+ * @returns {number} The ISO week number (1-53).
  */
 export function getWeekNumber(date) {
+  // Create a UTC copy of the date to avoid timezone issues
   const d = new Date(
     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
   )
-  const dayNum = d.getUTCDay() || 7 // dimanche = 7
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum) // se placer au jeudi de la semaine ISO
+
+  // Get the day number (Monday=1, Sunday=7)
+  const dayNum = d.getUTCDay() || 7
+
+  // Move date to Thursday of current ISO week
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+
+  // Get the first day of the year
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+
+  // Calculate the week number
   const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7)
   return weekNo
 }
 
 /**
  * Get the start (Monday) and end (Sunday) dates of the week for a given date.
- * @param {Date} date - The reference date
- * @returns {{ monday: Date, sunday: Date }}
+ *
+ * @param {Date} date - Reference date.
+ * @returns {{ monday: string, sunday: string }} Object containing ISO strings for Monday and Sunday.
  */
 export function getWeekRangeFromDate(date) {
-  const ref = new Date(date) // copy to avoid mutating input
+  const ref = new Date(date) // avoid mutating input
 
   const day = ref.getDay() // Sunday=0, Monday=1, ..., Saturday=6
 
-  // Calculate the difference to Monday (ISO: Monday is the first day)
+  // Calculate difference to Monday (ISO standard)
   const diffToMonday = day === 0 ? -6 : 1 - day
 
+  // Compute Monday
   const monday = new Date(ref)
   monday.setDate(ref.getDate() + diffToMonday)
 
+  // Compute Sunday
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
 
@@ -38,22 +52,24 @@ export function getWeekRangeFromDate(date) {
 }
 
 /**
- * Convert a date string to a formatted string in "DD/MM" format.
- * @param {String} dateString
- * @returns {String}
+ * Format a date string into "DD/MM" format.
+ *
+ * @param {string} dateString - Input date string.
+ * @returns {string} Formatted date string in "DD/MM" format.
  */
 export function formatDateToDDMM(dateString) {
   const date = new Date(dateString)
   const day = String(date.getDate()).padStart(2, "0")
-  const month = String(date.getMonth() + 1).padStart(2, "0") // Mois de 0 à 11
+  const month = String(date.getMonth() + 1).padStart(2, "0") // Month is 0-indexed
   return `${day}/${month}`
 }
 
 /**
  * Add a number of days to a given date and return the new Date.
- * @param {Date} date - The base date
- * @param {number} days - Number of days to add (can be negative)
- * @returns {Date}
+ *
+ * @param {Date} date - Base date.
+ * @param {number} days - Number of days to add (negative for subtraction).
+ * @returns {Date} New date after adding days.
  */
 export function addDays(date, days) {
   const result = new Date(date)
@@ -62,13 +78,14 @@ export function addDays(date, days) {
 }
 
 /**
- * Capitalizes the first letter of a string.
- * @param {String} text 
- * @returns {String}
+ * Capitalize the first letter of a string.
+ *
+ * @param {string} text - Input text.
+ * @returns {string} Text with first letter capitalized.
  * @example
- * capitalize("hello") // "Hello"
+ * capitalize("hello") // returns "Hello"
  */
 export function capitalize(text) {
-  if (!text) return "";
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  if (!text) return ""
+  return text.charAt(0).toUpperCase() + text.slice(1)
 }

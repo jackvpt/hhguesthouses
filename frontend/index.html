@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Character encoding for proper text rendering -->
     <meta charset="UTF-8" />
+
+    <!-- Preconnect to Google Fonts for faster font loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts: Delicious Handrawn, Luxurious Script, Orbitron, Roboto -->
     <link
       href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Luxurious+Script&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Favicon -->
+    <!-- Favicon for browsers -->
     <link rel="icon" type="image/svg+xml" href="/logo-hh.svg" />
     <link
       rel="alternate icon"
@@ -25,10 +30,10 @@
     />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <!-- iOS -->
+    <!-- iOS specific icon for home screen shortcuts -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- PWA / Android -->
+    <!-- PWA / Android icons and manifest for progressive web app support -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <link
       rel="icon"
@@ -43,15 +48,24 @@
       href="/icon-512x512.png"
     />
 
+    <!-- Meta description for SEO and social sharing -->
     <meta
       name="description"
       content="Heli Holland guest houses is a web application to manage the Den Helder guest houses."
     />
+
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Page title -->
     <title>HH Guest Houses</title>
   </head>
+
   <body>
+    <!-- Root element where React app will be mounted -->
     <div id="root"></div>
+
+    <!-- Main entry point for the React application -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
