@@ -2,12 +2,11 @@ import { useSelector } from "react-redux"
 import "./Calendar.scss"
 import OccupancyBadge from "../OccupancyBadge/OccupancyBadge"
 import { formatDateToDDMM } from "../../utils/dateTools"
-import { useQuery } from "@tanstack/react-query"
-import { fetchAllOccupancies } from "../../api/occupancies"
 import { IconButton, Tooltip } from "@mui/material"
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTranslation } from "react-i18next"
+import { useFetchOccupancies } from "../../hooks/useFetchOccupancies"
 
 /**
  * Adds a number of days to a given date.
@@ -33,10 +32,7 @@ const Calendar = ({ guestHouse }) => {
     data: occupancies = [],
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ["occupancies"],
-    queryFn: fetchAllOccupancies,
-  })
+  } = useFetchOccupancies()
 
   const { t } = useTranslation()
   const lang = useSelector((state) => state.parameters.language)
