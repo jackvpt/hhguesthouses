@@ -27,7 +27,7 @@ const LogTable = ({ logs, users }) => {
   const { t } = useTranslation()
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} aria-label={t("logs.table")}>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -41,14 +41,12 @@ const LogTable = ({ logs, users }) => {
 
         <TableBody>
           {logs
-            // Sort logs descending by date
             .sort((a, b) => new Date(b.date) - new Date(a.date))
             .map((log) => {
-              // Find the user corresponding to the log email
               const user = users.find((u) => u.email === log.email)
 
               return (
-                <TableRow key={log.id}>
+                <TableRow key={log._id}>
                   <TableCell>{new Date(log.date).toLocaleString()}</TableCell>
                   <TableCell>
                     {user ? `${user.firstName} ${user.lastName}` : log.email}

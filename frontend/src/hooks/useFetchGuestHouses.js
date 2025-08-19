@@ -8,7 +8,7 @@ import { fetchAllGuestHouses } from "../api/guesthouses"
  *
  * @returns {object} React Query object containing data, status, and methods
  */
-export const useGuestHouses = () =>
+export const useFetchGuestHouses = () =>
   useQuery({
     queryKey: ["guestHouses"], // Unique cache key for guest houses
     queryFn: fetchAllGuestHouses, // API call to fetch all guest houses

@@ -19,9 +19,9 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { convertRole } from "../../utils/stringTools"
-import { useLogs } from "../../hooks/useLogs"
+import { useFetchLogs } from "../../hooks/useFetchLogs"
 import { useTranslation } from "react-i18next"
-import { useUsers } from "../../hooks/useUsers"
+import { useFetchUsers } from "../../hooks/useFetchUsers"
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 
 import Loader from "../Loader/Loader"
@@ -41,12 +41,12 @@ export default function BurgerMenu() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = useSelector((state) => state.user)
-  const { data: logs, isLoadingLogs, errorLogs } = useLogs()
+  const { data: logs, isLoadingLogs, errorLogs } = useFetchLogs()
   const {
     data: users,
     isLoading: isLoadingUsers,
     error: errorUsers,
-  } = useUsers()
+  } = useFetchUsers()
 
   const [open, setOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)

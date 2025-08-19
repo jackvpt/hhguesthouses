@@ -1,7 +1,7 @@
 import "./Display.scss" // Component styles
 import GuestHouseCard from "../../components/GuestHouseCard/GuestHouseCard" // Card for each guest house
 import WeekSelection from "../../components/WeekSelection/WeekSelection" // Week selector component
-import { useGuestHouses } from "../../hooks/useGuestHouses" // Custom hook to fetch guest houses
+import { useFetchGuestHouses } from "../../hooks/useFetchGuestHouses" // Custom hook to fetch guest houses
 import { useTranslation } from "react-i18next" // Translation hook
 
 /**
@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next" // Translation hook
  * @returns {JSX.Element} Rendered Display component
  */
 const Display = () => {
-  const { data: guestHouses, isLoading, error } = useGuestHouses() // Fetch guest houses
+  const { data: guestHouses, isLoading, error } = useFetchGuestHouses() // Fetch guest houses
   const { t } = useTranslation() // i18n translation function
 
   // Show loading message while fetching data

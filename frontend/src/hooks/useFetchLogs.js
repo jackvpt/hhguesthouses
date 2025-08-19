@@ -9,7 +9,7 @@ import { fetchAllLogs } from "../api/logs"
  *
  * @returns {object} React Query object containing data, status, error, and methods
  */
-export const useLogs = () =>
+export const useFetchLogs = () =>
   useQuery({
     queryKey: ["logs"], // Unique cache key for logs
     queryFn: fetchAllLogs, // API call to fetch logs

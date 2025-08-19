@@ -11,7 +11,7 @@ import { fetchAllUsers } from "../api/users"
  * @param {boolean} options.enabled - Whether the query should be active (default: true).
  * @returns {object} Query object containing data, status, error, etc.
  */
-export const useUsers = ({ enabled = true } = {}) =>
+export const useFetchUsers = ({ enabled = true } = {}) =>
   useQuery({
     queryKey: ["users"], // Unique query key for caching
     queryFn: fetchAllUsers, // API call to fetch users

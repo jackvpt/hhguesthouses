@@ -1,16 +1,15 @@
 import Router from "./router/Router"
-import { useQuery } from "@tanstack/react-query"
-import { fetchAllGuestHouses } from "./api/guesthouses"
-import { fetchAllOccupancies } from "./api/occupancies"
-import { fetchAllUsers } from "./api/users"
 import Loader from "./components/Loader/Loader"
 import Error from "./components/Error/Error"
 import { useDispatch, useSelector } from "react-redux"
 import { clearUser } from "./features/userSlice"
 import { useAuthToken } from "./hooks/useAuthToken"
-import { fetchAllLogs } from "./api/logs"
 import { useEffect } from "react"
 import i18n from "./i18n"
+import { useFetchGuestHouses } from "./hooks/useFetchGuestHouses"
+import { useFetchOccupancies } from "./hooks/useFetchOccupancies"
+import { useFetchUsers } from "./hooks/useFetchUsers"
+import { useFetchLogs } from "./hooks/useFetchLogs"
 
 /**
  * Main application component.
@@ -51,33 +50,16 @@ function App() {
   const { isAuthLoading } = useAuthToken()
 
   // Fetch guest houses
-  const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } = useQuery(
-    {
-      queryKey: ["guestHouses"],
-      queryFn: fetchAllGuestHouses,
-    }
-  )
+  const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } =
+    useFetchGuestHouses()
 
   // Fetch occupancies and refresh every 15 seconds
-  const { isLoading: isLoadingOccupancies, error: errorOccupancies } = useQuery(
-    {
-      queryKey: ["occupancies"],
-      queryFn: fetchAllOccupancies,
-      refetchInterval: 15000, // Refetch every 15 seconds
-    }
-  )
+  const { isLoading: isLoadingOccupancies, error: errorOccupancies } = useFetchOccupancies()
 
   // Fetch all users
-  const { isLoading: isLoadingUsers, error: errorUsers } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchAllUsers,
-  })
-
+  const { isLoading: isLoadingUsers, error: errorUsers } = useFetchUsers()
   // Fetch logs
-  const { isLoading: isLoadingLogs, error: errorLogs } = useQuery({
-    queryKey: ["logs"],
-    queryFn: fetchAllLogs,
-  })
+  const { isLoading: isLoadingLogs, error: errorLogs } = useFetchLogs()
 
   // Show loader if any query or auth check is still loading
   if (

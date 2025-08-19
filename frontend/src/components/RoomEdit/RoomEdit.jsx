@@ -25,39 +25,37 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 
-// 🧰 Local tools
+// 🧰 Local utilities
 import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 
-// 🗃️ React-Redux & React-Query
+// 🗃️ State & Data fetching
 import { useDispatch, useSelector } from "react-redux"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-// 🌐 API calls
-import {
-  deleteOccupancy,
-  postOccupancy,
-  updateOccupancy,
-} from "../../api/occupancies"
-import { useUsers } from "../../hooks/useUsers"
-import { useOccupancies } from "../../hooks/useOccupancies.js"
+// 🌐 React Query hooks
+import { useFetchUsers } from "../../hooks/useFetchUsers.js"
+import { useFetchOccupancies } from "../../hooks/useFetchOccupancies.js"
 import { enGB } from "date-fns/locale"
 import { useTranslation } from "react-i18next"
+import { useAddOccupancy } from "../../hooks/useAddOccupancy.js"
+import { useUpdateOccupancy } from "../../hooks/useUpdateOccupancy.js"
+import { useDeleteOccupancy } from "../../hooks/useDeleteOccupancy.js"
 
 /**
- * Component for editing room occupancy details.
- * Displays a form to add or edit occupancy details for a room in a guest house.
+ * RoomEdit component.
+ *
+ * Displays a form to add, update, or delete room occupancy records for a guest house.
+ * Handles user selection, room selection, arrival/departure dates, and validation
+ * of room availability. Supports both admin and regular users with different UI modes.
  *
  * @component
- * @param {Object} props
- * @param {Object} props.guestHouse - The guest house data containing rooms.
- * @param {string} props.guestHouse.name - Name of the guest house.
- * @param {Array<{name: string}>} props.guestHouse.rooms - List of rooms in the guest house.
- * @returns {JSX.Element}
+ * @param {Object} props - Component props
+ * @param {Object} props.guestHouse - Guest house data including rooms
+ * @param {string} props.guestHouse.name - Guest house name
+ * @param {Array<{name: string}>} props.guestHouse.rooms - Rooms available in the guest house
+ * @returns {JSX.Element} The rendered RoomEdit form
  */
 const RoomEdit = ({ guestHouse }) => {
-  const queryClient = useQueryClient()
   const dispatch = useDispatch()
-
   const { t } = useTranslation()
 
   const user = useSelector((state) => state.user)
@@ -67,24 +65,22 @@ const RoomEdit = ({ guestHouse }) => {
   // React Query: Fetch occupancies
   const {
     data: occupancies,
-    isLoadingOccupancies,
-    errorOccupancies,
-  } = useOccupancies()
+    isLoading: isLoadingOccupancies,
+    error: errorOccupancies,
+  } = useFetchOccupancies()
 
-  // React Query: Fetch users
+  // React Query: Fetch users (enabled only for admins)
   const {
     data: users,
-    isLoadingUsers,
-    errorUsers,
-  } = useUsers({ enabled: user.role === "admin" || user.role === "superadmin" })
+    isLoading: isLoadingUsers,
+    error: errorUsers,
+  } = useFetchUsers({ enabled: user.role === "admin" || user.role === "superadmin" })
 
   /**
-   * Mutation to add a new occupancy.
+   * React Query: Add occupancy mutation
    */
-  const addMutation = useMutation({
-    mutationFn: postOccupancy,
+  const addOccupancyMutation = useAddOccupancy({
     onSuccess: () => {
-      queryClient.invalidateQueries("occupancies")
       setToastMessage(t("room-edit.occupancy-added"))
       setToastOpen(true)
       setTimeout(() => {
@@ -92,17 +88,15 @@ const RoomEdit = ({ guestHouse }) => {
       }, 2000)
     },
     onError: (error) => {
-      console.error("Error while submitting occupancy:", error)
+      console.error("Error adding occupancy:", error)
     },
   })
 
   /**
-   * Mutation to delete an existing occupancy.
+   * React Query: Delete occupancy mutation
    */
-  const deleteMutation = useMutation({
-    mutationFn: deleteOccupancy,
+  const deleteOccupancyMutation = useDeleteOccupancy({
     onSuccess: () => {
-      queryClient.invalidateQueries("occupancies")
       setToastMessage(t("room-edit.occupancy-deleted"))
       setToastOpen(true)
       setTimeout(() => {
@@ -115,12 +109,10 @@ const RoomEdit = ({ guestHouse }) => {
   })
 
   /**
-   * Mutation to update an existing occupancy.
+   * React Query: Update occupancy mutation
    */
-  const updateMutation = useMutation({
-    mutationFn: updateOccupancy,
+  const updateOccupancyMutation = useUpdateOccupancy({
     onSuccess: () => {
-      queryClient.invalidateQueries("occupancies")
       setToastMessage(t("room-edit.occupancy-updated"))
       setToastOpen(true)
       setTimeout(() => {
@@ -137,9 +129,9 @@ const RoomEdit = ({ guestHouse }) => {
     (state) => state.parameters.selectedOccupancy
   )
 
+  // Local state
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-
   const [codeName, setCodeName] = useState(user.codeName)
   const [room, setRoom] = useState(
     selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
@@ -147,11 +139,10 @@ const RoomEdit = ({ guestHouse }) => {
   const [toggleArrivalDate, setToggleArrivalDate] = useState("today")
   const [arrivalDate, setArrivalDate] = useState(new Date())
   const [departureDate, setDepartureDate] = useState(addDays(new Date(), 2))
-
   const [confirmOpen, setConfirmOpen] = useState(false)
 
   /**
-   * Initialize form fields based on selected occupancy or default values.
+   * Initialize form fields when selected occupancy or guest house changes.
    */
   useEffect(() => {
     setCodeName(selectedOccupancy?.occupantCode || user.codeName)
@@ -165,12 +156,16 @@ const RoomEdit = ({ guestHouse }) => {
     setDepartureDate(
       new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
     )
-  }, [selectedOccupancy, users, guestHouse.rooms])
+  }, [selectedOccupancy, users, guestHouse.rooms, user.codeName])
 
+  /**
+   * Check if the selected room is available for the requested dates.
+   * @returns {boolean} True if available, false if overlap found
+   */
   const isRoomAvailable = () => {
     const normalize = (d) => {
       const newDate = new Date(d)
-      newDate.setHours(0, 0, 0, 0) // Set midnight to normalize date
+      newDate.setHours(0, 0, 0, 0) // Normalize to midnight
       return newDate
     }
 
@@ -188,11 +183,11 @@ const RoomEdit = ({ guestHouse }) => {
       return reqStart < occEnd && reqEnd > occStart
     })
 
-    return !overlap // True if room is available
+    return !overlap
   }
 
   /**
-   * Handle occupant name change.
+   * Handle occupant code name change.
    * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   const handleNameChange = (event) => {
@@ -225,6 +220,10 @@ const RoomEdit = ({ guestHouse }) => {
     }
   }
 
+  /**
+   * Handle arrival date change via date picker.
+   * @param {Date | null} newValue
+   */
   const handleArrivalSelectDateChange = (newValue) => {
     if (newValue === null) return
     setArrivalDate(newValue)
@@ -240,7 +239,7 @@ const RoomEdit = ({ guestHouse }) => {
   }
 
   /**
-   * Handle arrival date selection (Today/Tomorrow).
+   * Handle arrival date toggle (today / tomorrow).
    * @param {React.MouseEvent<HTMLElement>} event
    * @param {string} newValue
    */
@@ -279,25 +278,18 @@ const RoomEdit = ({ guestHouse }) => {
   }
 
   /**
-   * Reset and close the room edit form.
+   * Reset and close the edit form.
    */
   const handleCancelClick = () => {
-    dispatch({
-      type: "parameters/setEditMode",
-      payload: null,
-    })
-    dispatch({
-      type: "parameters/setHouseEditName",
-      payload: null,
-    })
-    dispatch({
-      type: "parameters/setSelectedOccupancy",
-      payload: null,
-    })
+    dispatch({ type: "parameters/setEditMode", payload: null })
+    dispatch({ type: "parameters/setHouseEditName", payload: null })
+    dispatch({ type: "parameters/setSelectedOccupancy", payload: null })
   }
 
   /**
-   * Convert the arrival date to a Date object.
+   * Convert string toggle values into Date objects.
+   * @param {string} dateText - "today" or "tomorrow"
+   * @returns {Date} Corresponding Date object
    */
   const convertArrivalDate = (dateText) => {
     if (dateText === "today") return new Date()
@@ -305,39 +297,45 @@ const RoomEdit = ({ guestHouse }) => {
   }
 
   /**
-   * Trigger the add occupancy mutation.
+   * Submit add occupancy mutation.
    */
   const handleAddClick = () => {
     const occupancyData = {
       house: guestHouse.name,
       occupantCode: codeName,
       room,
-      arrivalDate: arrivalDate,
+      arrivalDate,
       departureDate,
     }
 
-    addMutation.mutate(occupancyData)
+    addOccupancyMutation.mutate(occupancyData)
   }
 
+  /**
+   * Submit update occupancy mutation.
+   */
   const handleModifyClick = () => {
-    updateMutation.mutate({
+    updateOccupancyMutation.mutate({
       id: selectedOccupancy._id,
       updatedData: {
         house: guestHouse.name,
         occupantCode: codeName,
         room,
-        arrivalDate: arrivalDate,
+        arrivalDate,
         departureDate,
       },
     })
   }
 
+  /**
+   * Open delete confirmation dialog.
+   */
   const handleDeleteClick = () => {
     setConfirmOpen(true)
   }
 
   /**
-   * Close the success toast notification.
+   * Close the toast notification.
    * @param {Event} event
    * @param {string} reason
    */
@@ -346,8 +344,11 @@ const RoomEdit = ({ guestHouse }) => {
     setToastOpen(false)
   }
 
+  /**
+   * Confirm deletion and trigger mutation.
+   */
   const handleConfirmDelete = () => {
-    deleteMutation.mutate(selectedOccupancy._id)
+    deleteOccupancyMutation.mutate(selectedOccupancy._id)
     setConfirmOpen(false)
   }
 
@@ -357,15 +358,12 @@ const RoomEdit = ({ guestHouse }) => {
 
   return (
     <section className="room-edit">
+      {/* Admin view (select user + date picker) */}
       {isAdmin && (
         <>
-          {/** CODE NAME */}
+          {/* Occupant code name select */}
           <FormControl
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
             <FormLabel className="form-label">{t("room-edit.guest")}</FormLabel>
             <Select
@@ -385,13 +383,9 @@ const RoomEdit = ({ guestHouse }) => {
             </Select>
           </FormControl>
 
-          {/** ARRIVAL SELECT DATE */}
+          {/* Arrival date (date picker) */}
           <FormControl
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
             <FormLabel htmlFor="arrival-select-date" className="form-label">
               {t("room-edit.arrival")}
@@ -418,15 +412,11 @@ const RoomEdit = ({ guestHouse }) => {
         </>
       )}
 
+      {/* Regular user view (arrival date toggle) */}
       {!isAdmin && (
-        // 📅 ARRIVAL DATE TOGGLE
         <div className="room-edit__arrival-date">
           <FormControl
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
             <FormLabel className="form-label">{t("room-edit.guest")}</FormLabel>
             <ToggleButtonGroup
@@ -469,13 +459,9 @@ const RoomEdit = ({ guestHouse }) => {
         </div>
       )}
 
-      {/** DEPARTURE DATE */}
+      {/* Departure date */}
       <FormControl
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
+        sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
         <FormLabel htmlFor="departure-date" className="form-label">
           {t("room-edit.departure")}
@@ -498,7 +484,7 @@ const RoomEdit = ({ guestHouse }) => {
         </LocalizationProvider>
       </FormControl>
 
-      {/** ROOM NAME */}
+      {/* Room select */}
       <FormControl
         className="room-edit__roomName"
         sx={{
@@ -527,6 +513,7 @@ const RoomEdit = ({ guestHouse }) => {
         </Select>
       </FormControl>
 
+      {/* Availability alert */}
       <Alert
         severity={isRoomAvailable() ? "success" : "error"}
         sx={{
@@ -550,7 +537,7 @@ const RoomEdit = ({ guestHouse }) => {
           : t("room-edit.room-not-available")}
       </Alert>
 
-      {/** BUTTONS */}
+      {/* Action buttons */}
       <div className="room-edit__buttons">
         <Button
           className="btn_cancel"
@@ -593,7 +580,7 @@ const RoomEdit = ({ guestHouse }) => {
         )}
       </div>
 
-      {/* Toast notification for success messages */}
+      {/* Success toast */}
       <Snackbar
         open={toastOpen}
         autoHideDuration={3000}
@@ -609,7 +596,7 @@ const RoomEdit = ({ guestHouse }) => {
         </Alert>
       </Snackbar>
 
-      {/** Modal Dialog Box */}
+      {/* Delete confirmation dialog */}
       <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}

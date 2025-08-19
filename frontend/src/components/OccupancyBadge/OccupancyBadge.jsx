@@ -8,7 +8,7 @@ import "./OccupancyBadge.scss"
 import { useDispatch, useSelector } from "react-redux"
 
 // 👉 Custom hook to fetch users data
-import { useUsers } from "../../hooks/useUsers"
+import { useFetchUsers } from "../../hooks/useFetchUsers"
 
 /**
  * OccupancyBadge component displays occupancy status for a guest house.
@@ -26,7 +26,7 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
   const dispatch = useDispatch()
 
   // 👉 React Query: Fetch all users
-  const { data: users, isLoadingUsers, errorUsers } = useUsers()
+  const { data: users, isLoadingUsers, errorUsers } = useFetchUsers()
 
   // 👉 Current user from Redux store
   const user = useSelector((state) => state.user)
