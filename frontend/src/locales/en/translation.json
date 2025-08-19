@@ -1,7 +1,7 @@
 {
   "common-words": {
-    "from": "From",
-    "to": "To",
+    "from": "from",
+    "to": "to",
     "is-available": "is available",
     "welcome": "Welcome"
   },
@@ -22,9 +22,9 @@
     "go-to-homepage": "Go to homepage"
   },
   "dates": {
-    "week": "Week",
-    "today": "Today",
-    "tomorrow": "Tomorrow",
+    "week": "week",
+    "today": "today",
+    "tomorrow": "tomorrow",
     "days_abbreviated": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "burger-menu": {

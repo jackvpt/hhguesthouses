@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
-import { formatDateToDDMM } from "../../utils/dateTools"
+import { capitalize, formatDateToDDMM } from "../../utils/dateTools"
 import { IconButton } from "@mui/material"
 import { useTranslation } from "react-i18next"
 
@@ -33,7 +33,7 @@ const WeekSelection = () => {
           />
         </IconButton>
         <div className="week-selection__date">
-          <p className="week-selection__date-weekNumber">{t("dates.week")} {weekNumber}</p>
+          <p className="week-selection__date-weekNumber">{capitalize(t("dates.week"))} {weekNumber}</p>
           <p className="week-selection__date-range">
             {formatDateToDDMM(weekRange.monday)} -{" "}
             {formatDateToDDMM(weekRange.sunday)}

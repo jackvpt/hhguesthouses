@@ -9,13 +9,26 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTranslation } from "react-i18next"
 
+/**
+ * Adds a number of days to a given date.
+ * @param {Date} date - The starting date.
+ * @param {number} days - Number of days to add.
+ * @returns {Date} New date after adding the days.
+ */
 const addDays = (date, days) => {
   const result = new Date(date)
   result.setDate(result.getDate() + days)
   return result
 }
 
+/**
+ * Calendar component displaying occupancy of rooms in a guest house.
+ * @param {Object} props
+ * @param {Object} props.guestHouse - Guest house object containing rooms and name.
+ * @returns {JSX.Element} Rendered calendar table.
+ */
 const Calendar = ({ guestHouse }) => {
+  // Fetch all occupancies using React Query
   const {
     data: occupancies = [],
     isLoading,
@@ -28,12 +41,14 @@ const Calendar = ({ guestHouse }) => {
   const { t } = useTranslation()
   const lang = useSelector((state) => state.parameters.language)
 
+  // Days abbreviations according to selected language
   const days = t("dates.days_abbreviated", { returnObjects: true })
   const rooms = guestHouse.rooms
 
   const firstDayOfWeek = new Date(
     useSelector((state) => state.parameters.weekRange.monday)
   )
+
   if (isLoading) return <div>{t("actions.loading")}</div>
   if (error)
     return (
@@ -42,7 +57,14 @@ const Calendar = ({ guestHouse }) => {
       </div>
     )
 
-  const checkOccupancy = (guestHouse, roomName, date) => {
+  /**
+   * Checks if a room is occupied on a specific date.
+   * @param {string} guestHouseName - Name of the guest house.
+   * @param {string} roomName - Name of the room.
+   * @param {Date} date - Date to check occupancy for.
+   * @returns {Object|null} Occupancy object if found, otherwise null.
+   */
+  const checkOccupancy = (guestHouseName, roomName, date) => {
     const target = new Date(date)
     target.setHours(0, 0, 0, 0)
 
@@ -53,7 +75,7 @@ const Calendar = ({ guestHouse }) => {
       departure.setHours(0, 0, 0, 0)
 
       return (
-        occ.house === guestHouse &&
+        occ.house === guestHouseName &&
         occ.room === roomName &&
         target >= arrival &&
         target < departure
@@ -91,6 +113,7 @@ const Calendar = ({ guestHouse }) => {
 
         <tbody>
           {rooms.map((room) => {
+            // Get room description in the selected language
             const description =
               room.description.find((desc) => desc.language === lang)?.text ||
               ""

@@ -61,4 +61,14 @@ export function addDays(date, days) {
   return result
 }
 
-
+/**
+ * Capitalizes the first letter of a string.
+ * @param {String} text 
+ * @returns {String}
+ * @example
+ * capitalize("hello") // "Hello"
+ */
+export function capitalize(text) {
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

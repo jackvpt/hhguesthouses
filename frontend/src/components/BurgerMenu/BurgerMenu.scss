@@ -41,22 +41,22 @@
   }
 
   &__version {
-    display:flex;
+    display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap:10px;
+    gap: 10px;
 
     font-size: 0.8rem;
     color: $primary-color-3;
 
-    img{
+    img {
       opacity: 0.6;
-      width:1.5rem;
+      width: 1.5rem;
     }
 
-    p{
-      margin-top:5px;
+    p {
+      margin-top: 5px;
     }
   }
 }

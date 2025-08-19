@@ -5,4 +5,5 @@ export const useLogs = () =>
   useQuery({
     queryKey: ["logs"],
     queryFn: fetchAllLogs,
+    refetchInterval: 30000,
   })

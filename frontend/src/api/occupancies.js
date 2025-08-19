@@ -1,9 +1,14 @@
 import axios from "axios"
-
 import { API_URL } from "./apiURL"
 
 const BASE_URL = `${API_URL}/occupancies`
 
+/**
+ * Fetch all occupancies from the API.
+ *
+ * @returns {Promise<Object[]>} Array of occupancy objects.
+ * @throws {Error} If the request fails.
+ */
 export const fetchAllOccupancies = async () => {
   try {
     const response = await axios.get(BASE_URL)
@@ -14,6 +19,13 @@ export const fetchAllOccupancies = async () => {
   }
 }
 
+/**
+ * Create a new occupancy.
+ *
+ * @param {Object} occupancyData - Data for the new occupancy.
+ * @returns {Promise<Object>} The created occupancy object.
+ * @throws {Error} If the request fails.
+ */
 export const postOccupancy = async (occupancyData) => {
   try {
     const token =
@@ -33,6 +45,13 @@ export const postOccupancy = async (occupancyData) => {
   }
 }
 
+/**
+ * Delete an occupancy by ID.
+ *
+ * @param {string|number} id - The ID of the occupancy to delete.
+ * @returns {Promise<Object>} The response from the API.
+ * @throws {Error} If the request fails.
+ */
 export const deleteOccupancy = async (id) => {
   try {
     const token =
@@ -51,6 +70,15 @@ export const deleteOccupancy = async (id) => {
   }
 }
 
+/**
+ * Update an occupancy by ID.
+ *
+ * @param {Object} params - The parameters for the update.
+ * @param {string|number} params.id - The ID of the occupancy to update.
+ * @param {Object} params.updatedData - The updated occupancy data.
+ * @returns {Promise<Object>} The updated occupancy object.
+ * @throws {Error} If the request fails.
+ */
 export const updateOccupancy = async ({ id, updatedData }) => {
   try {
     const token =

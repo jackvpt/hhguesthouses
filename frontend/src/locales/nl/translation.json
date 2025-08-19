@@ -22,9 +22,9 @@
     "go-to-homepage": "Ga naar de homepage"
   },
   "dates": {
-    "week": "Week",
-    "today": "Vandaag",
-    "tomorrow": "Morgen",
+    "week": "week",
+    "today": "vandaag",
+    "tomorrow": "morgen",
     "days_abbreviated": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
   },
   "burger-menu": {

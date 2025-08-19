@@ -13,13 +13,6 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableRow,
-  TableCell,
-  Table,
-  TableBody,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
@@ -31,12 +24,19 @@ import { useTranslation } from "react-i18next"
 import { useUsers } from "../../hooks/useUsers"
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 
+import Loader from "../Loader/Loader"
+import Error from "../Error/Error"
+import LogTable from "../LogTable/LogTable"
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
 })
 
+/**
+ * BurgerMenu component with user options and logs display.
+ */
 export default function BurgerMenu() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -48,20 +48,21 @@ export default function BurgerMenu() {
     error: errorUsers,
   } = useUsers()
 
-  // State to control the drawer open/close
   const [open, setOpen] = useState(false)
-
   const [modalOpen, setModalOpen] = useState(false)
 
   const { t } = useTranslation()
 
+  /**
+   * Toggle the drawer state.
+   * @param {boolean} state
+   */
+  const toggleDrawer = (state) => () => setOpen(state)
+
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
 
-  const toggleDrawer = (state) => () => {
-    setOpen(state)
-  }
-
+  /** Handle user logout */
   const handleLogOut = () => {
     navigate("/login")
     localStorage.removeItem("token")
@@ -70,6 +71,7 @@ export default function BurgerMenu() {
     setOpen(false)
   }
 
+  /** Navigate to signup page */
   const handleSignUp = () => {
     navigate("/signup")
     setOpen(false)
@@ -83,10 +85,10 @@ export default function BurgerMenu() {
     return (
       <Error
         message={[
-          "An error occurred while loading data.",
-          "Please check your network connection.",
-          "If the problem persists, contact support.",
-          "We apologize for the inconvenience.",
+          t("error.fetch-data"),
+          t("error.network"),
+          t("error.contact-support"),
+          t("error.apologies"),
         ]}
       />
     )
@@ -100,7 +102,7 @@ export default function BurgerMenu() {
             className="burger-menu__icon"
             edge="start"
             color="inherit"
-            aria-label="menu"
+            aria-label={t("burger-menu.open")}
             onClick={toggleDrawer(true)}
           >
             <MenuIcon sx={{ fontSize: "3rem" }} />
@@ -111,10 +113,12 @@ export default function BurgerMenu() {
               {user.userId && (
                 <>
                   <ListItem className="burger-menu__account">
-                    <p className="burger-menu__name">{`${user.firstName} ${user.lastName}`}</p>
-                    <div
-                      className={`burger-menu__role ${user.role}`}
-                    >{`${convertRole(user.role)}`}</div>
+                    <p className="burger-menu__name">
+                      {`${user.firstName} ${user.lastName}`}
+                    </p>
+                    <div className={`burger-menu__role ${user.role}`}>
+                      {convertRole(user.role)}
+                    </div>
                   </ListItem>
                   <Divider />
                 </>
@@ -150,7 +154,9 @@ export default function BurgerMenu() {
               <ListItemButton onClick={handleLogOut}>
                 <ListItemText primary={t("burger-menu.log-out")} />
               </ListItemButton>
+
               <Divider />
+
               <ListItem>
                 <div className="burger-menu__version">
                   <img
@@ -168,47 +174,16 @@ export default function BurgerMenu() {
         </section>
       </ThemeProvider>
 
-      {/** Modal for viewing logs */}
+      {/* Modal to display logs */}
       <Dialog
         open={modalOpen}
         onClose={handleModalClose}
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Log Details</DialogTitle>
+        <DialogTitle>Log details</DialogTitle>
         <DialogContent>
-          <TableContainer component={Paper}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Date</TableCell>
-                  <TableCell align="center">User name</TableCell>
-                  <TableCell align="center">Action</TableCell>
-                  <TableCell align="center">Remarks</TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {logs
-                  .sort((a, b) => new Date(b.date) - new Date(a.date))
-                  .map((log) => {
-                    const user = users.find((u) => u.email === log.email)
-                    return (
-                      <TableRow key={log.id}>
-                        <TableCell>
-                          {new Date(log.date).toLocaleString()}
-                        </TableCell>
-                        <TableCell>
-                          {user.firstName} {user.lastName}
-                        </TableCell>
-                        <TableCell>{log.action}</TableCell>
-                        <TableCell>{log.remarks}</TableCell>
-                      </TableRow>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <LogTable logs={logs} users={users} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleModalClose} color="primary">
