@@ -28,11 +28,7 @@ const addDays = (date, days) => {
  */
 const Calendar = ({ guestHouse }) => {
   // Fetch all occupancies using React Query
-  const {
-    data: occupancies = [],
-    isLoading,
-    error,
-  } = useFetchOccupancies()
+  const { data: occupancies = [], isLoading, error } = useFetchOccupancies()
 
   const { t } = useTranslation()
   const lang = useSelector((state) => state.parameters.language)
@@ -121,7 +117,7 @@ const Calendar = ({ guestHouse }) => {
                     <div className="calendar__room-info">
                       <Tooltip
                         title={description}
-                        componentsProps={{
+                        slotProps={{
                           tooltip: {
                             sx: { fontSize: "1rem" },
                           },
@@ -140,8 +136,7 @@ const Calendar = ({ guestHouse }) => {
                 </th>
                 {days.map((day, dayIndex) => {
                   const date = addDays(firstDayOfWeek, dayIndex)
-                  const isToday =
-                    date.toDateString() === new Date().toDateString()
+
                   const occupancy = checkOccupancy(
                     guestHouse.name,
                     room.name,
@@ -152,7 +147,7 @@ const Calendar = ({ guestHouse }) => {
                       <OccupancyBadge
                         guestHouse={guestHouse}
                         occupancy={occupancy}
-                        isToday={isToday}
+                        date={date}
                       />
                     </td>
                   )

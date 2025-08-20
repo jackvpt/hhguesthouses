@@ -25,7 +25,7 @@ const initialState = {
   selectedOccupancy: null,
 
   // Application language
-  language: "nl",
+  language: localStorage.getItem("language") || "nl",
 }
 
 /**

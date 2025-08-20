@@ -55,9 +55,9 @@ export const login = async (userData) => {
  * @returns {Promise<Object>} The response data confirming token validity.
  * @throws {Object} Error response from the server or network error.
  */
-export async function validateToken(token) {
-  const { data } = await axios.get(`${BASE_URL}/validate`, {
+export const validateToken = async (token) => {
+  const response = await axios.get(`${BASE_URL}/validate`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  return data
+  return response.data
 }

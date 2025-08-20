@@ -10,6 +10,7 @@ import { useFetchGuestHouses } from "./hooks/useFetchGuestHouses"
 import { useFetchOccupancies } from "./hooks/useFetchOccupancies"
 import { useFetchUsers } from "./hooks/useFetchUsers"
 import { useFetchLogs } from "./hooks/useFetchLogs"
+import { setLanguage } from "./features/parametersSlice"
 
 /**
  * Main application component.
@@ -32,6 +33,14 @@ function App() {
   const dispatch = useDispatch()
 
   // Get the selected language from Redux parameters
+  const userLanguage = useSelector(
+    (state) => state.user.settings?.preferredLanguage
+  )
+
+  if (userLanguage) {
+    dispatch(setLanguage(userLanguage))
+  }
+
   const language = useSelector((state) => state.parameters.language)
 
   // Change i18n language whenever Redux language state changes
@@ -54,10 +63,12 @@ function App() {
     useFetchGuestHouses()
 
   // Fetch occupancies and refresh every 15 seconds
-  const { isLoading: isLoadingOccupancies, error: errorOccupancies } = useFetchOccupancies()
+  const { isLoading: isLoadingOccupancies, error: errorOccupancies } =
+    useFetchOccupancies()
 
   // Fetch all users
   const { isLoading: isLoadingUsers, error: errorUsers } = useFetchUsers()
+
   // Fetch logs
   const { isLoading: isLoadingLogs, error: errorLogs } = useFetchLogs()
 

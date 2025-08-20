@@ -20,35 +20,19 @@ export function useAuthToken() {
 
   // Retrieve token from localStorage or sessionStorage
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
-
   return useQuery({
-    queryKey: ["token", token], // Cache query per token
-    queryFn: () => validateToken(token), // API call to validate token
-    enabled: !!token, // Only run if token exists
-    retry: false, // Disable automatic retry on failure
-    refetchInterval: 30000, // Refetch every 30 seconds to keep session active
-
-    /**
-     * Handle successful token validation
-     * @param {object} data - API response containing validity and user info
-     */
+    queryKey: ["token", token],
+    queryFn: () => validateToken(token),
+    enabled: !!token,
+    retry: false,
+    refetchInterval: 30000,
+    staleTime: 0,
     onSuccess: (data) => {
-      if (data.valid) {
-        // Set user in Redux
-        dispatch(setUser(data.user))
-        // Apply user's preferred language
-        dispatch(setLanguage(data.user.settings.preferredLanguage))
-      } else {
-        // Clear user state and redirect to login
-        dispatch(clearUser())
-        navigate("/login", { replace: true })
-      }
+      dispatch(setUser(data))
+      dispatch(setLanguage(data.settings.preferredLanguage))
     },
-
-    /**
-     * Handle errors in token validation (network errors, etc.)
-     */
-    onError: () => {
+    onError: (err) => {
+      console.error("❌ onError triggered", err)
       dispatch(clearUser())
       navigate("/login", { replace: true })
     },

@@ -23,3 +23,16 @@ export function convertRole(role) {
   // Return the mapped role, or empty string if not found
   return roles[role] || ""
 }
+
+/**
+ * Capitalize the first letter of a string.
+ *
+ * @param {string} text - Input text.
+ * @returns {string} Text with first letter capitalized.
+ * @example
+ * capitalize("hello") // returns "Hello"
+ */
+export function capitalize(text) {
+  if (!text) return ""
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}

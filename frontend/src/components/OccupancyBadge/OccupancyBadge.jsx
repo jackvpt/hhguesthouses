@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 // 👉 Custom hook to fetch users data
 import { useFetchUsers } from "../../hooks/useFetchUsers"
+import { numberOfDaysBetweenTwoDates } from "../../utils/dateTools"
 
 /**
  * OccupancyBadge component displays occupancy status for a guest house.
@@ -22,8 +23,17 @@ import { useFetchUsers } from "../../hooks/useFetchUsers"
  * @param {boolean} props.isToday - Whether the badge represents today's occupancy
  * @returns {JSX.Element|null} Rendered badge or null if users are loading or an error occurs
  */
-const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
+const OccupancyBadge = ({ occupancy, guestHouse, date }) => {
   const dispatch = useDispatch()
+
+  const isSunday = date.getDay() === 0
+  const isToday = date.toDateString() === new Date().toDateString()
+  const isOccupancyFirstDay =
+    date.toDateString() === new Date(occupancy?.arrivalDate).toDateString()
+  const occupancyDuration = numberOfDaysBetweenTwoDates(
+    occupancy?.arrivalDate,
+    occupancy?.departureDate
+  )
 
   // 👉 React Query: Fetch all users
   const { data: users, isLoadingUsers, errorUsers } = useFetchUsers()
@@ -69,13 +79,23 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
     (user) => user.codeName === occupancy?.occupantCode
   )
 
+  const BadgeStandard = ({ occupancy }) => {
+    return (
+      <>
+        <div className="occupancy-badge__morning"></div>
+        <div className="occupancy-badge__day">{occupancy?.occupantCode}</div>
+        <div className="occupancy-badge__night"></div>
+      </>
+    )
+  }
+
   return (
     <Tooltip
       disableHoverListener={!occupancy}
       title={
         occupancy ? `${occupantName?.firstName} ${occupantName?.lastName}` : ""
       }
-      componentsProps={{
+      slotProps={{
         tooltip: {
           sx: { fontSize: "1rem" },
         },
@@ -90,9 +110,7 @@ const OccupancyBadge = ({ occupancy, guestHouse, isToday }) => {
         } ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
         onClick={handleClick}
       >
-        <div className="occupancy-badge__morning"></div>
-        <div className="occupancy-badge__day">{occupancy?.occupantCode}</div>
-        <div className="occupancy-badge__night"></div>
+        {BadgeStandard({ occupancy })}
       </div>
     </Tooltip>
   )

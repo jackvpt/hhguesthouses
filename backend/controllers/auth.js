@@ -180,6 +180,7 @@ exports.validate = async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       codeName: user.codeName,
+      settings: user.settings,
       role: user.role,
     })
   } catch (error) {

@@ -77,15 +77,9 @@ export function addDays(date, days) {
   return result
 }
 
-/**
- * Capitalize the first letter of a string.
- *
- * @param {string} text - Input text.
- * @returns {string} Text with first letter capitalized.
- * @example
- * capitalize("hello") // returns "Hello"
- */
-export function capitalize(text) {
-  if (!text) return ""
-  return text.charAt(0).toUpperCase() + text.slice(1)
+export const numberOfDaysBetweenTwoDates = (startDate, endDate) => {
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const timeDiff = end - start
+  return Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
 }

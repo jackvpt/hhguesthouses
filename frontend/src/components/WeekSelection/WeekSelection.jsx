@@ -13,7 +13,8 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 
 // 👉 Utilities
-import { capitalize, formatDateToDDMM } from "../../utils/dateTools"
+import { formatDateToDDMM } from "../../utils/dateTools"
+import { capitalize} from "../../utils/stringTools"
 
 // 👉 Material UI
 import { IconButton } from "@mui/material"

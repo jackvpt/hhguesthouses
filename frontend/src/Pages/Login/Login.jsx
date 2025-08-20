@@ -157,7 +157,9 @@ const Login = () => {
           settings: data.settings,
         },
       })
-      dispatch(setLanguage(data.settings.preferredLanguage))
+      const language = data.settings.preferredLanguage
+      dispatch(setLanguage(language))
+      localStorage.setItem("language", language)
 
       // Reset form
       setFormData({
