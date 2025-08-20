@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next"
 import { useAddOccupancy } from "../../hooks/useAddOccupancy.js"
 import { useUpdateOccupancy } from "../../hooks/useUpdateOccupancy.js"
 import { useDeleteOccupancy } from "../../hooks/useDeleteOccupancy.js"
+import { faL } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * RoomEdit component.
@@ -74,7 +75,9 @@ const RoomEdit = ({ guestHouse }) => {
     data: users,
     isLoading: isLoadingUsers,
     error: errorUsers,
-  } = useFetchUsers({ enabled: user.role === "admin" || user.role === "superadmin" })
+  } = useFetchUsers({
+    enabled: user.role === "admin" || user.role === "superadmin",
+  })
 
   /**
    * React Query: Add occupancy mutation
@@ -163,24 +166,27 @@ const RoomEdit = ({ guestHouse }) => {
    * @returns {boolean} True if available, false if overlap found
    */
   const isRoomAvailable = () => {
-    const normalize = (d) => {
+    const normalizeDate = (d) => {
       const newDate = new Date(d)
       newDate.setHours(0, 0, 0, 0) // Normalize to midnight
       return newDate
     }
 
-    const reqStart = normalize(arrivalDate)
-    const reqEnd = normalize(departureDate)
+    const reqArrivalDate = normalizeDate(arrivalDate)
+    const reqDepartureDate = normalizeDate(departureDate)
 
     const sameRoomOccupancies = occupancies.filter(
       (occ) => occ.house === guestHouse.name && occ.room === room
     )
 
     const overlap = sameRoomOccupancies.some((occ) => {
-      const occStart = normalize(occ.arrivalDate)
-      const occEnd = normalize(occ.departureDate)
+      if (occ.occupantCode === codeName) {
+        return false
+      }
+      const occArrival = normalizeDate(occ.arrivalDate)
+      const occDeparture = normalizeDate(occ.departureDate)
 
-      return reqStart < occEnd && reqEnd > occStart
+      return reqArrivalDate < occDeparture && reqDepartureDate > occArrival
     })
 
     return !overlap
