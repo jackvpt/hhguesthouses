@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import "./Calendar.scss"
 import OccupancyBadge from "../OccupancyBadge/OccupancyBadge"
-import { formatDateToDDMM } from "../../utils/dateTools"
+import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 import { IconButton, Tooltip } from "@mui/material"
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -14,11 +14,6 @@ import { useFetchOccupancies } from "../../hooks/useFetchOccupancies"
  * @param {number} days - Number of days to add.
  * @returns {Date} New date after adding the days.
  */
-const addDays = (date, days) => {
-  const result = new Date(date)
-  result.setDate(result.getDate() + days)
-  return result
-}
 
 /**
  * Calendar component displaying occupancy of rooms in a guest house.
@@ -70,7 +65,7 @@ const Calendar = ({ guestHouse }) => {
         occ.house === guestHouseName &&
         occ.room === roomName &&
         target >= arrival &&
-        target < departure
+        target <= departure
       )
     })
 

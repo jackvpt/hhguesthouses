@@ -26,14 +26,26 @@ import { numberOfDaysBetweenTwoDates } from "../../utils/dateTools"
 const OccupancyBadge = ({ occupancy, guestHouse, date }) => {
   const dispatch = useDispatch()
 
+  const arrivalDate = occupancy ? new Date(occupancy?.arrivalDate) : null
+  const departureDate = occupancy ? new Date(occupancy?.departureDate) : null
+
   const isSunday = date.getDay() === 0
   const isToday = date.toDateString() === new Date().toDateString()
-  const isOccupancyFirstDay =
-    date.toDateString() === new Date(occupancy?.arrivalDate).toDateString()
+
   const occupancyDuration = numberOfDaysBetweenTwoDates(
-    occupancy?.arrivalDate,
-    occupancy?.departureDate
+    arrivalDate,
+    departureDate
   )
+
+  const isOccupancyLastMorning = () => {
+    if (!departureDate) return false
+    return date.toDateString() === departureDate.toDateString()
+  }
+
+  const isOccupancyFirstDay = () => {
+    if (!arrivalDate) return false
+    return date.toDateString() === arrivalDate.toDateString()
+  }
 
   // 👉 React Query: Fetch all users
   const { data: users, isLoadingUsers, errorUsers } = useFetchUsers()
@@ -79,14 +91,19 @@ const OccupancyBadge = ({ occupancy, guestHouse, date }) => {
     (user) => user.codeName === occupancy?.occupantCode
   )
 
-  const BadgeStandard = ({ occupancy }) => {
-    return (
-      <>
-        <div className="occupancy-badge__morning"></div>
-        <div className="occupancy-badge__day">{occupancy?.occupantCode}</div>
-        <div className="occupancy-badge__night"></div>
-      </>
-    )
+  const Badge = (codeName) => {
+    if (isOccupancyLastMorning()) {
+      return <div className="occupancy-badge__lastMorning"></div>
+    }
+    // if (isOccupancyFirstDay() && occupancyDuration > 1 && !isSunday) {
+    //   return (
+    //     <div className="occupancy-badge__firstDayButSunday">{codeName}</div>
+    //   )
+    // }
+    // if (isOccupancyFirstDay() && occupancyDuration === 1 && isSunday) {
+    //   return <div className="occupancy-badge__firstDay">{codeName}</div>
+    // }
+    return <div className="occupancy-badge__standard">{codeName}</div>
   }
 
   return (
@@ -110,7 +127,7 @@ const OccupancyBadge = ({ occupancy, guestHouse, date }) => {
         } ${occupancy ? "occupied" : ""} ${isToday ? "istoday" : ""}`}
         onClick={handleClick}
       >
-        {BadgeStandard({ occupancy })}
+        {Badge(occupancy?.occupantCode)}
       </div>
     </Tooltip>
   )

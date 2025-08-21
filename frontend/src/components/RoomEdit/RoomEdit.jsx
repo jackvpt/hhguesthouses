@@ -39,7 +39,6 @@ import { useTranslation } from "react-i18next"
 import { useAddOccupancy } from "../../hooks/useAddOccupancy.js"
 import { useUpdateOccupancy } from "../../hooks/useUpdateOccupancy.js"
 import { useDeleteOccupancy } from "../../hooks/useDeleteOccupancy.js"
-import { faL } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * RoomEdit component.
@@ -533,13 +532,9 @@ const RoomEdit = ({ guestHouse }) => {
         {isRoomAvailable()
           ? `${t("room-edit.room")} ${room} ${t(
               "common-words.is-available"
-            )} ${t("common-words.from")} ${
-              toggleArrivalDate === "today"
-                ? t("dates.today")
-                : toggleArrivalDate === "tomorrow"
-                ? t("dates.tomorrow")
-                : toggleArrivalDate
-            } ${t("common-words.to")} ${formatDateToDDMM(departureDate)}.`
+            )} ${t("common-words.from")} ${formatDateToDDMM(arrivalDate)} ${t(
+              "common-words.to"
+            )} ${formatDateToDDMM(departureDate)}.`
           : t("room-edit.room-not-available")}
       </Alert>
 

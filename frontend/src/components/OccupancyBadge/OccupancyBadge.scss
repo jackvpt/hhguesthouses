@@ -4,6 +4,7 @@
 .occupancy-badge {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   background-color: $secondary-color-1;
   height: 36px;
@@ -12,6 +13,11 @@
   .MuiTooltip-tooltip {
     font-size: 0.9rem;
   }
+
+ &__lastMorning {
+  width: 25%;
+  background-color: violet;
+ }
 
   &__morning {
     flex: 1;

@@ -99,6 +99,7 @@ const parametersSlice = createSlice({
      */
     setLanguage: (state, action) => {
       state.language = action.payload
+      localStorage.setItem("language", action.payload)
     },
 
     /**
