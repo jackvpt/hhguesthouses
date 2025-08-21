@@ -1,7 +1,7 @@
 @use "../../styles/utils/variables" as *;
 @use "../../styles/utils/mixins" as *;
 
-.occupancy-badge {
+.occupancy-badge__standard {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -13,25 +13,55 @@
   .MuiTooltip-tooltip {
     font-size: 0.9rem;
   }
+}
 
- &__lastMorning {
-  width: 25%;
-  background-color: violet;
- }
+.occupancy-badge__firstDay {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: $secondary-color-1;
+  height: 36px;
+  cursor: default;
+  
 
-  &__morning {
-    flex: 1;
-    height: 100%;
+  .MuiTooltip-tooltip {
+    font-size: 0.9rem;
   }
 
-  &__day {
-    padding: 5px 0;
-    flex: 2;
-    text-align: center;
+  &-badge {
+    width: 75%;
+    background-color: $secondary-color-2;
+  }
+}
+
+.occupancy-badge__mix{
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  background-color: $secondary-color-1;
+  height: 36px;
+  cursor: default;
+
+}
+
+.occupancy-badge__lastDay {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $secondary-color-1;
+  height: 36px;
+  cursor: default;
+  
+
+  .MuiTooltip-tooltip {
+    font-size: 0.9rem;
   }
 
-  &__night {
-    flex: 1;
+  &-badge {
+    width: 25%;
+    background-color: $secondary-color-2;
   }
 }
 

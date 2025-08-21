@@ -51,11 +51,11 @@ const Calendar = ({ guestHouse }) => {
    * @param {Date} date - Date to check occupancy for.
    * @returns {Object|null} Occupancy object if found, otherwise null.
    */
-  const checkOccupancy = (guestHouseName, roomName, date) => {
+  const findOccupancies = (guestHouseName, roomName, date) => {
     const target = new Date(date)
     target.setHours(0, 0, 0, 0)
 
-    const occupancy = occupancies.find((occ) => {
+    const occupancy = occupancies.filter((occ) => {
       const arrival = new Date(occ.arrivalDate)
       const departure = new Date(occ.departureDate)
       arrival.setHours(0, 0, 0, 0)
@@ -132,7 +132,7 @@ const Calendar = ({ guestHouse }) => {
                 {days.map((day, dayIndex) => {
                   const date = addDays(firstDayOfWeek, dayIndex)
 
-                  const occupancy = checkOccupancy(
+                  const occupancies = findOccupancies(
                     guestHouse.name,
                     room.name,
                     date
@@ -141,7 +141,7 @@ const Calendar = ({ guestHouse }) => {
                     <td key={dayIndex}>
                       <OccupancyBadge
                         guestHouse={guestHouse}
-                        occupancy={occupancy}
+                        occupancies={occupancies}
                         date={date}
                       />
                     </td>
