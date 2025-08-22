@@ -44,12 +44,12 @@
   cursor: default;
 
   &-badgeLastDay {
-    width: 25%;
+    width: 20%;
     background-color: $secondary-color-2;
   }
 
   &-badgeFirstDay {
-    width: 70%;
+    width: 75%;
     background-color: $secondary-color-2;
 
     &-text{
@@ -74,7 +74,7 @@
   }
 
   &-badge {
-    width: 25%;
+    width: 30%;
     background-color: $secondary-color-2;
   }
 }

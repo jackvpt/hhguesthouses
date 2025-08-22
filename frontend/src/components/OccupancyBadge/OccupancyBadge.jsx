@@ -25,9 +25,6 @@ import { equalDates } from "../../utils/dateTools"
  */
 const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   const dispatch = useDispatch()
-  const occupancy = occupancies ? occupancies[0] : null
-
-  const isToday = date.toDateString() === new Date().toDateString()
 
   // 👉 React Query: Fetch all users
   const { data: users, isLoadingUsers, errorUsers } = useFetchUsers()
@@ -35,9 +32,23 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   // 👉 Current user from Redux store
   const user = useSelector((state) => state.user)
 
+  // 👉 Determine if the badge represents today's occupancy
+  const isToday = date.toDateString() === new Date().toDateString()
+
   // 👉 Determine if the badge is editable
   const isAdmin = user.role === "admin" || user.role === "super-admin"
 
+  // 👉 Find occupant's full name
+  const occupantName = (codeName) => {
+    const user = users.find((u) => u.codeName === codeName)
+    return user ? `${user.firstName} ${user.lastName}` : null
+  }
+
+  // 👉 Check if the occupancy belongs to the current user
+  const isOwnOccupancy = (occupancyCodeName) => {
+    return user.codeName === occupancyCodeName
+  }
+  
   /**
    * Handle click on the badge.
    * Only allows edit mode if the user has permissions.
@@ -62,17 +73,6 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   // 👉 Return nothing if users are loading or there is an error
   if (isLoadingUsers || errorUsers) {
     return null
-  }
-
-  // 👉 Find occupant's full name
-  const occupantName = (codeName) => {
-    const user = users.find((u) => u.codeName === codeName)
-    return user ? `${user.firstName} ${user.lastName}` : null
-  }
-
-  // 👉 Check if the occupancy belongs to the current user
-  const isOwnOccupancy = (occupancyCodeName) => {
-    return user.codeName === occupancyCodeName
   }
 
   const Badge = (occupancies) => {
@@ -211,7 +211,9 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
             <div
               className={`occupancy-badge__mix ${
                 firstOccupancy.occupantCode.toLowerCase() || ""
-              } ${isAdmin || isOwnOccupancy(firstCodeName) ? "clickable" : ""} ${
+              } ${
+                isAdmin || isOwnOccupancy(firstCodeName) ? "clickable" : ""
+              } ${
                 isOwnOccupancy(firstCodeName) ? "own-occupancy" : ""
               } occupied `}
               onClick={() => handleClick(firstOccupancy)}
@@ -232,7 +234,9 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
             <div
               className={`occupancy-badge__mix-badgeFirstDay-text ${
                 secondOccupancy.occupantCode.toLowerCase() || ""
-              } ${isAdmin || isOwnOccupancy(secondCodeName) ? "clickable" : ""} ${
+              } ${
+                isAdmin || isOwnOccupancy(secondCodeName) ? "clickable" : ""
+              } ${
                 isOwnOccupancy(secondCodeName) ? "own-occupancy" : ""
               } occupied `}
               onClick={() => handleClick(secondOccupancy)}
