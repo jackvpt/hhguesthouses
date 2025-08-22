@@ -11,7 +11,8 @@
     "modify": "Modify",
     "delete": "Delete",
     "loading": "Loading...",
-    "Error": "Error"
+    "Error": "Error",
+    "close": "Close"
   },
   "messages": {
     "something-went-wrong": "Something went wrong!",
@@ -29,6 +30,7 @@
   },
   "burger-menu": {
     "language": "Language",
+    "parking-lot": "Parking Lot",
     "signup": "Sign Up",
     "view-log": "View log",
     "log-out": "Log out",
@@ -69,5 +71,8 @@
     "departure": "Departure",
     "room": "Room",
     "room-not-available": "Room not available at these dates"
+  },
+  "carousel-parking": {
+    "title": "Parking Lot"
   }
 }

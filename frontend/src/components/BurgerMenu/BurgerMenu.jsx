@@ -23,10 +23,12 @@ import { useFetchLogs } from "../../hooks/useFetchLogs"
 import { useTranslation } from "react-i18next"
 import { useFetchUsers } from "../../hooks/useFetchUsers"
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
+import { parkingLot } from "../../../public/images/parking-lot/parking-lot"
 
 import Loader from "../Loader/Loader"
 import Error from "../Error/Error"
 import LogTable from "../LogTable/LogTable"
+import PhotoCarouselModal from "../PhotoCarouselModal/PhotoCarouselModal"
 
 const darkTheme = createTheme({
   palette: {
@@ -50,6 +52,8 @@ export default function BurgerMenu() {
 
   const [open, setOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [parkingModalOpen, setParkingModalOpen] = useState(false)
+
 
   const { t } = useTranslation()
 
@@ -61,6 +65,9 @@ export default function BurgerMenu() {
 
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
+
+  const handleParkingModalOpen = () => setParkingModalOpen(true)
+  const handleParkingModalClose = () => setParkingModalOpen(false)
 
   /** Handle user logout */
   const handleLogOut = () => {
@@ -140,6 +147,12 @@ export default function BurgerMenu() {
                 <LanguageSwitcher />
               </ListItem>
 
+              {user.userId && (
+                <ListItemButton onClick={handleParkingModalOpen}>
+                  <ListItemText primary={t("burger-menu.parking-lot")} />
+                </ListItemButton>
+              )}
+
               {user.role === "super-admin" && (
                 <>
                   <ListItemButton onClick={handleSignUp} size="small">
@@ -191,6 +204,13 @@ export default function BurgerMenu() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <PhotoCarouselModal
+        open={parkingModalOpen}
+        onClose={handleParkingModalClose}
+        photos={parkingLot}
+        title={t("carousel-parking.title")}
+      />
     </>
   )
 }

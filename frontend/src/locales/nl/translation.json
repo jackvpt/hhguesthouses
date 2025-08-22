@@ -11,7 +11,8 @@
     "modify": "Wijzigen",
     "delete": "Verwijderen",
     "loading": "Laden...",
-    "Error": "Fout"
+    "Error": "Fout",
+    "close": "Sluiten"
   },
   "messages": {
     "something-went-wrong": "Er is iets misgegaan!",
@@ -29,6 +30,7 @@
   },
   "burger-menu": {
     "language": "Taal",
+    "parking-lot": "Parkeerplaats",
     "signup": "Aanmelden",
     "view-log": "Bekijk log",
     "log-out": "Uitloggen",
@@ -69,5 +71,8 @@
     "departure": "Vertrek",
     "room": "Kamer",
     "room-not-available": "Kamer niet beschikbaar op deze data"
+  },
+  "carousel-parking": {
+    "title": "Parkeerplaats"
   }
 }
