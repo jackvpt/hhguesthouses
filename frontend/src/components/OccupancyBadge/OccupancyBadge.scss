@@ -23,37 +23,51 @@
   background-color: $secondary-color-1;
   height: 36px;
   cursor: default;
-  
 
   .MuiTooltip-tooltip {
     font-size: 0.9rem;
   }
 
   &-badge {
-    width: 75%;
+    width: 70%;
     background-color: $secondary-color-2;
   }
 }
 
-.occupancy-badge__mix{
+.occupancy-badge__mix {
   display: flex;
   flex-direction: row;
-  align-items: space-between;
+  justify-content: space-between;
+  align-items: center;
   background-color: $secondary-color-1;
   height: 36px;
   cursor: default;
 
+  &-badgeLastDay {
+    width: 25%;
+    background-color: $secondary-color-2;
+  }
+
+  &-badgeFirstDay {
+    width: 70%;
+    background-color: $secondary-color-2;
+
+    &-text{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+    }
+  }
 }
 
 .occupancy-badge__lastDay {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   background-color: $secondary-color-1;
   height: 36px;
   cursor: default;
-  
 
   .MuiTooltip-tooltip {
     font-size: 0.9rem;

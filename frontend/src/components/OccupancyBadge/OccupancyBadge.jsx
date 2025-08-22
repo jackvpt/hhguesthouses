@@ -35,19 +35,15 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   // 👉 Current user from Redux store
   const user = useSelector((state) => state.user)
 
-  // 👉 Check if the occupancy belongs to the current user
-  const ownOccupancy = user.codeName === occupancy?.occupantCode
-
   // 👉 Determine if the badge is editable
   const isAdmin = user.role === "admin" || user.role === "super-admin"
-  const isEditable = isAdmin || ownOccupancy
 
   /**
    * Handle click on the badge.
    * Only allows edit mode if the user has permissions.
    */
-  const handleClick = () => {
-    if (!isEditable) return
+  const handleClick = (occupancy) => {
+    if (!isAdmin && !isOwnOccupancy(occupancy.occupantCode)) return
 
     dispatch({
       type: "parameters/setHouseEditMode",
@@ -69,9 +65,15 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   }
 
   // 👉 Find occupant's full name
-  const occupantName = users.find(
-    (user) => user.codeName === occupancy?.occupantCode
-  )
+  const occupantName = (codeName) => {
+    const user = users.find((u) => u.codeName === codeName)
+    return user ? `${user.firstName} ${user.lastName}` : null
+  }
+
+  // 👉 Check if the occupancy belongs to the current user
+  const isOwnOccupancy = (occupancyCodeName) => {
+    return user.codeName === occupancyCodeName
+  }
 
   const Badge = (occupancies) => {
     if (occupancies.length === 0) {
@@ -80,28 +82,23 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
 
     if (occupancies.length === 1) {
       const occupancy = occupancies[0]
-      const codeName = occupancy?.occupantCode || ""
+
       if (equalDates(date, new Date(occupancy?.departureDate))) {
-        return BadgeLastDay(occupancy, codeName)
+        return BadgeLastDay(occupancy)
       }
 
       if (equalDates(date, new Date(occupancy?.arrivalDate))) {
-        return BadgeFirstDay(occupancy, codeName)
+        return BadgeFirstDay(occupancy)
       }
-      return BadgeStandard(occupancy, codeName)
+      return BadgeStandard(occupancy)
     }
 
     if (occupancies.length === 2) {
-      return (
-        <div className="">
-          {/* {BadgeLastDay(occupancies[0], occupancies[0].occupantCode)} */}
-          {BadgeFirstDay(occupancies[1], occupancies[1].occupantCode)}
-        </div>
-      )
+      return BadgeMix(occupancies)
     }
   }
 
-  const BadgeStandard = (occupancy, codeName) => {
+  const BadgeStandard = (occupancy) => {
     if (!occupancy) {
       return (
         <div
@@ -110,9 +107,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
       )
     }
 
+    const codeName = occupancy?.occupantCode || ""
+
     return (
       <Tooltip
-        title={`${occupantName?.firstName} ${occupantName?.lastName}`}
+        title={occupantName(codeName)}
         slotProps={{
           tooltip: {
             sx: { fontSize: "1rem" },
@@ -123,10 +122,10 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
         <div
           className={`occupancy-badge__standard ${
             codeName.toLowerCase() || ""
-          } ${isEditable && occupancy ? "clickable" : ""} ${
-            ownOccupancy ? "own-occupancy" : ""
+          } ${isAdmin || isOwnOccupancy(codeName) ? "clickable" : ""} ${
+            isOwnOccupancy(codeName) ? "own-occupancy" : ""
           }  occupied ${isToday ? "istoday" : ""}`}
-          onClick={handleClick}
+          onClick={() => handleClick(occupancy)}
         >
           <div>{codeName}</div>
         </div>
@@ -134,12 +133,13 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     )
   }
 
-  const BadgeFirstDay = (occupancy, codeName) => {
+  const BadgeFirstDay = (occupancy) => {
+    const codeName = occupancy?.occupantCode || ""
     return (
       <div className={`occupancy-badge__firstDay ${isToday ? "istoday" : ""}`}>
         <div className="occupancy-badge__firstDay-badge">
           <Tooltip
-            title={`${occupantName?.firstName} ${occupantName?.lastName}`}
+            title={occupantName(codeName)}
             slotProps={{
               tooltip: {
                 sx: { fontSize: "1rem" },
@@ -150,10 +150,10 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
             <div
               className={`occupancy-badge__standard ${
                 codeName.toLowerCase() || ""
-              } ${isEditable && occupancy ? "clickable" : ""} ${
-                ownOccupancy ? "own-occupancy" : ""
+              } ${isAdmin || isOwnOccupancy(codeName) ? "clickable" : ""} ${
+                isOwnOccupancy(codeName) ? "own-occupancy" : ""
               } occupied `}
-              onClick={handleClick}
+              onClick={() => handleClick(occupancy)}
             >
               <div>{codeName}</div>
             </div>
@@ -163,27 +163,82 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     )
   }
 
-  const BadgeLastDay = (occupancy, codeName) => {
+  const BadgeLastDay = (occupancy) => {
+    const codeName = occupancy?.occupantCode || ""
     return (
       <div className={`occupancy-badge__lastDay ${isToday ? "istoday" : ""}`}>
         <div className="occupancy-badge__lastDay-badge">
           <Tooltip
-            title={`${occupantName?.firstName} ${occupantName?.lastName}`}
+            title={occupantName(codeName)}
             slotProps={{
               tooltip: {
                 sx: { fontSize: "1rem" },
               },
             }}
-            className=""
           >
             <div
-              className={`occupancy-badge__standard ${
+              className={`occupancy-badge__lastDay ${
                 codeName.toLowerCase() || ""
-              } ${isEditable && occupancy ? "clickable" : ""} ${
-                ownOccupancy ? "own-occupancy" : ""
+              } ${isAdmin || isOwnOccupancy(codeName) ? "clickable" : ""} ${
+                isOwnOccupancy(codeName) ? "own-occupancy" : ""
               } occupied `}
-              onClick={handleClick}
+              onClick={() => handleClick(occupancy)}
             ></div>
+          </Tooltip>
+        </div>
+      </div>
+    )
+  }
+
+  const BadgeMix = (occupancies) => {
+    const firstOccupancy = occupancies[0]
+    const firstCodeName = firstOccupancy?.occupantCode || ""
+    const secondOccupancy = occupancies[1]
+    const secondCodeName = secondOccupancy?.occupantCode || ""
+
+    return (
+      <div className={`occupancy-badge__mix ${isToday ? "istoday" : ""}`}>
+        {/** Badge for the last day */}
+        <div className="occupancy-badge__mix-badgeLastDay">
+          <Tooltip
+            title={occupantName(firstCodeName)}
+            slotProps={{
+              tooltip: {
+                sx: { fontSize: "1rem" },
+              },
+            }}
+          >
+            <div
+              className={`occupancy-badge__mix ${
+                firstOccupancy.occupantCode.toLowerCase() || ""
+              } ${isAdmin || isOwnOccupancy(firstCodeName) ? "clickable" : ""} ${
+                isOwnOccupancy(firstCodeName) ? "own-occupancy" : ""
+              } occupied `}
+              onClick={() => handleClick(firstOccupancy)}
+            ></div>
+          </Tooltip>
+        </div>
+
+        {/** Badge for the first day */}
+        <div className="occupancy-badge__mix-badgeFirstDay">
+          <Tooltip
+            title={occupantName(secondCodeName)}
+            slotProps={{
+              tooltip: {
+                sx: { fontSize: "1rem" },
+              },
+            }}
+          >
+            <div
+              className={`occupancy-badge__mix-badgeFirstDay-text ${
+                secondOccupancy.occupantCode.toLowerCase() || ""
+              } ${isAdmin || isOwnOccupancy(secondCodeName) ? "clickable" : ""} ${
+                isOwnOccupancy(secondCodeName) ? "own-occupancy" : ""
+              } occupied `}
+              onClick={() => handleClick(secondOccupancy)}
+            >
+              {secondCodeName}
+            </div>
           </Tooltip>
         </div>
       </div>
