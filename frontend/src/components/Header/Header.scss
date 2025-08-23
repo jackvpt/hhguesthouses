@@ -8,14 +8,17 @@ header {
   justify-content: space-between;
   padding: 15px 20px;
   position: relative;
-  min-height: 120px;
+  min-height: 100px;
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
 
+  @include responsive-tablet {
+    min-height: 120px;
+  }
+
   @include responsive-desktop {
-    height: 120px;
-    min-height: unset;
+    min-height: 150px;
   }
 
   .header__center {

@@ -66,7 +66,10 @@ export default function BurgerMenu() {
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
 
-  const handleParkingModalOpen = () => setParkingModalOpen(true)
+  const handleParkingModalOpen = () =>{
+    setOpen(false)
+    setParkingModalOpen(true)
+  } 
   const handleParkingModalClose = () => setParkingModalOpen(false)
 
   /** Handle user logout */

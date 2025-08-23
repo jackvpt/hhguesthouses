@@ -1,6 +1,60 @@
 /* Responsive */
 /* Responsive */
-.occupancy-badge {
+.occupancy-badge__standard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #01b121;
+  height: 36px;
+  cursor: default;
+}
+.occupancy-badge__standard .MuiTooltip-tooltip {
+  font-size: 0.9rem;
+}
+
+.occupancy-badge__firstDay {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #01b121;
+  height: 36px;
+  cursor: default;
+}
+.occupancy-badge__firstDay .MuiTooltip-tooltip {
+  font-size: 0.9rem;
+}
+.occupancy-badge__firstDay-badge {
+  width: 70%;
+  background-color: #c71717;
+}
+
+.occupancy-badge__mix {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #01b121;
+  height: 36px;
+  cursor: default;
+}
+.occupancy-badge__mix-badgeLastDay {
+  width: 20%;
+  background-color: #c71717;
+}
+.occupancy-badge__mix-badgeFirstDay {
+  width: 75%;
+  background-color: #c71717;
+}
+.occupancy-badge__mix-badgeFirstDay-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+}
+
+.occupancy-badge__lastDay {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -8,20 +62,12 @@
   height: 36px;
   cursor: default;
 }
-.occupancy-badge .MuiTooltip-tooltip {
+.occupancy-badge__lastDay .MuiTooltip-tooltip {
   font-size: 0.9rem;
 }
-.occupancy-badge__morning {
-  flex: 1;
-  height: 100%;
-}
-.occupancy-badge__day {
-  padding: 5px 0;
-  flex: 2;
-  text-align: center;
-}
-.occupancy-badge__night {
-  flex: 1;
+.occupancy-badge__lastDay-badge {
+  width: 30%;
+  background-color: #c71717;
 }
 
 .occupied {

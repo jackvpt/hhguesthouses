@@ -25,6 +25,14 @@ const Loader = () => {
 
           {/* Loading text */}
           <div className="loader__text">
+            {/* Logo */}
+            <img
+              className="loader__image"
+              src="/logo-hh.png"
+              alt="App logo"
+              width={"48px"}
+
+            />
             {t("actions.loading")}
           </div>
         </div>

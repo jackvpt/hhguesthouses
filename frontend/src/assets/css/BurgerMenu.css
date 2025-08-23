@@ -30,6 +30,18 @@
   border-radius: 15px;
 }
 .burger-menu__version {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
   font-size: 0.8rem;
   color: #a1a1a1;
+}
+.burger-menu__version img {
+  opacity: 0.6;
+  width: 1.5rem;
+}
+.burger-menu__version p {
+  margin-top: 5px;
 }/*# sourceMappingURL=BurgerMenu.css.map */

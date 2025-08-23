@@ -12,6 +12,7 @@ import {
   createTheme,
 } from "@mui/material"
 import { ArrowBack, ArrowForward } from "@mui/icons-material"
+import { useTranslation } from "react-i18next"
 
 /**
  * PhotoCarouselModal
@@ -21,7 +22,8 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material"
  * - Two text lines: name + address
  * - Fixed URL prefix for photos
  */
-export default function PhotoCarouselModal({ open, onClose, photos, title }) {
+const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
+  const {t} = useTranslation()
   // Current index of the displayed photo
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -30,16 +32,12 @@ export default function PhotoCarouselModal({ open, onClose, photos, title }) {
 
   // Navigate to previous photo (loops to last if at first)
   const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? photos.length - 1 : prev - 1
-    )
+    setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1))
   }
 
   // Navigate to next photo (loops to first if at last)
   const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === photos.length - 1 ? 0 : prev + 1
-    )
+    setCurrentIndex((prev) => (prev === photos.length - 1 ? 0 : prev + 1))
   }
 
   // Dark theme for the modal
@@ -51,7 +49,18 @@ export default function PhotoCarouselModal({ open, onClose, photos, title }) {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        sx={{
+          "& .MuiDialog-paper": {
+            margin: "12px", 
+            width: "100%",
+            maxWidth: "512px", 
+          },
+        }}
+      >
         {/* Modal title */}
         <DialogTitle>{title || "Photo Gallery"}</DialogTitle>
 
@@ -93,10 +102,12 @@ export default function PhotoCarouselModal({ open, onClose, photos, title }) {
         {/* Close button */}
         <DialogActions>
           <Button onClick={onClose} color="primary">
-            Close
+            {t("actions.close")}
           </Button>
         </DialogActions>
       </Dialog>
     </ThemeProvider>
   )
 }
+
+export default PhotoCarouselModal
