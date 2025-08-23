@@ -31,9 +31,7 @@ const Loader = () => {
               src="/logo-hh.png"
               alt="App logo"
               width={"48px"}
-
             />
-            {t("actions.loading")}
           </div>
         </div>
       </div>
