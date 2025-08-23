@@ -1,6 +1,3 @@
-// 👉 i18n translation hook
-import { useTranslation } from "react-i18next"
-
 // 👉 Component-specific SCSS
 import "./Loader.scss"
 
@@ -12,8 +9,6 @@ import "./Loader.scss"
  * @returns {JSX.Element} Rendered Loader component
  */
 const Loader = () => {
-  // i18n translation function
-  const { t } = useTranslation()
 
   return (
     <section className="loader">

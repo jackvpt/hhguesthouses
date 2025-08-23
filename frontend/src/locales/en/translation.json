@@ -12,7 +12,8 @@
     "delete": "Delete",
     "loading": "Loading...",
     "Error": "Error",
-    "close": "Close"
+    "close": "Close",
+    "reload-page": "Reload page"
   },
   "messages": {
     "something-went-wrong": "Something went wrong!",
@@ -20,7 +21,13 @@
     "page-not-found": "Page not found",
     "oops": "Oops... Something went wrong",
     "sorry": "Sorry for the inconvenience",
-    "go-to-homepage": "Go to homepage"
+    "go-to-homepage": "Go to homepage",
+    "main-loading-error":[
+          "An error occurred while loading data.",
+          "Please check your network connection.",
+          "If the problem persists, contact support.",
+          "We apologize for the inconvenience."
+        ]
   },
   "dates": {
     "week": "week",

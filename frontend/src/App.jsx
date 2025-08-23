@@ -85,16 +85,7 @@ function App() {
 
   // Show error page if any query failed
   if (errorGuestHouses || errorOccupancies || errorUsers || errorLogs) {
-    return (
-      <Error
-        message={[
-          "An error occurred while loading data.",
-          "Please check your network connection.",
-          "If the problem persists, contact support.",
-          "We apologize for the inconvenience.",
-        ]}
-      />
-    )
+    return <Error />
   }
 
   // All data loaded successfully, render main router

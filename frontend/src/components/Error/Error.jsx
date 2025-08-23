@@ -13,8 +13,10 @@ import { useTranslation } from "react-i18next"
  * @param {string|string[]} props.message - The error message(s) to display.
  * @returns {JSX.Element} Rendered Error component.
  */
-const Error = ({ message }) => {
+const Error = ({ errorMessage }) => {
   const { t } = useTranslation() // Hook for i18n translations
+  const message =
+    errorMessage || t("messages.main-loading-error", { returnObjects: true })
 
   return (
     <section className="error">
@@ -27,9 +29,12 @@ const Error = ({ message }) => {
 
         {/* Specific error details */}
         <div className="error__modal-text">
-          {Array.isArray(message)
-            ? message.map((line, index) => <p key={index}>{line}</p>) // Render each message line if array
-            : <p>{message}</p>} {/* Render single message string */}
+          {Array.isArray(message) ? (
+            message.map((line, index) => <p key={index}>{line}</p>) // Render each message line if array
+          ) : (
+            <p>{message}</p>
+          )}
+          {/* Render single message string */}
         </div>
 
         {/* Reload button */}
@@ -40,7 +45,7 @@ const Error = ({ message }) => {
           sx={{ marginTop: "1.5rem", padding: "0.8rem 1rem" }}
           onClick={() => window.location.reload()} // Reload the page when clicked
         >
-          Reload page
+          {t("actions.reload-page")}
         </Button>
       </div>
     </section>

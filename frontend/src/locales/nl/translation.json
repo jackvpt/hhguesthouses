@@ -12,7 +12,8 @@
     "delete": "Verwijderen",
     "loading": "Laden...",
     "Error": "Fout",
-    "close": "Sluiten"
+    "close": "Sluiten",
+    "reload-page": "Pagina herladen"
   },
   "messages": {
     "something-went-wrong": "Er is iets misgegaan!",
@@ -20,7 +21,13 @@
     "page-not-found": "Pagina niet gevonden",
     "oops": "Oops... Er is iets misgegaan",
     "sorry": "Sorry voor het ongemak",
-    "go-to-homepage": "Ga naar de homepage"
+    "go-to-homepage": "Ga naar de homepage",
+    "main-loading-error": [
+      "Een fout is opgetreden tijdens het laden van gegevens.",
+      "Controleer uw netwerkverbinding.",
+      "Als het probleem aanhoudt, neem dan contact op met de ondersteuning.",
+      "Onze excuses voor het ongemak."
+    ]
   },
   "dates": {
     "week": "week",
@@ -62,7 +69,7 @@
     "password-incorrect": "E-mailadres en/of wachtwoord onjuist",
     "login-successfull": "Inloggen succesvol"
   },
-  "room-edit":{
+  "room-edit": {
     "occupancy-added": "Bezetting succesvol toegevoegd",
     "occupancy-deleted": "Bezetting succesvol verwijderd",
     "occupancy-updated": "Bezetting succesvol gewijzigd",
