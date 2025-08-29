@@ -90,6 +90,9 @@
     "title": "Contact",
     "name": "Naam",
     "email": "Email",
-    "message": "Bericht"
+    "message": "Bericht",
+    "message-sending": "Bericht verzenden...",
+    "message-sent": "Bericht succesvol verzonden",
+    "message-failed": "Verzenden van bericht mislukt"
   }
 }

@@ -9,6 +9,8 @@ import {
   FormLabel,
   TextField,
   Stack,
+  Snackbar,
+  Alert,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
@@ -26,6 +28,10 @@ const ContactFormModal = ({ open, onClose }) => {
   })
 
   const [emailError, setEmailError] = useState("") // Email validation error
+  const [messageStatus, setMessageStatus] = useState({
+    message: "",
+    severity: "success",
+  }) // Alert message state
 
   // Handle form input changes
   const handleInputChange = (event) => {
@@ -47,6 +53,8 @@ const ContactFormModal = ({ open, onClose }) => {
       return
     }
 
+    setMessageStatus({ message: t("contact.message-sending"), severity: "info" })
+
     try {
       const response = await emailjs.send(
         "service_v3gewzd",
@@ -62,13 +70,25 @@ const ContactFormModal = ({ open, onClose }) => {
         }
       )
 
-      if (response.text != "OK") throw new Error("Error while sending email")
+      if (response.text != "OK") {
+        setMessageStatus({
+          message: t("contact.message-failed"),
+          severity: "error",
+        })
+        throw new Error("Error while sending email")
+      }
 
-      console.log("Message sent successfully", formData)
-
+      setMessageStatus({
+        message: t("contact.message-sent"),
+        severity: "success",
+      })
       setFormData({ firstName: "", lastName: "", email: "", message: "" })
     } catch (error) {
       console.error(error)
+      setMessageStatus({
+        message: t("contact.message-failed"),
+        severity: "error",
+      })
     }
   }
 
@@ -89,6 +109,11 @@ const ContactFormModal = ({ open, onClose }) => {
     }
     setEmailError("")
     return true
+  }
+
+  const handleClose = () => {
+    setMessageStatus({ message: "", severity: "success" })
+    onClose()
   }
 
   return (
@@ -202,7 +227,7 @@ const ContactFormModal = ({ open, onClose }) => {
               className="btn_close"
               sx={{ m: 1, minWidth: 120 }}
               variant="contained"
-              onClick={onClose}
+              onClick={handleClose}
             >
               {t("actions.close")}
             </Button>
@@ -215,6 +240,24 @@ const ContactFormModal = ({ open, onClose }) => {
               {t("actions.send")}
             </Button>
           </DialogActions>
+        </div>
+
+        <div className="contact__status">
+          {/* Message status */}
+          <Alert
+            severity={messageStatus.severity}
+            sx={{
+              p: 0.5,
+              py: 0,
+              fontSize: "1rem",
+              alignItems: "center",
+              lineHeight: 1,
+              width: "90%",
+              visibility: messageStatus.message ? "visible" : "hidden",
+            }}
+          >
+            {messageStatus.message}
+          </Alert>
         </div>
       </Dialog>
     </section>

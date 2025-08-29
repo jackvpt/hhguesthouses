@@ -91,6 +91,8 @@
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "submit": "Submit"
+    "message-sending": "Sending message...",
+    "message-sent": "Message sent successfully",
+    "message-failed": "Failed to send message"
   }
 }
