@@ -32,47 +32,41 @@ import { setLanguage } from "./features/parametersSlice"
 function App() {
   const dispatch = useDispatch()
 
-  // Get the selected language from Redux parameters
   const userLanguage = useSelector(
     (state) => state.user.settings?.preferredLanguage
   )
 
-  if (userLanguage) {
-    dispatch(setLanguage(userLanguage))
-  }
-
   const language = useSelector((state) => state.parameters.language)
 
-  // Change i18n language whenever Redux language state changes
+  // Met à jour la langue Redux quand userLanguage change
+  useEffect(() => {
+    if (userLanguage) {
+      dispatch(setLanguage(userLanguage))
+    }
+  }, [userLanguage, dispatch])
+
+  // Met à jour i18n quand Redux change
   useEffect(() => {
     i18n.changeLanguage(language)
   }, [language])
 
-  // Retrieve token from localStorage or sessionStorage
+  // Vérifie le token
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
-  if (!token) {
-    // Clear user state if no valid token found
-    dispatch(clearUser())
-  }
 
-  // Custom hook to verify auth token validity
+  useEffect(() => {
+    if (!token) {
+      dispatch(clearUser())
+    }
+  }, [token, dispatch])
+
   const { isAuthLoading } = useAuthToken()
-
-  // Fetch guest houses
   const { isLoading: isLoadingGuestHouses, error: errorGuestHouses } =
     useFetchGuestHouses()
-
-  // Fetch occupancies and refresh every 15 seconds
   const { isLoading: isLoadingOccupancies, error: errorOccupancies } =
     useFetchOccupancies()
-
-  // Fetch all users
   const { isLoading: isLoadingUsers, error: errorUsers } = useFetchUsers()
-
-  // Fetch logs
   const { isLoading: isLoadingLogs, error: errorLogs } = useFetchLogs()
 
-  // Show loader if any query or auth check is still loading
   if (
     isAuthLoading ||
     isLoadingGuestHouses ||
@@ -83,13 +77,10 @@ function App() {
     return <Loader />
   }
 
-  // Show error page if any query failed
   if (errorGuestHouses || errorOccupancies || errorUsers || errorLogs) {
     return <Error />
   }
 
-  // All data loaded successfully, render main router
   return <Router />
 }
-
 export default App

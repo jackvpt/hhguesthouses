@@ -1,4 +1,4 @@
-export const parkingLot = [
+const parkingLot = [
   {
     name: "N°22",
     address: "Californiestraat - Building 32/44",
@@ -15,3 +15,5 @@ export const parkingLot = [
     url: "parking-lot_68.webp",
   },
 ]
+
+export default parkingLot

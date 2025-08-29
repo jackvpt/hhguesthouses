@@ -89,6 +89,16 @@
     animation: shake 1s ease;
   }
 
+  .login__link {
+    background: none;
+    border: none;
+    color:$secondary-color-3;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+  }
+
   &__textfield {
     // Field text
     .MuiInputBase-input {

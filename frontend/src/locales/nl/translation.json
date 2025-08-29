@@ -13,7 +13,9 @@
     "loading": "Laden...",
     "Error": "Fout",
     "close": "Sluiten",
-    "reload-page": "Pagina herladen"
+    "reload-page": "Pagina herladen",
+    "submit": "Verzenden",
+    "send": "Verzenden"
   },
   "messages": {
     "something-went-wrong": "Er is iets misgegaan!",
@@ -41,6 +43,7 @@
     "signup": "Aanmelden",
     "view-log": "Bekijk log",
     "log-out": "Uitloggen",
+    "contact": "Contact",
     "software-version": "Softwareversie"
   },
   "occupancy": {
@@ -65,7 +68,8 @@
     "password": "Wachtwoord",
     "login": "Inloggen",
     "remember-me": "Onthoud mij",
-    "no-account": "Heeft u geen account? Neem contact op met de beheerder",
+    "no-account": "Heeft u geen account?",
+    "contact-admin": "Neem contact op met de beheerder",
     "password-incorrect": "E-mailadres en/of wachtwoord onjuist",
     "login-successfull": "Inloggen succesvol"
   },
@@ -81,5 +85,11 @@
   },
   "carousel-parking": {
     "title": "Parkeerplaats"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Naam",
+    "email": "Email",
+    "message": "Bericht"
   }
 }

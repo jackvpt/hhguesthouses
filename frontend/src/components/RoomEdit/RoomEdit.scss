@@ -7,7 +7,6 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
-  background-color: $text-color-1;
   padding: 10px;
   border-bottom: 1px solid $text-color-1;
 
@@ -27,18 +26,9 @@
     &-toggle-group {
       display: flex;
       flex-direction: row;
-
-      .MuiToggleButton-root {
-        &.Mui-selected {
-          background-color: $secondary-color-3;
-          color: $text-color-1;
-        }
-      }
     }
   }
   &__roomName {
-    background-color: $text-color-1;
-    color: $primary-color-2;
     flex: 1;
 
     .MuiSelect-select {

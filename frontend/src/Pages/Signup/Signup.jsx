@@ -13,11 +13,9 @@ import {
 } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { signup } from "../../api/auth"
 
 import "./Signup.scss"
+import { useSignUp } from "../../hooks/useSignUp"
 
 /**
  * Signup Component
@@ -25,9 +23,6 @@ import "./Signup.scss"
  * and displays notifications via toasts.
  */
 const Signup = () => {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-
   /** Initial form state */
   const initialState = {
     firstName: "",
@@ -60,6 +55,31 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  // Validate input on blur
+  const handleInputBlur = (event) => {
+    const { name, value } = event.target
+    if (name === "email") isValidEmail(value)
+  }
+
+  /**
+   * Validate email format
+   * @param {string} email
+   * @returns {boolean} True if valid, false otherwise
+   */
+  const isValidEmail = (email) => {
+    if (!email) {
+      setEmailError("Email is required.")
+      return false
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format.")
+      return false
+    }
+    setEmailError("")
+    return true
+  }
+
   /**
    * Validates email format
    * @param {string} email
@@ -76,16 +96,14 @@ const Signup = () => {
     password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password)
 
   // --- React Query mutation for signup ---
-  const signupMutation = useMutation(signup, {
+  const signupMutation = useSignUp({
     onSuccess: () => {
-      setToast({ message: "Signup successful!", severity: "success" })
+      setToast("User added successfully")
       setToastOpen(true)
-      queryClient.invalidateQueries(["users"]) // refresh users list
-      navigate("/login")
+      setTimeout(() => {}, 2000)
     },
     onError: (error) => {
-      setToast({ message: error.message || "Signup failed", severity: "error" })
-      setToastOpen(true)
+      console.error("Error adding user:", error)
     },
   })
 
@@ -117,45 +135,86 @@ const Signup = () => {
   }
 
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
-      <TextField
-        label="First Name"
-        name="firstName"
-        value={formData.firstName}
-        onChange={handleInputChange}
-        required
-      />
-      <TextField
-        label="Last Name"
-        name="lastName"
-        value={formData.lastName}
-        onChange={handleInputChange}
-        required
-      />
-      <TextField
-        label="Code Name"
-        name="codeName"
-        value={formData.codeName}
-        onChange={handleInputChange}
-      />
-      <FormControl>
-        <FormLabel>Role</FormLabel>
+    <section className="signup">
+      <h1>SIGN UP</h1>
+      {/* FIRST NAME FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="firstName" required className="signup__formlabel">
+          First name
+        </FormLabel>
+        <TextField
+          id="firstName"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          required
+        />
+      </FormControl>
+
+      {/* LAST NAME FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="lastName" required className="signup__formlabel">
+          Last name
+        </FormLabel>
+        <TextField
+          id="lastName"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          required
+        />
+      </FormControl>
+
+      {/* CODE NAME FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="codeName" required className="signup__formlabel">
+          Code name
+        </FormLabel>
+        <TextField
+          id="codeName"
+          name="codeName"
+          value={formData.codeName}
+          onChange={handleInputChange}
+        />
+      </FormControl>
+
+      {/* ROLE FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="codeName" required className="signup__formlabel">
+          Role
+        </FormLabel>
         <Select name="role" value={formData.role} onChange={handleInputChange}>
           <MenuItem value="guest">Guest</MenuItem>
           <MenuItem value="admin">Admin</MenuItem>
         </Select>
       </FormControl>
-      <TextField
-        label="Email"
-        name="email"
-        value={formData.email}
-        onChange={handleInputChange}
-        error={!!emailError}
-        helperText={emailError}
-        required
-      />
-      <FormControl variant="outlined">
-        <FormLabel>Password</FormLabel>
+
+      {/* EMAIL FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="email" required className="signup__formlabel">
+          Email
+        </FormLabel>
+        <TextField
+          className="signup__textfield"
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          variant="outlined"
+          value={formData.email}
+          onChange={handleInputChange}
+          onBlur={handleInputBlur}
+          required
+          error={Boolean(emailError)}
+          helperText={emailError}
+        />
+      </FormControl>
+
+      {/* PASSWORD FIELD */}
+      <FormControl fullWidth>
+        <FormLabel htmlFor="codeName" required className="signup__formlabel">
+          Password
+        </FormLabel>
         <OutlinedInput
           type={showPassword ? "text" : "password"}
           name="password"
@@ -173,10 +232,10 @@ const Signup = () => {
         />
         {passwordError && <span className="error-text">{passwordError}</span>}
       </FormControl>
-      <Button type="submit" variant="contained" color="primary">
+
+      <Button onClick={handleSubmit} variant="contained" color="primary">
         Sign Up
       </Button>
-
       <Snackbar
         open={toastOpen}
         autoHideDuration={6000}
@@ -190,7 +249,7 @@ const Signup = () => {
           {toast.message}
         </Alert>
       </Snackbar>
-    </form>
+    </section>
   )
 }
 

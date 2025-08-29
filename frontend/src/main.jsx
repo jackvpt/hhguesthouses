@@ -9,6 +9,7 @@ import { PersistGate } from "redux-persist/integration/react"
 import "./i18n"
 import { store, persistor } from "./store/store.js"
 import { BrowserRouter } from "react-router-dom"
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 
 /**
  * Initializes a new QueryClient instance for React Query.
@@ -41,13 +42,24 @@ const queryClient = new QueryClient({
  * - `BrowserRouter` for client-side routing
  * - `ReactQueryDevtools` for debugging React Query (dev tool, initially closed)
  */
+
+// Dark theme for the modal
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+})
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <App />
+            <ThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <App />
+            </ThemeProvider>
           </BrowserRouter>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

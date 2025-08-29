@@ -1,0 +1,29 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+@use "sass:color";
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 2rem;
+
+  &__buttons {
+    .btn_close {
+      background-color: $primary-color-3;
+
+      &:hover {
+        background-color: color.adjust($primary-color-3, $lightness: -20%);
+      }
+    }
+    .btn_send {
+      background-color: $secondary-color-1;
+
+      &:hover {
+        background-color: color.adjust($secondary-color-1, $lightness: -20%);
+      }
+    }
+  }
+}

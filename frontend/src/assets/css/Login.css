@@ -71,6 +71,15 @@
 .login .login__error {
   animation: shake 1s ease;
 }
+.login .login__link {
+  background: none;
+  border: none;
+  color: #6088d8;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
 .login__textfield .MuiInputBase-input {
   color: #fff;
 }

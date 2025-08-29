@@ -13,7 +13,9 @@
     "loading": "Loading...",
     "Error": "Error",
     "close": "Close",
-    "reload-page": "Reload page"
+    "reload-page": "Reload page",
+    "submit": "Submit",
+    "send": "Send"
   },
   "messages": {
     "something-went-wrong": "Something went wrong!",
@@ -22,12 +24,12 @@
     "oops": "Oops... Something went wrong",
     "sorry": "Sorry for the inconvenience",
     "go-to-homepage": "Go to homepage",
-    "main-loading-error":[
-          "An error occurred while loading data.",
-          "Please check your network connection.",
-          "If the problem persists, contact support.",
-          "We apologize for the inconvenience."
-        ]
+    "main-loading-error": [
+      "An error occurred while loading data.",
+      "Please check your network connection.",
+      "If the problem persists, contact support.",
+      "We apologize for the inconvenience."
+    ]
   },
   "dates": {
     "week": "week",
@@ -41,6 +43,7 @@
     "signup": "Sign Up",
     "view-log": "View log",
     "log-out": "Log out",
+    "contact": "Contact",
     "software-version": "Software version"
   },
   "occupancy": {
@@ -65,7 +68,8 @@
     "password": "Password",
     "login": "Log in",
     "remember-me": "Remember me",
-    "no-account": "Don't have an account? Contact the administrator",
+    "no-account": "Don't have an account?",
+    "contact-admin": "Contact the administrator",
     "password-incorrect": "User email and/or password incorrect",
     "login-successfull": "Login successfull"
   },
@@ -81,5 +85,12 @@
   },
   "carousel-parking": {
     "title": "Parking Lot"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Submit"
   }
 }

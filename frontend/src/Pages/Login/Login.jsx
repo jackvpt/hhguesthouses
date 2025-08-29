@@ -41,6 +41,7 @@ import { useTranslation } from "react-i18next"
 
 // Redux action to set the preferred language
 import { setLanguage } from "../../features/parametersSlice"
+import ContactFormModal from "../../components/ContactFormModal/ContactFormModal"
 
 /**
  * Login component
@@ -72,6 +73,7 @@ const Login = () => {
   const [toastOpen, setToastOpen] = useState(false) // Toast visibility
   const [loginError, setLoginError] = useState(false) // Login failure indicator
   const [rememberMe, setRememberMe] = useState(false) // Remember me checkbox
+  const [contactFormModalOpen, setContactFormModalOpen] = useState(false)
 
   // Toggle password visibility
   const handleClickShowPassword = () => {
@@ -273,14 +275,29 @@ const Login = () => {
           <Checkbox
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
+            size="small" 
           />
         }
-        sx={{ justifyContent: "flex-start" }}
         label={t("login.remember-me")}
+        sx={{
+          alignItems: "center",
+          "& .MuiFormControlLabel-label": {
+            display: "flex",
+            alignItems: "center",
+            lineHeight: 1.2,
+          },
+        }}
       />
 
       <div className="login__noaccount">
         <p>{t("login.no-account")}</p>
+        <button
+          type="button"
+          className="login__link"
+          onClick={() => setContactFormModalOpen(true)}
+        >
+          {t("login.contact-admin")}
+        </button>
       </div>
 
       {/* LOGIN ERROR MESSAGE */}
@@ -305,6 +322,11 @@ const Login = () => {
           {toast.message}
         </Alert>
       </Snackbar>
+
+      <ContactFormModal
+        open={contactFormModalOpen}
+        onClose={() => setContactFormModalOpen(false)}
+      />
     </section>
   )
 }
