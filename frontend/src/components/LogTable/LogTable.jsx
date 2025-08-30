@@ -1,3 +1,5 @@
+import "./LogTable.scss"
+
 // 👉 Material UI components for table layout
 import {
   Paper,
@@ -27,38 +29,44 @@ const LogTable = ({ logs, users }) => {
   const { t } = useTranslation()
 
   return (
-    <TableContainer component={Paper} aria-label={t("logs.table")}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            {/* Table headers with localization */}
-            <TableCell align="center">{t("logs.date")}</TableCell>
-            <TableCell align="center">{t("logs.user")}</TableCell>
-            <TableCell align="center">{t("logs.action")}</TableCell>
-            <TableCell align="center">{t("logs.remarks")}</TableCell>
-          </TableRow>
-        </TableHead>
+    <section className="log-table">
+      <TableContainer component={Paper} aria-label={t("logs.table")}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              {/* Table headers with localization */}
+              <TableCell align="center">{t("logs.date")}</TableCell>
+              <TableCell align="center">{t("logs.user")}</TableCell>
+              <TableCell align="center">{t("logs.action")}</TableCell>
+              <TableCell align="center">{t("logs.remarks")}</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {logs
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .map((log) => {
-              const user = users.find((u) => u.email === log.email)
+          <TableBody>
+            {logs
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .map((log) => {
+                const user = users.find((u) => u.email === log.email)
 
-              return (
-                <TableRow key={log._id}>
-                  <TableCell>{new Date(log.date).toLocaleString()}</TableCell>
-                  <TableCell>
-                    {user ? `${user.firstName} ${user.lastName}` : log.email}
-                  </TableCell>
-                  <TableCell>{log.action}</TableCell>
-                  <TableCell>{log.remarks}</TableCell>
-                </TableRow>
-              )
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                return (
+                  <TableRow key={log._id}>
+                    <TableCell>{new Date(log.date).toLocaleString()}</TableCell>
+                    <TableCell className="log-table__cell">
+                      <div className={`${user.role}`}>
+                        {user
+                          ? `${user.firstName} ${user.lastName}`
+                          : log.email}
+                      </div>
+                    </TableCell>
+                    <TableCell>{log.action}</TableCell>
+                    <TableCell>{log.remarks}</TableCell>
+                  </TableRow>
+                )
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </section>
   )
 }
 

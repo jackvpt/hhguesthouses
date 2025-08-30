@@ -1,0 +1,29 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+.log-table {
+  &__cell {
+    > * {
+      padding: 4px 6px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .guest {
+      background-color: $guest-background-color;
+      color: $guest-color;
+    }
+
+    .manager {
+      background-color: $manager-background-color;
+    }
+
+    .admin {
+      background-color: $admin-background-color;
+    }
+
+    .super-admin {
+      background-color: $super-admin-background-color;
+    }
+  }
+}
