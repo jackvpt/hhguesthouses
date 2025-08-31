@@ -11,6 +11,7 @@ import {
   Stack,
   Snackbar,
   Alert,
+  CircularProgress,
 } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
@@ -27,11 +28,15 @@ const ContactFormModal = ({ open, onClose }) => {
     message: "",
   })
 
+  const [isFormValid, setIsFormValid] = useState(false)
+
   const [emailError, setEmailError] = useState("") // Email validation error
   const [messageStatus, setMessageStatus] = useState({
     message: "",
     severity: "success",
   }) // Alert message state
+
+  const [isSending, setIsSending] = useState(false)
 
   // Handle form input changes
   const handleInputChange = (event) => {
@@ -40,20 +45,26 @@ const ContactFormModal = ({ open, onClose }) => {
       ...prevData,
       [name]: value,
     }))
+    validForm()
   }
 
   // Validate input on blur
   const handleInputBlur = (event) => {
     const { name, value } = event.target
-    if (name === "email") isValidEmail(value)
+    if (name === "email") isEmailValid(value)
+    validForm()
   }
 
   const handleSendEmail = async () => {
-    if (!isValidEmail(formData.email)) {
+    if (!isFormValid) {
       return
     }
 
-    setMessageStatus({ message: t("contact.message-sending"), severity: "info" })
+    setIsSending(true)
+    setMessageStatus({
+      message: t("contact.message-sending"),
+      severity: "info",
+    })
 
     try {
       const response = await emailjs.send(
@@ -83,12 +94,15 @@ const ContactFormModal = ({ open, onClose }) => {
         severity: "success",
       })
       setFormData({ firstName: "", lastName: "", email: "", message: "" })
+      setIsFormValid(false)
     } catch (error) {
       console.error(error)
       setMessageStatus({
         message: t("contact.message-failed"),
         severity: "error",
       })
+    } finally {
+      setIsSending(false)
     }
   }
 
@@ -97,7 +111,7 @@ const ContactFormModal = ({ open, onClose }) => {
    * @param {string} email
    * @returns {boolean} True if valid, false otherwise
    */
-  const isValidEmail = (email) => {
+  const isEmailValid = (email) => {
     if (!email) {
       setEmailError("Email is required.")
       return false
@@ -109,6 +123,16 @@ const ContactFormModal = ({ open, onClose }) => {
     }
     setEmailError("")
     return true
+  }
+
+  const validForm = () => {
+    const isValid =
+      formData.firstName.trim() !== "" &&
+      formData.lastName.trim() !== "" &&
+      formData.message.trim() !== "" &&
+      isEmailValid(formData.email)
+
+    setIsFormValid(isValid)
   }
 
   const handleClose = () => {
@@ -236,8 +260,13 @@ const ContactFormModal = ({ open, onClose }) => {
               sx={{ m: 1, minWidth: 120 }}
               variant="contained"
               onClick={handleSendEmail}
+              disabled={!isFormValid || isSending} // désactivé pendant le send
             >
-              {t("actions.send")}
+              {isSending ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                t("actions.send")
+              )}
             </Button>
           </DialogActions>
         </div>
