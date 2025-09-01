@@ -17,12 +17,14 @@
 }
 .contact__buttons .btn_close:hover {
   background-color: #6e6e6e;
+  color: #fff;
 }
 .contact__buttons .btn_send {
   background-color: #01b121;
 }
 .contact__buttons .btn_send:hover {
   background-color: rgb(0.4269662921, 75.5730337079, 14.0898876404);
+  color: #fff;
 }
 .contact__status {
   display: flex;

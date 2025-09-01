@@ -1,0 +1,20 @@
+/* Responsive */
+/* Responsive */
+.log-table__cell > * {
+  padding: 4px 6px;
+  text-align: center;
+  border-radius: 5px;
+}
+.log-table__cell .guest {
+  background-color: #fff;
+  color: #181818;
+}
+.log-table__cell .manager {
+  background-color: #01b121;
+}
+.log-table__cell .admin {
+  background-color: #e09947;
+}
+.log-table__cell .super-admin {
+  background-color: #6088d8;
+}/*# sourceMappingURL=LogTable.css.map */

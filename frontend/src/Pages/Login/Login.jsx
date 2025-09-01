@@ -8,6 +8,7 @@ import {
   Alert,
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -264,8 +265,13 @@ const Login = () => {
         fullWidth
         size="large"
         onClick={submitForm}
+        disabled={loginMutation.isPending}
       >
-        Log in
+        {loginMutation.isPending ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          "Log in"
+        )}
       </Button>
 
       {/* REMEMBER ME CHECKBOX */}
@@ -275,7 +281,7 @@ const Login = () => {
           <Checkbox
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
-            size="small" 
+            size="small"
           />
         }
         label={t("login.remember-me")}
