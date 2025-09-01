@@ -1,3 +1,9 @@
+import "./PhotoCarouselModal.scss"
+
+// 👉 FontAwesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCamera, faMapLocationDot } from "@fortawesome/free-solid-svg-icons"
+
 import { useState } from "react"
 import {
   Dialog,
@@ -24,6 +30,7 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
   const { t } = useTranslation()
   // Current index of the displayed photo
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [showLocation, setShowLocation] = useState(false)
 
   // Return null if no photos provided
   if (!photos || photos.length === 0) return null
@@ -45,7 +52,6 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
       fullWidth
       sx={{
         "& .MuiDialog-paper": {
-          margin: "12px",
           width: "100%",
           maxWidth: "512px",
         },
@@ -56,17 +62,30 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
 
       <DialogContent>
         <Box textAlign="center" flex={1}>
-          {/* Display the current image */}
-          <img
-            src={`/images/parking-lot/${photos[currentIndex].url}`}
-            alt={`Photo ${currentIndex + 1}`}
-            style={{
-              maxWidth: "100%",
-              maxHeight: "400px",
-              borderRadius: "8px",
-            }}
-          />
-
+          <div className="flip-scene">
+            {/* Display the current image */}
+            {showLocation ? (
+              <img
+                src={`/images/parking-lot/${photos[currentIndex].url_location}`}
+                alt={`Photo ${currentIndex + 1}`}
+              />
+            ) : (
+              <img
+                src={`/images/parking-lot/${photos[currentIndex].url}`}
+                alt={`Photo ${currentIndex + 1}`}
+              />
+            )}
+            <IconButton
+              className="button-icon"
+              onClick={() => setShowLocation((prev) => !prev)}
+            >
+              {showLocation ? (
+                <FontAwesomeIcon icon={faCamera} size="lg" />
+              ) : (
+                <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
+              )}
+            </IconButton>
+          </div>
           {/* Display the name of the photo/location */}
           <Typography variant="h6" sx={{ mt: 2 }}>
             {photos[currentIndex].name}
@@ -90,8 +109,8 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
       </DialogContent>
 
       {/* Close button */}
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
+      <DialogActions sx={{ p: 3, pt: 0 }}>
+        <Button onClick={onClose} variant="contained">
           {t("actions.close")}
         </Button>
       </DialogActions>
