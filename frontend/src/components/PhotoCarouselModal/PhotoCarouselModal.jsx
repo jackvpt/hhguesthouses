@@ -63,18 +63,25 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
       <DialogContent>
         <Box textAlign="center" flex={1}>
           <div className="flip-scene">
-            {/* Display the current image */}
-            {showLocation ? (
-              <img
-                src={`/images/parking-lot/${photos[currentIndex].url_location}`}
-                alt={`Photo ${currentIndex + 1}`}
-              />
-            ) : (
-              <img
-                src={`/images/parking-lot/${photos[currentIndex].url}`}
-                alt={`Photo ${currentIndex + 1}`}
-              />
-            )}
+            <div className={`flip-card ${showLocation ? "flipped" : ""}`}>
+              {/* Recto */}
+              <div className="flip-face flip-front">
+                <img
+                  src={`/images/parking-lot/${photos[currentIndex].url}`}
+                  alt={`Photo ${currentIndex + 1}`}
+                />
+              </div>
+
+              {/* Verso */}
+              <div className="flip-face flip-back">
+                <img
+                  src={`/images/parking-lot/${photos[currentIndex].url_location}`}
+                  alt={`Localisation ${currentIndex + 1}`}
+                />
+              </div>
+            </div>
+
+            {/* Overlay bouton */}
             <IconButton
               className="button-icon"
               onClick={() => setShowLocation((prev) => !prev)}
@@ -86,6 +93,7 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
               )}
             </IconButton>
           </div>
+
           {/* Display the name of the photo/location */}
           <Typography variant="h6" sx={{ mt: 2 }}>
             {photos[currentIndex].name}
