@@ -97,10 +97,17 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
           </Typography>
 
           {/* Navigation arrows below the image */}
-          <Box display="flex" justifyContent="center" gap={2} mt={2}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
+            mt={1}
+          >
             <IconButton onClick={handlePrev}>
               <ArrowBack />
             </IconButton>
+            {currentIndex + 1} / {photos.length}
             <IconButton onClick={handleNext}>
               <ArrowForward />
             </IconButton>
