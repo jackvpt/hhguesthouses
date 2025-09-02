@@ -7,6 +7,7 @@ import Login from "../Pages/Login/Login"
 import { useSelector } from "react-redux"
 import Error404 from "../Pages/Error404/Error404"
 import Loader from "../components/Loader/Loader"
+import Account from "../Pages/Account/Account"
 
 /**
  * Application Router Component
@@ -45,6 +46,7 @@ export default function Router() {
               {/* Routes for authenticated users */}
               <Route path="/" element={<Display />} />
               <Route path="/display" element={<Display />} />
+              <Route path="/account" element={<Account />} />
 
               {/* Allow admin/user to signup or login if needed */}
               <Route path="/signup" element={<Signup />} />

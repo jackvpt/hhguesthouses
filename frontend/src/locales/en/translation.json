@@ -38,6 +38,7 @@
     "days_abbreviated": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "burger-menu": {
+    "account-settings":"Account settings",
     "language": "Language",
     "parking-lot": "Parking Lot",
     "signup": "Sign Up",
@@ -45,6 +46,16 @@
     "log-out": "Log out",
     "contact": "Contact",
     "software-version": "Software version"
+  },
+  "account":{
+    "title": "Account",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "code-name": "Code Name",
+    "role": "Role",
+    "change-password": "Change password",
+    "new-password": "New Password",
+    "confirm-password": "Confirm Password"
   },
   "occupancy": {
     "guest": "Guest",

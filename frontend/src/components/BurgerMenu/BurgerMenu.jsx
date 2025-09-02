@@ -87,6 +87,12 @@ export default function BurgerMenu() {
     setOpen(false)
   }
 
+  /** Navigate to account page */
+  const handleAccount = () => {
+    navigate("/account")
+    setOpen(false)
+  }
+
   if (isLoadingLogs || isLoadingUsers) {
     return <Loader />
   }
@@ -121,6 +127,7 @@ export default function BurgerMenu() {
           <List sx={{ width: "100%", padding: 2 }}>
             {user.userId && (
               <>
+                {/* Account type */}
                 <ListItem className="burger-menu__account">
                   <p className="burger-menu__name">
                     {`${user.firstName} ${user.lastName}`}
@@ -130,9 +137,15 @@ export default function BurgerMenu() {
                   </div>
                 </ListItem>
                 <Divider />
+
+                {/* Account settings */}
+                <ListItemButton onClick={handleAccount}>
+                  <ListItemText primary={t("burger-menu.account-settings")} />
+                </ListItemButton>
               </>
             )}
 
+            {/* Language switcher */}
             <ListItem
               sx={{
                 display: "flex",
@@ -149,12 +162,14 @@ export default function BurgerMenu() {
               <LanguageSwitcher />
             </ListItem>
 
+            {/* Parking lot */}
             {user.userId && (
               <ListItemButton onClick={handleParkingModalOpen}>
                 <ListItemText primary={t("burger-menu.parking-lot")} />
               </ListItemButton>
             )}
 
+            {/* Signup form */}
             {user.role === "super-admin" && (
               <>
                 <ListItemButton onClick={handleSignUp} size="small">
@@ -166,11 +181,14 @@ export default function BurgerMenu() {
               </>
             )}
 
-            <ListItemButton onClick={handleLogOut}>
-              <ListItemText primary={t("burger-menu.log-out")} />
-            </ListItemButton>
+            {/* Contact form */}
             <ListItemButton onClick={handleContactFormModalOpen}>
               <ListItemText primary={t("burger-menu.contact")} />
+            </ListItemButton>
+
+            {/* Log out */}
+            <ListItemButton onClick={handleLogOut}>
+              <ListItemText primary={t("burger-menu.log-out")} />
             </ListItemButton>
 
             <Divider />

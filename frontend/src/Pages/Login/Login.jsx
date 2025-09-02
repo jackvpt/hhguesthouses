@@ -1,5 +1,3 @@
-// pages/Login/Login.jsx
-
 // Import the SCSS file for this page's styles
 import "./Login.scss"
 

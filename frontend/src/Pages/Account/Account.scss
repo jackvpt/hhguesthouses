@@ -1,0 +1,72 @@
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
+
+// To avoid autocompleion style issues in Chrome
+.signup__textfield input:-webkit-autofill,
+.signup__textfield input:-webkit-autofill:hover,
+.signup__textfield input:-webkit-autofill:focus,
+.signup__textfield input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px $primary-color-2 inset; // Background color
+  -webkit-text-fill-color: $text-color-1; // Text color
+  transition: background-color 5000s ease-in-out 0s; // Hack for Chrome
+}
+
+.account {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 30px 30px 30px 20px;
+  gap: 15px;
+  width: 100%;
+  background-color: $primary-color-2;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    h1{
+        position:absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+  }
+
+  &__formlabel {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  &__textfield.MuiTextField-root {
+    margin-left: 10px;
+  }
+
+  .toggle-password-visibility {
+    color: $text-color-1;
+    &:hover {
+      color: $primary-color-3;
+    }
+  }
+
+  &__error {
+    color: red;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  @include responsive-tablet {
+    border-radius: 10px;
+    width: auto;
+    min-width: 500px;
+    gap: 20px;
+  }
+
+  @include responsive-desktop {
+    min-width: 700px;
+    gap: 25px;
+  }
+}

@@ -38,6 +38,7 @@
     "days_abbreviated": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
   },
   "burger-menu": {
+    "account-settings":"Account instellingen",
     "language": "Taal",
     "parking-lot": "Parkeerplaats",
     "signup": "Aanmelden",
@@ -45,6 +46,16 @@
     "log-out": "Uitloggen",
     "contact": "Contact",
     "software-version": "Softwareversie"
+  },
+  "account":{
+    "title": "Account",
+    "first-name": "Voornaam",
+    "last-name": "Achternaam",
+    "code-name": "Code naam",
+    "role": "Rol",
+    "change-password": "Wachtwoord wijzigen",
+    "new-password": "Nieuw wachtwoord",
+    "confirm-password": "Bevestig wachtwoord"
   },
   "occupancy": {
     "guest": "Gast",
