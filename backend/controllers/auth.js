@@ -188,3 +188,60 @@ exports.validate = async (req, res) => {
     return res.status(401).json({ message: "Invalid or expired token" })
   }
 }
+
+/** UPDATE User Password */
+exports.updatePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body
+
+  try {
+    // Check required fields
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Both current and new password are required." })
+    }
+
+    // Check new password validity
+    if (!isValidPassword(newPassword)) {
+      return res.status(400).json({
+        error:
+          "Password is not valid (8 characters min, 1 uppercase, 1 lowercase, 1 number, 1 special char).",
+      })
+    }
+
+    // Check token & get userId
+    const authHeader = req.headers.authorization
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" })
+    }
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
+
+    // Get user & auth
+    const user = await User.findById(decoded.userId)
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    const auth = await Auth.findOne({ userId: user._id })
+    if (!auth) {
+      return res.status(404).json({ message: "Auth not found for this user" })
+    }
+
+    // Check if current password is valid
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, auth.passwordHash)
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ message: "Current password is incorrect" })
+    }
+
+    // Hash and update to new password
+    const saltRounds = 10
+    auth.passwordHash = await bcrypt.hash(newPassword, saltRounds)
+    await auth.save()
+
+    await createLog(user.email, "Password updated")
+
+    res.status(200).json({ message: "Password updated successfully." })
+  } catch (error) {
+    console.error("Password update failed:", error.message)
+    res.status(500).json({ error: error.message || "Error updating password" })
+  }
+}

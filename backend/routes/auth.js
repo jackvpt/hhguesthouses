@@ -9,5 +9,6 @@ const authCtrl = require("../controllers/auth")
 router.post("/signup", authCtrl.signup)
 router.post("/login", authCtrl.login)
 router.get("/validate", authCtrl.validate)
+router.put("/update-password", authCtrl.updatePassword)
 
 module.exports = router

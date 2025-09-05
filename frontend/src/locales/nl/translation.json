@@ -38,7 +38,7 @@
     "days_abbreviated": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
   },
   "burger-menu": {
-    "account-settings":"Account instellingen",
+    "account-settings": "Account instellingen",
     "language": "Taal",
     "parking-lot": "Parkeerplaats",
     "signup": "Aanmelden",
@@ -47,15 +47,25 @@
     "contact": "Contact",
     "software-version": "Softwareversie"
   },
-  "account":{
+  "account": {
     "title": "Account",
     "first-name": "Voornaam",
     "last-name": "Achternaam",
     "code-name": "Code naam",
     "role": "Rol",
+    "update-account": "Account bijwerken",
     "change-password": "Wachtwoord wijzigen",
+    "current-password": "Huidig wachtwoord",
     "new-password": "Nieuw wachtwoord",
-    "confirm-password": "Bevestig wachtwoord"
+    "confirm-password": "Bevestig wachtwoord",
+    "password-requirements": "Wachtwoord moet minimaal 8 tekens lang zijn en ten minste één hoofdletter en één cijfer bevatten.",
+    "passwords-do-not-match": "Wachtwoorden komen niet overeen.",
+    "account-update-success": "Account succesvol bijgewerkt.",
+    "account-update-error": "Fout bij het bijwerken van het account. Probeer het opnieuw.",
+    "modify-account": "If u uw account wilt wijzigen ",
+    "password-change-success": "Wachtwoord succesvol gewijzigd",
+    "password-change-incorrect-password": "Huidig wachtwoord is onjuist",
+    "password-change-error": "Fout bij het wijzigen van het wachtwoord. Probeer het opnieuw."
   },
   "occupancy": {
     "guest": "Gast",

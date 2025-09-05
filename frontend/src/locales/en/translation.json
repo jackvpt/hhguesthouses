@@ -38,7 +38,7 @@
     "days_abbreviated": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "burger-menu": {
-    "account-settings":"Account settings",
+    "account-settings": "Account settings",
     "language": "Language",
     "parking-lot": "Parking Lot",
     "signup": "Sign Up",
@@ -47,15 +47,25 @@
     "contact": "Contact",
     "software-version": "Software version"
   },
-  "account":{
+  "account": {
     "title": "Account",
     "first-name": "First Name",
     "last-name": "Last Name",
     "code-name": "Code Name",
     "role": "Role",
+    "update-account": "Update Account",
     "change-password": "Change password",
+    "current-password": "Current Password",
     "new-password": "New Password",
-    "confirm-password": "Confirm Password"
+    "confirm-password": "Confirm Password",
+    "password-requirements": "Password must be at least 8 characters long and contain at least one uppercase letter and one number.",
+    "passwords-do-not-match": "Passwords do not match.",
+    "account-update-success": "Account updated successfully.",
+    "account-update-error": "Error updating account. Please try again.",
+    "modify-account": "If you need to modify your account ",
+    "password-change-success": "Password changed successfully",
+    "password-change-incorrect-password": "Current password is incorrect",
+    "password-change-error": "Error changing password. Please try again."
   },
   "occupancy": {
     "guest": "Guest",

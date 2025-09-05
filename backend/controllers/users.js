@@ -105,11 +105,11 @@ exports.updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       { ...userObject, _id: req.params.id },
+      { updatedAt: new Date() },
       { new: true }
     )
 
-    await createLog(user.email, "User updated",  `Preferred language ${updatedUser.settings.preferredLanguage}`)
-    console.log("OK")
+    await createLog(user.email, "User updated",  updatedUser)
 
     res.status(200).json(updatedUser)
     console.log(

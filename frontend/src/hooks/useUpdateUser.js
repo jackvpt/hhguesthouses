@@ -9,18 +9,24 @@ import { updateUser } from "../api/users"
  *
  * @returns {object} Mutation object containing mutate function, status, error, etc.
  */
-export const useUpdateUser = () => {
+export const useUpdateUser = (options = {}) => {
   const queryClient = useQueryClient() // Access React Query client
 
   return useMutation({
     mutationFn: updateUser, // API call to update a user
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       // Invalidate "users" cache to refetch fresh data
       queryClient.invalidateQueries({ queryKey: ["users"] })
+      if (options.onSuccess) {
+        options.onSuccess(data, variables, context)
+      }
     },
-    onError: (error) => {
+    onError: (error, variables, context) => {
       // Log mutation errors for debugging
       console.error("Error updating user:", error.message)
+      if (options.onError) {
+        options.onError(error, variables, context)
+      }
     },
   })
 }

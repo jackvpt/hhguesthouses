@@ -61,3 +61,35 @@ export const validateToken = async (token) => {
   })
   return response.data
 }
+
+/**
+ * Update the current user's password.
+ *
+ * @async
+ * @function updatePassword
+ * @param {Object} params - Parameters for updating the password.
+ * @param {string} params.currentPassword - The user's current password.
+ * @param {string} params.newPassword - The new password to set.
+ * @param {string} params.token - JWT authentication token.
+ * @returns {Promise<Object>} The response data confirming password update.
+ * @throws {Object} Error response from the server or network error.
+ */
+export const updatePassword = async ({ currentPassword, newPassword }) => {
+  try {
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+    const response = await axios.put(
+      `${BASE_URL}/update-password`,
+      { currentPassword, newPassword },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error("Error updating password:", error)
+    throw error
+  }
+}
