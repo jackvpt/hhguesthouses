@@ -35,10 +35,18 @@ const LogTable = ({ logs, users }) => {
           <TableHead>
             <TableRow>
               {/* Table headers with localization */}
-              <TableCell align="center">{t("logs.date")}</TableCell>
-              <TableCell align="center">{t("logs.user")}</TableCell>
-              <TableCell align="center">{t("logs.action")}</TableCell>
-              <TableCell align="center">{t("logs.remarks")}</TableCell>
+              <TableCell align="center" sx={{ width: "20%" }}>
+                Date
+              </TableCell>
+              <TableCell align="center" sx={{ width: "30%" }}>
+                User
+              </TableCell>
+              <TableCell align="center" sx={{ width: "20%" }}>
+                Action
+              </TableCell>
+              <TableCell align="center" sx={{ width: "30%" }}>
+                Remarks
+              </TableCell>
             </TableRow>
           </TableHead>
 
@@ -50,16 +58,18 @@ const LogTable = ({ logs, users }) => {
 
                 return (
                   <TableRow key={log._id}>
-                    <TableCell>{new Date(log.date).toLocaleString()}</TableCell>
-                    <TableCell className="log-table__cell">
+                    <TableCell align="center">
+                      {new Date(log.date).toLocaleString()}
+                    </TableCell>
+                    <TableCell align="center" className="log-table__cell">
                       <div className={`${user.role}`}>
                         {user
                           ? `${user.firstName} ${user.lastName}`
                           : log.email}
                       </div>
                     </TableCell>
-                    <TableCell>{log.action}</TableCell>
-                    <TableCell>{log.remarks}</TableCell>
+                    <TableCell align="center">{log.action}</TableCell>
+                    <TableCell align="center">{log.remarks}</TableCell>
                   </TableRow>
                 )
               })}
