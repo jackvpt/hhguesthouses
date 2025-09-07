@@ -140,6 +140,8 @@ const ContactFormModal = ({ open, onClose }) => {
     onClose()
   }
 
+  if (!open) return null
+
   return (
     <section className="contact">
       <Dialog

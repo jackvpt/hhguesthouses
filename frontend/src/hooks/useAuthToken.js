@@ -20,21 +20,27 @@ export function useAuthToken() {
 
   // Retrieve token from localStorage or sessionStorage
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+
   return useQuery({
     queryKey: ["token", token],
-    queryFn: () => validateToken(token),
+    queryFn: () =>
+      validateToken(token, {
+        onSuccess: (data) => {
+          console.log("✅ Token is valid", data)
+          dispatch(setUser(data))
+          dispatch(setLanguage(data.settings.preferredLanguage))
+        },
+        onError: (err) => {
+          console.log("❌ onError triggered :>> ", err.message)
+          localStorage.removeItem("token")
+          sessionStorage.removeItem("token")
+          dispatch(clearUser())
+          navigate("/login", { replace: true })
+        },
+      }),
     enabled: !!token,
     retry: false,
     refetchInterval: 30000,
     staleTime: 0,
-    onSuccess: (data) => {
-      dispatch(setUser(data))
-      dispatch(setLanguage(data.settings.preferredLanguage))
-    },
-    onError: (err) => {
-      console.error("❌ onError triggered", err)
-      dispatch(clearUser())
-      navigate("/login", { replace: true })
-    },
   })
 }

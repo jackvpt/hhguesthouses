@@ -9,3 +9,8 @@ export function formatDateToDDMM(dateString) {
   const month = String(date.getMonth() + 1).padStart(2, "0") // Mois de 0 à 11
   return `${day}/${month}`
 }
+
+export function decodeExp(exp) {
+  const date = new Date(exp * 1000)
+  return date.toLocaleString()
+}

@@ -4,6 +4,7 @@ const Auth = require("../models/Auth")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const createLog = require("../utils/Logger")
+const { decodeExp } = require("../utils/dateTools")
 
 /** Check password validity */
 const isValidPassword = (password) => {
@@ -88,12 +89,14 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: req.body.email })
 
     if (!user) {
+      console.log("User not found")
       return res.status(401).json({ message: "UserID/Password incorrect" })
     }
 
     /** Find the Auth by userId */
     const auth = await Auth.findOne({ userId: user._id })
     if (!auth) {
+      console.log("Auth not found for this user")
       return res.status(401).json({ message: "Auth not found for this user" })
     }
 
@@ -101,6 +104,7 @@ exports.login = async (req, res) => {
     const valid = await bcrypt.compare(req.body.password, auth.passwordHash)
 
     if (!valid) {
+      console.log("Invalid password")
       return res.status(401).json({ message: "UserID/Password incorrect" })
     }
 
@@ -158,17 +162,20 @@ exports.validate = async (req, res) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log("No token provided")
       return res.status(401).json({ message: "No token provided" })
     }
 
     const token = authHeader.split(" ")[1]
 
     const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
+    console.log("Token valid. Expiry time: ", decodeExp(decoded.exp))
 
     // Check if user exists
     const user = await User.findById(decoded.userId)
 
     if (!user) {
+      console.log("User not found for this token")
       return res.status(401).json({ message: "Invalid token: user not found" })
     }
 
@@ -196,7 +203,9 @@ exports.updatePassword = async (req, res) => {
   try {
     // Check required fields
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "Both current and new password are required." })
+      return res
+        .status(400)
+        .json({ message: "Both current and new password are required." })
     }
 
     // Check new password validity
@@ -227,7 +236,10 @@ exports.updatePassword = async (req, res) => {
     }
 
     // Check if current password is valid
-    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, auth.passwordHash)
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      auth.passwordHash
+    )
     if (!isCurrentPasswordValid) {
       return res.status(401).json({ message: "Current password is incorrect" })
     }

@@ -1,12 +1,11 @@
-const Log = require("../models/Log");
+const Log = require("../models/Log")
 
-async function createLog(email, action,remarks) {
-  console.log('email :>> ', email);
+async function createLog(email, action, remarks) {
   try {
-    await Log.create({ email, action,remarks });
+    await Log.create({ email, action, remarks })
   } catch (err) {
-    console.error("Erreur lors de la création du log :", err.message);
+    console.error("Erreur lors de la création du log :", err.message)
   }
 }
 
-module.exports = createLog;
+module.exports = createLog

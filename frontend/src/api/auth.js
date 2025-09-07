@@ -52,14 +52,22 @@ export const login = async (userData) => {
  * @async
  * @function validateToken
  * @param {string} token - The JWT authentication token to validate.
+ * @param {Object} options - Optional callbacks.
+ * @param {Function} [options.onSuccess] - Called when validation succeeds.
+ * @param {Function} [options.onError] - Called when validation fails.
  * @returns {Promise<Object>} The response data confirming token validity.
- * @throws {Object} Error response from the server or network error.
  */
-export const validateToken = async (token) => {
-  const response = await axios.get(`${BASE_URL}/validate`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-  return response.data
+export const validateToken = async (token, {onSuccess,onError}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/validate`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (onSuccess) onSuccess(response.data)
+    return response.data
+  } catch (error) {
+    if (onError) onError(error)
+    throw error
+  }
 }
 
 /**

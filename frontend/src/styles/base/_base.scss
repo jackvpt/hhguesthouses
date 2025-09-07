@@ -16,8 +16,8 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  // height: 100vh;
-  // height: 100dvh; // For smartphone devices
+  min-height: 100vh;
+  min-height: 100dvh; // For smartphone devices
   max-width: 1440px;
   margin: 0 auto;
   background-color: $primary-color-1;

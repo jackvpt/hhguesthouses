@@ -12,7 +12,6 @@ import {
   IconButton,
   InputAdornment,
   OutlinedInput,
-  Snackbar,
   TextField,
 } from "@mui/material"
 import { useSelector } from "react-redux"
