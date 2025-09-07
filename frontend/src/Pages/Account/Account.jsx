@@ -28,6 +28,7 @@ import { useUpdatePassword } from "../../hooks/useUpdatePassword"
 const Account = () => {
   const { t } = useTranslation()
   const user = useSelector((state) => state.user)
+
   const navigate = useNavigate()
 
   // Form state

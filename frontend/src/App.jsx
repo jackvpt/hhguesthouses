@@ -45,12 +45,12 @@ function App() {
     }
   }, [userLanguage, dispatch])
 
-  // Met à jour i18n quand Redux change
+  // Update i18n language when language in Redux changes
   useEffect(() => {
     i18n.changeLanguage(language)
   }, [language])
 
-  // Vérifie le token
+  // Check token validity on app load
   const token = localStorage.getItem("token") || sessionStorage.getItem("token")
 
   useEffect(() => {

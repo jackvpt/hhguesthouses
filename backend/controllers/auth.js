@@ -186,6 +186,7 @@ exports.validate = async (req, res) => {
       userId: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
+      email:user.email,
       codeName: user.codeName,
       settings: user.settings,
       role: user.role,
