@@ -1,14 +1,25 @@
+// 📁 CSS imports
 import "./styles/_index.scss"
-import App from "./App.jsx"
+
+// 📦 React imports
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { BrowserRouter } from "react-router-dom"
+
+// 🌐 React Query
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
+// 👉 Internal components
+import App from "./App.jsx"
+import "./i18n"
+
+// 🗃️ State & Data fetching
 import { Provider } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react"
-import "./i18n"
 import { store, persistor } from "./store/store.js"
-import { BrowserRouter } from "react-router-dom"
+
+// 🧩 MUI Core imports
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 
 /**

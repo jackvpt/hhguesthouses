@@ -1,7 +1,8 @@
 import axios from "axios"
 import { API_URL } from "./apiURL"
 
-const BASE_URL = API_URL
+// Base URL for authentication-related endpoints
+const BASE_URL = `${API_URL}/guesthouses`
 
 /**
  * Fetch all guest houses from the API.
@@ -13,7 +14,10 @@ const BASE_URL = API_URL
  */
 export const fetchAllGuestHouses = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/guesthouses`)
+    /**
+     * Make the GET request to fetch all guest houses.
+     */
+    const response = await axios.get(BASE_URL)
     return response.data
   } catch (error) {
     console.error(`Error fetching guest houses data from API: ${error.message}`)

@@ -1,8 +1,15 @@
-import "./Display.scss" // Component styles
-import GuestHouseCard from "../../components/GuestHouseCard/GuestHouseCard" // Card for each guest house
-import WeekSelection from "../../components/WeekSelection/WeekSelection" // Week selector component
-import { useFetchGuestHouses } from "../../hooks/useFetchGuestHouses" // Custom hook to fetch guest houses
-import { useTranslation } from "react-i18next" // Translation hook
+// 📁 CSS imports
+import "./Display.scss"
+
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+
+// 👉 Internal components
+import GuestHouseCard from "../../components/GuestHouseCard/GuestHouseCard"
+import WeekSelection from "../../components/WeekSelection/WeekSelection"
+
+// 🌐 React Query hooks
+import { useFetchGuestHouses } from "../../hooks/useFetchGuestHouses"
 
 /**
  * Display component showing guest houses and a week selection.

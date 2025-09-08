@@ -1,19 +1,27 @@
-import { useSelector } from "react-redux"
+// 📁 CSS imports
 import "./Calendar.scss"
+
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+
+// 🗃️ State & Data fetching
+import { useSelector } from "react-redux"
+
+// 👉 Internal components
 import OccupancyBadge from "../OccupancyBadge/OccupancyBadge"
-import { addDays, formatDateToDDMM } from "../../utils/dateTools"
+
+// 🧩 MUI Core imports
 import { IconButton, Tooltip } from "@mui/material"
+
+// 🧩 FontAwesome imports
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useTranslation } from "react-i18next"
+
+// 🌐 React Query hooks
 import { useFetchOccupancies } from "../../hooks/useFetchOccupancies"
 
-/**
- * Adds a number of days to a given date.
- * @param {Date} date - The starting date.
- * @param {number} days - Number of days to add.
- * @returns {Date} New date after adding the days.
- */
+// 🧰 Local utilities
+import { addDays, formatDateToDDMM } from "../../utils/dateTools"
 
 /**
  * Calendar component displaying occupancy of rooms in a guest house.
@@ -25,7 +33,10 @@ const Calendar = ({ guestHouse }) => {
   // Fetch all occupancies using React Query
   const { data: occupancies = [], isLoading, error } = useFetchOccupancies()
 
+  // Translation module
   const { t } = useTranslation()
+
+  // Application language from Redux store
   const lang = useSelector((state) => state.parameters.language)
 
   // Days abbreviations according to selected language
@@ -36,6 +47,7 @@ const Calendar = ({ guestHouse }) => {
     useSelector((state) => state.parameters.weekRange.monday)
   )
 
+  /** Loading and error states */
   if (isLoading) return <div>{t("actions.loading")}</div>
   if (error)
     return (
@@ -78,6 +90,8 @@ const Calendar = ({ guestHouse }) => {
         <thead>
           <tr>
             <th></th>
+            {/* Render day headers */}
+
             {days.map((day, dayIndex) => {
               const date = addDays(firstDayOfWeek, dayIndex)
               const isToday = date.toDateString() === new Date().toDateString()
@@ -88,7 +102,9 @@ const Calendar = ({ guestHouse }) => {
                   }
                   key={day}
                 >
+                  {/* Day name */}
                   <p className="calendar__days-name">{day}</p>
+                  {/* Formatted date */}
                   <p className="calendar__days-date">
                     {formatDateToDDMM(date)}
                   </p>
@@ -99,6 +115,8 @@ const Calendar = ({ guestHouse }) => {
         </thead>
 
         <tbody>
+          {/* Render each room row */}
+
           {rooms.map((room) => {
             // Get room description in the selected language
             const description =
@@ -106,6 +124,7 @@ const Calendar = ({ guestHouse }) => {
               ""
             return (
               <tr key={room.name}>
+                {/* Room name and info tooltip */}
                 <th>
                   <div className="calendar__room">
                     <div className="calendar__room-name">{room.name}</div>
@@ -129,9 +148,12 @@ const Calendar = ({ guestHouse }) => {
                     </div>
                   </div>
                 </th>
+
+                {/* Render occupancy badges for each day */}
                 {days.map((day, dayIndex) => {
                   const date = addDays(firstDayOfWeek, dayIndex)
 
+                  // Find occupancy records for the current room and date
                   const occupancies = findOccupancies(
                     guestHouse.name,
                     room.name,

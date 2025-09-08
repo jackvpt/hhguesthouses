@@ -1,6 +1,10 @@
+// 📁 CSS imports
 import "./LogTable.scss"
 
-// 👉 Material UI components for table layout
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+
+// 🧩 MUI Core imports
 import {
   Paper,
   Table,
@@ -10,9 +14,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-
-// 👉 i18n translation hook
-import { useTranslation } from "react-i18next"
 
 /**
  * Component to display logs in a table format.
@@ -25,13 +26,14 @@ import { useTranslation } from "react-i18next"
  * @returns {JSX.Element} Rendered LogTable component
  */
 const LogTable = ({ logs, users }) => {
-  // i18n translation function
+  // Translation module
   const { t } = useTranslation()
 
   return (
     <section className="log-table">
       <TableContainer component={Paper} aria-label={t("logs.table")}>
         <Table size="small">
+          {/** HEADER */}
           <TableHead>
             <TableRow>
               {/* Table headers with localization */}
@@ -50,6 +52,7 @@ const LogTable = ({ logs, users }) => {
             </TableRow>
           </TableHead>
 
+          {/** BODY */}
           <TableBody>
             {logs
               .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -57,10 +60,14 @@ const LogTable = ({ logs, users }) => {
                 const user = users.find((u) => u.email === log.email)
 
                 return (
+                  // ROWS
                   <TableRow key={log._id}>
+                    {/** DATE */}
                     <TableCell align="center">
                       {new Date(log.date).toLocaleString()}
                     </TableCell>
+
+                    {/** USER */}
                     <TableCell align="center" className="log-table__cell">
                       <div className={`${user.role}`}>
                         {user
@@ -68,7 +75,11 @@ const LogTable = ({ logs, users }) => {
                           : log.email}
                       </div>
                     </TableCell>
+
+                    {/** ACTION */}
                     <TableCell align="center">{log.action}</TableCell>
+
+                    {/** REMARKS */}
                     <TableCell align="center">{log.remarks}</TableCell>
                   </TableRow>
                 )

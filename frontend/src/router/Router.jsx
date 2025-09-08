@@ -1,13 +1,19 @@
+// 📦 React imports
 import { Routes, Route, Navigate } from "react-router-dom"
+
+// 🗃️ State & Data fetching
+import { useSelector } from "react-redux"
+
+// 👉 Internal pages
 import Display from "../Pages/Display/Display"
-import Header from "../components/Header/Header"
-import Footer from "../components/Footer/Footer"
 import Signup from "../Pages/Signup/Signup"
 import Login from "../Pages/Login/Login"
-import { useSelector } from "react-redux"
 import Error404 from "../Pages/Error404/Error404"
-import Loader from "../components/Loader/Loader"
 import Account from "../Pages/Account/Account"
+
+// 👉 Internal components
+import Header from "../components/Header/Header"
+import Footer from "../components/Footer/Footer"
 
 /**
  * Application Router Component

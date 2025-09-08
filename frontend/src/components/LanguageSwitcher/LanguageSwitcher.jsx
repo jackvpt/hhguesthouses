@@ -1,17 +1,15 @@
-// 👉 React Redux hooks
+// 🗃️ State & Data fetching
 import { useDispatch, useSelector } from "react-redux"
+import { setLanguage } from "../../features/parametersSlice"
+import { setPreferredLanguage } from "../../features/userSlice"
 
-// 👉 Material UI components
+// 🧩 MUI Core imports
 import { Select, MenuItem } from "@mui/material"
 
 // 👉 Country flags
 import { NL, GB } from "country-flag-icons/react/3x2"
 
-// 👉 Redux actions pour mettre à jour la langue
-import { setLanguage } from "../../features/parametersSlice"
-import { setPreferredLanguage } from "../../features/userSlice"
-
-// 👉 Custom hook pour mettre à jour l'utilisateur dans le backend
+// 🌐 React Query hooks
 import { useUpdateUser } from "../../hooks/useUpdateUser"
 
 /**

@@ -1,4 +1,4 @@
-// 👉 Component-specific SCSS
+// 📁 CSS imports
 import "./Loader.scss"
 
 /**
@@ -20,6 +20,7 @@ const Loader = () => {
 
           {/* Loading text */}
           <div className="loader__text">
+            
             {/* Logo */}
             <img
               className="loader__image"

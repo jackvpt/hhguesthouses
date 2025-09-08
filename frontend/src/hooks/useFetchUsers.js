@@ -1,4 +1,7 @@
+// 🌐 React Query
 import { useQuery } from "@tanstack/react-query"
+
+// 🧰 API functions
 import { fetchAllUsers } from "../api/users"
 
 /**

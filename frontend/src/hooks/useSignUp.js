@@ -1,4 +1,7 @@
+// 🌐 React Query
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+// 🧰 API functions
 import { signup } from "../api/auth"
 
 /**
@@ -13,10 +16,10 @@ export const useSignUp = ({ onSuccess, onError } = {}) => {
   return useMutation({
     mutationFn: signup,
     onSuccess: (...args) => {
-      // Invalider le cache
+      // Invalidate the cache
       queryClient.invalidateQueries({ queryKey: ["occupancies"] })
 
-      // Si le composant veut gérer un toast, callback, etc.
+      // If the component wants to handle a toast, callback, etc.
       if (onSuccess) onSuccess(...args)
     },
     onError: (error, ...rest) => {

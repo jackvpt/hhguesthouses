@@ -1,4 +1,7 @@
+// 🌐 React Query
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+// 🧰 API functions
 import { postOccupancy } from "../api/occupancies"
 
 /**
@@ -13,10 +16,10 @@ export const useAddOccupancy = ({ onSuccess, onError } = {}) => {
   return useMutation({
     mutationFn: postOccupancy,
     onSuccess: (...args) => {
-      // Invalider le cache
+      // Invalidate the cache
       queryClient.invalidateQueries({ queryKey: ["occupancies"] })
 
-      // Si le composant veut gérer un toast, callback, etc.
+      // If the component wants to handle a toast, callback, etc.
       if (onSuccess) onSuccess(...args)
     },
     onError: (error, ...rest) => {

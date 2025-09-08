@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API_URL } from "./apiURL"
 
+// Base URL for user-related endpoints
 const BASE_URL = `${API_URL}/users`
 
 /**
@@ -11,6 +12,9 @@ const BASE_URL = `${API_URL}/users`
  */
 export const fetchAllUsers = async () => {
   try {
+    /**
+     * Make the GET request to fetch all users.
+     */
     const response = await axios.get(BASE_URL)
     return response.data
   } catch (error) {
@@ -30,9 +34,14 @@ export const fetchAllUsers = async () => {
  */
 export const updateUser = async ({ id, updatedData }) => {
   try {
+    // Retrieve token from localStorage or sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token")
 
+    /**
+     * Make the PUT request to update the user.
+     * The token is included in the Authorization header.
+     */
     const { data } = await axios.put(`${BASE_URL}/${id}`, updatedData, {
       headers: {
         Authorization: `Bearer ${token}`,

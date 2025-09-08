@@ -77,6 +77,13 @@ export function addDays(date, days) {
   return result
 }
 
+/**
+ * Get the number of days between two dates.
+ *
+ * @param {Date} startDate - The start date.
+ * @param {Date} endDate - The end date.
+ * @returns {number} The number of days between the two dates.
+ */
 export const numberOfDaysBetweenTwoDates = (startDate, endDate) => {
   const start = new Date(startDate)
   const end = new Date(endDate)
@@ -84,6 +91,13 @@ export const numberOfDaysBetweenTwoDates = (startDate, endDate) => {
   return Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
 }
 
+/**
+ * Check if two dates are equal (same day).
+ *
+ * @param {Date} date1 - The first date.
+ * @param {Date} date2 - The second date.
+ * @returns {boolean} True if the dates are equal, false otherwise.
+ */
 export const equalDates = (date1, date2) => {
   const d1 = new Date(date1)
   const d2 = new Date(date2)

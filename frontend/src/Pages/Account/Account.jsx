@@ -1,10 +1,16 @@
+// 📁 CSS imports
 import "./Account.scss"
 
+// 🌍 Library imports
 import { useTranslation } from "react-i18next"
+
+// 📦 React imports
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
+// 🧩 MUI Core imports
 import {
   Alert,
-  Box,
   Button,
   Divider,
   FormControl,
@@ -14,18 +20,30 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material"
+import { Visibility, VisibilityOff } from "@mui/icons-material"
+
+// 🗃️ State & Data fetching
 import { useSelector } from "react-redux"
 
 // 👉 FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHouse } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from "react-router-dom"
+
+// 🧰 Local utilities
 import { convertRole } from "../../utils/stringTools"
-import { Visibility, VisibilityOff } from "@mui/icons-material"
+
+// 👉 Internal components
 import ContactFormModal from "../../components/ContactFormModal/ContactFormModal"
+
+// 🌐 React Query hooks
 import { useUpdatePassword } from "../../hooks/useUpdatePassword"
 
+/**
+ * Account component
+ * @returns {JSX.Element}
+ */
 const Account = () => {
+  // Translation module
   const { t } = useTranslation()
   const user = useSelector((state) => state.user)
 
@@ -43,6 +61,7 @@ const Account = () => {
     confirmNewPassword: "",
   })
 
+  // States
   const [newPasswordError, setNewPasswordError] = useState(false)
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -52,6 +71,7 @@ const Account = () => {
     message: "",
     severity: "success",
   }) // Alert message state
+
   /**
    * Updates form state on input change
    * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} event
@@ -61,6 +81,13 @@ const Account = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  /**
+   *
+   * @param {Object} formData
+   * @param {boolean} newPasswordError
+   * @param {boolean} confirmNewPasswordError
+   * @returns {boolean}
+   */
   const validateForm = (
     formData,
     newPasswordError,
@@ -77,6 +104,10 @@ const Account = () => {
     return result
   }
 
+  /**
+   *
+   * @param {React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} event
+   */
   const handleInputBlur = (event) => {
     const { name, value } = event.target
 
@@ -112,7 +143,6 @@ const Account = () => {
       setMessageStatus(t("account.password-change-success"))
     },
     onError: (error) => {
-
       if (error.status === 401)
         setMessageStatus({
           message: t("account.password-change-incorrect-password"),
@@ -133,6 +163,9 @@ const Account = () => {
    */
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
+  /**
+   * Handles password change submission
+   */
   const handleChangePassword = () => {
     updatePasswordMutation.mutate({
       currentPassword: formData.currentPassword,
@@ -348,6 +381,7 @@ const Account = () => {
         )}
       </FormControl>
 
+      {/** CHANGE PASSWORD BUTTON */}
       <Button
         className="account__buttons"
         onClick={handleChangePassword}

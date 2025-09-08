@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API_URL } from "./apiURL"
 
+// Base URL for authentication-related endpoints
 const BASE_URL = `${API_URL}/occupancies`
 
 /**
@@ -28,9 +29,14 @@ export const fetchAllOccupancies = async () => {
  */
 export const postOccupancy = async (occupancyData) => {
   try {
+    // Retrieve the token from localStorage or sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token")
 
+    /**
+     * Make the POST request to create a new occupancy.
+     * The token is included in the Authorization header.
+     */
     const { data } = await axios.post(BASE_URL, occupancyData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -54,9 +60,14 @@ export const postOccupancy = async (occupancyData) => {
  */
 export const deleteOccupancy = async (id) => {
   try {
+    // Retrieve the token from localStorage or sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token")
 
+    /**
+     * Make the DELETE request to delete the occupancy by ID.
+     * The token is included in the Authorization header.
+     */
     const response = await axios.delete(`${BASE_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,9 +92,14 @@ export const deleteOccupancy = async (id) => {
  */
 export const updateOccupancy = async ({ id, updatedData }) => {
   try {
+    // Retrieve token from localStorage or sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token")
 
+    /**
+     * Make the PUT request to update the occupancy.
+     * The token is included in the Authorization header.
+     */
     const { data } = await axios.put(`${BASE_URL}/${id}`, updatedData, {
       headers: {
         Authorization: `Bearer ${token}`,

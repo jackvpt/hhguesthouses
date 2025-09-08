@@ -1,10 +1,17 @@
+// 📁 CSS imports
 import "./PhotoCarouselModal.scss"
+
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
 
 // 👉 FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCamera, faMapLocationDot } from "@fortawesome/free-solid-svg-icons"
 
+// 📦 React imports
 import { useState } from "react"
+
+// 🧩 MUI Core imports
 import {
   Dialog,
   DialogTitle,
@@ -16,7 +23,6 @@ import {
   Box,
 } from "@mui/material"
 import { ArrowBack, ArrowForward } from "@mui/icons-material"
-import { useTranslation } from "react-i18next"
 
 /**
  * PhotoCarouselModal

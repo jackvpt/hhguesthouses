@@ -1,9 +1,16 @@
+// 🌐 React Query
 import { useQuery } from "@tanstack/react-query"
+
+// 🧰 API functions
+import { validateToken } from "../api/auth"
+
+// 📦 React imports
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+
+// 🗃️ State & Data fetching
 import { setUser, clearUser } from "../features/userSlice"
 import { setLanguage } from "../features/parametersSlice"
-import { validateToken } from "../api/auth"
 
 /**
  * Custom React hook to validate and manage authentication token.

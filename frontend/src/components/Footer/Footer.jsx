@@ -1,3 +1,4 @@
+// 📁 CSS imports
 import "./Footer.scss"
 
 /**

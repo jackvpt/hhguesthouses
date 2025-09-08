@@ -1,3 +1,7 @@
+// 📁 CSS imports
+import "./Signup.scss"
+
+// 🧩 MUI Core imports
 import {
   Alert,
   Button,
@@ -12,9 +16,11 @@ import {
   TextField,
 } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+
+// 📦 React imports
 import { useState } from "react"
 
-import "./Signup.scss"
+// 🌐 React Query hooks
 import { useSignUp } from "../../hooks/useSignUp"
 
 /**
@@ -33,7 +39,7 @@ const Signup = () => {
     password: "Guesthouses.1",
   }
 
-  // --- STATES ---
+  // States
   const [formData, setFormData] = useState(initialState)
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
@@ -95,7 +101,7 @@ const Signup = () => {
   const validatePassword = (password) =>
     password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password)
 
-  // --- React Query mutation for signup ---
+  // Signup mutation
   const signupMutation = useSignUp({
     onSuccess: () => {
       setToast("User added successfully")
@@ -114,7 +120,7 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // --- Validation ---
+    // Validation
     let valid = true
     if (!validateEmail(formData.email)) {
       setEmailError("Invalid email format")
@@ -130,13 +136,14 @@ const Signup = () => {
 
     if (!valid) return
 
-    // --- Call signup API ---
+    // Call signup API
     signupMutation.mutate(formData)
   }
 
   return (
     <section className="signup">
       <h1>SIGN UP</h1>
+
       {/* FIRST NAME FIELD */}
       <FormControl fullWidth>
         <FormLabel htmlFor="firstName" required className="signup__formlabel">
@@ -233,9 +240,12 @@ const Signup = () => {
         {passwordError && <span className="error-text">{passwordError}</span>}
       </FormControl>
 
+      {/** SIGNUP BUTTON */}
       <Button onClick={handleSubmit} variant="contained" color="primary">
         Sign Up
       </Button>
+
+      {/** TOAST NOTIFICATIONS */}
       <Snackbar
         open={toastOpen}
         autoHideDuration={6000}

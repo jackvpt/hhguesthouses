@@ -1,4 +1,7 @@
+// 🌐 React Query
 import { useMutation } from "@tanstack/react-query"
+
+// 🧰 API functions
 import { updatePassword } from "../api/auth"
 
 /**

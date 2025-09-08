@@ -1,7 +1,11 @@
+// 📦 React imports
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { persistStore, persistReducer } from "redux-persist"
+
+
 import storage from "redux-persist/lib/storage" // defaults to localStorage
 
+// 🗃️ State & Data fetching
 import parametersSlice from "../features/parametersSlice"
 import userSlice from "../features/userSlice"
 

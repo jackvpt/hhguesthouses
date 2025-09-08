@@ -1,6 +1,10 @@
 // 📁 CSS imports
 import "./RoomEdit.scss"
 
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+import { enGB } from "date-fns/locale"
+
 // 📦 React imports
 import { useEffect, useState } from "react"
 
@@ -34,8 +38,6 @@ import { useDispatch, useSelector } from "react-redux"
 // 🌐 React Query hooks
 import { useFetchUsers } from "../../hooks/useFetchUsers.js"
 import { useFetchOccupancies } from "../../hooks/useFetchOccupancies.js"
-import { enGB } from "date-fns/locale"
-import { useTranslation } from "react-i18next"
 import { useAddOccupancy } from "../../hooks/useAddOccupancy.js"
 import { useUpdateOccupancy } from "../../hooks/useUpdateOccupancy.js"
 import { useDeleteOccupancy } from "../../hooks/useDeleteOccupancy.js"
@@ -55,8 +57,9 @@ import { useDeleteOccupancy } from "../../hooks/useDeleteOccupancy.js"
  * @returns {JSX.Element} The rendered RoomEdit form
  */
 const RoomEdit = ({ guestHouse }) => {
-  const dispatch = useDispatch()
+  // Translation module
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const user = useSelector((state) => state.user)
   const role = useSelector((state) => state.user.role)
@@ -131,7 +134,7 @@ const RoomEdit = ({ guestHouse }) => {
     (state) => state.parameters.selectedOccupancy
   )
 
-  // Local state
+  // States
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
   const [codeName, setCodeName] = useState(user.codeName)
@@ -174,10 +177,12 @@ const RoomEdit = ({ guestHouse }) => {
     const reqArrivalDate = normalizeDate(arrivalDate)
     const reqDepartureDate = normalizeDate(departureDate)
 
+    // Filter occupancies for the same guest house and room
     const sameRoomOccupancies = occupancies.filter(
       (occ) => occ.house === guestHouse.name && occ.room === room
     )
 
+    // Check for date overlaps, ignoring the current user's occupancy if modifying
     const overlap = sameRoomOccupancies.some((occ) => {
       if (occ.occupantCode === codeName) {
         return false
@@ -432,6 +437,7 @@ const RoomEdit = ({ guestHouse }) => {
               aria-label="arrival date"
               size="small"
             >
+              {/** TODAY BUTTON */}
               <ToggleButton
                 value="today"
                 aria-label="today arrival"
@@ -439,6 +445,8 @@ const RoomEdit = ({ guestHouse }) => {
               >
                 {t("dates.today")}
               </ToggleButton>
+
+              {/** TOMORROW BUTTON */}
               <ToggleButton
                 value="tomorrow"
                 aria-label="tomorrow arrival"
@@ -540,6 +548,7 @@ const RoomEdit = ({ guestHouse }) => {
 
       {/* Action buttons */}
       <div className="room-edit__buttons">
+        {/** CANCEL BUTTON */}
         <Button
           className="btn_cancel"
           sx={{ m: 1, minWidth: 120 }}
@@ -548,6 +557,8 @@ const RoomEdit = ({ guestHouse }) => {
         >
           {t("actions.cancel")}
         </Button>
+
+        {/** MODIFY BUTTON (edit mode only) */}
         {houseEditMode === "modify" && (
           <Button
             className="btn_modify"
@@ -558,6 +569,8 @@ const RoomEdit = ({ guestHouse }) => {
             {t("actions.modify")}
           </Button>
         )}
+
+        {/** DELETE BUTTON (edit mode only) */}
         {houseEditMode === "modify" && (
           <Button
             className="btn_delete"
@@ -568,6 +581,8 @@ const RoomEdit = ({ guestHouse }) => {
             {t("actions.delete")}
           </Button>
         )}
+
+        {/** ADD BUTTON */}
         {houseEditMode === "add" && (
           <Button
             className="btn_add"

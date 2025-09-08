@@ -1,7 +1,10 @@
-// Import the SCSS file for this page's styles
+// 📁 CSS imports
 import "./Login.scss"
 
-// Import Material UI components for form, buttons, alerts, etc.
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+
+// 🧩 MUI Core imports
 import {
   Alert,
   Button,
@@ -16,30 +19,23 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material"
-
-// Import visibility icons for password field
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 
-// React Router hook to navigate programmatically
+// 📦 React imports
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-// React hooks
-import { useState } from "react"
-
-// React Query hook for API mutations
+// 🌐 React Query
 import { useMutation } from "@tanstack/react-query"
 
-// Login API function
+// 🧰 API functions
 import { login } from "../../api/auth"
 
-// Redux hook to dispatch actions
-import { useDispatch } from "react-redux"
-
-// i18n hook for translations
-import { useTranslation } from "react-i18next"
-
-// Redux action to set the preferred language
+// 🗃️ State & Data fetching
 import { setLanguage } from "../../features/parametersSlice"
+
+// 👉 Internal components
 import ContactFormModal from "../../components/ContactFormModal/ContactFormModal"
 
 /**
@@ -66,6 +62,7 @@ const Login = () => {
     password: "",
   })
 
+  // States
   const [emailError, setEmailError] = useState("") // Email validation error
   const [showPassword, setShowPassword] = useState(false) // Toggle password visibility
   const [toast, setToast] = useState({ message: "", severity: "success" }) // Toast message state
@@ -293,6 +290,7 @@ const Login = () => {
         }}
       />
 
+      {/** NO ACCOUNT LINK */}
       <div className="login__noaccount">
         <p>{t("login.no-account")}</p>
         <button

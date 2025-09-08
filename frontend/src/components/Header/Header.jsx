@@ -1,4 +1,8 @@
+// 📁 CSS imports
 import "./Header.scss"
+
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
 
 // 👉 FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,11 +12,8 @@ import { faUser } from "@fortawesome/free-solid-svg-icons"
 import BurgerMenu from "../BurgerMenu/BurgerMenu"
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 
-// 👉 Redux hooks
+// 🗃️ State & Data fetching
 import { useSelector } from "react-redux"
-
-// 👉 i18n
-import { useTranslation } from "react-i18next"
 
 /**
  * Header component for the application.
@@ -26,7 +27,7 @@ const Header = () => {
   // Get user information from Redux store
   const user = useSelector((state) => state.user)
 
-  // Translation function from react-i18next
+  // Translation module
   const { t } = useTranslation()
 
   return (

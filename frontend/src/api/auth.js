@@ -1,6 +1,7 @@
-import axios from "axios"
 import { API_URL } from "./apiURL"
+import axios from "axios"
 
+// Base URL for authentication-related endpoints
 const BASE_URL = `${API_URL}/auth`
 
 /**
@@ -38,6 +39,9 @@ export const signup = async (userData) => {
  */
 export const login = async (userData) => {
   try {
+    /**
+     * Make the POST request to the login endpoint with user credentials.
+     */
     const response = await axios.post(`${BASE_URL}/login`, userData)
     return response.data
   } catch (error) {
@@ -57,8 +61,12 @@ export const login = async (userData) => {
  * @param {Function} [options.onError] - Called when validation fails.
  * @returns {Promise<Object>} The response data confirming token validity.
  */
-export const validateToken = async (token, {onSuccess,onError}) => {
+export const validateToken = async (token, { onSuccess, onError }) => {
   try {
+    /**
+     * Make the GET request to validate the token.
+     * The token is included in the Authorization header.
+     */
     const response = await axios.get(`${BASE_URL}/validate`, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -84,8 +92,14 @@ export const validateToken = async (token, {onSuccess,onError}) => {
  */
 export const updatePassword = async ({ currentPassword, newPassword }) => {
   try {
+    // Retrieve token from localStorage or sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token")
+
+    /**
+     * Make the PUT request to update the password.
+     * The token is included in the Authorization header.
+     */
     const response = await axios.put(
       `${BASE_URL}/update-password`,
       { currentPassword, newPassword },

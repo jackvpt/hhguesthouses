@@ -1,4 +1,7 @@
-// 👉 MUI Core
+// 📁 CSS imports
+import "./GuestHouseCard.scss"
+
+// 🧩 MUI Core imports
 import IconButton from "@mui/material/IconButton"
 import { Collapse } from "@mui/material"
 
@@ -9,15 +12,14 @@ import {
   faSquareCaretUp,
 } from "@fortawesome/free-solid-svg-icons"
 
-// 👉 Redux hooks
+// 🗃️ State & Data fetching
 import { useDispatch, useSelector } from "react-redux"
 
 // 👉 Internal components
 import RoomEdit from "../RoomEdit/RoomEdit"
 import Calendar from "../Calendar/Calendar"
 
-// 👉 Styles
-import "./GuestHouseCard.scss"
+
 
 /**
  * GuestHouseCard component.

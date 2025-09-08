@@ -1,4 +1,4 @@
-// userSlice.js
+
 import { createSlice } from "@reduxjs/toolkit"
 
 /**
@@ -66,5 +66,4 @@ const userSlice = createSlice({
 // Export actions for dispatch
 export const { setUser, clearUser, setPreferredLanguage } = userSlice.actions
 
-// Export reducer for store configuration
 export default userSlice.reducer

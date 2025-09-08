@@ -1,13 +1,13 @@
-// 👉 Material UI Tooltip component
-import { Tooltip } from "@mui/material"
-
-// 👉 Component-specific styles
+// 📁 CSS imports
 import "./OccupancyBadge.scss"
 
-// 👉 Redux hooks for state management
+// 🧩 MUI Core imports
+import { Tooltip } from "@mui/material"
+
+// 🗃️ State & Data fetching
 import { useDispatch, useSelector } from "react-redux"
 
-// 👉 Custom hook to fetch users data
+// 🌐 React Query hooks
 import { useFetchUsers } from "../../hooks/useFetchUsers"
 import { equalDates } from "../../utils/dateTools"
 
@@ -48,7 +48,7 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
   const isOwnOccupancy = (occupancyCodeName) => {
     return user.codeName === occupancyCodeName
   }
-  
+
   /**
    * Handle click on the badge.
    * Only allows edit mode if the user has permissions.
@@ -75,6 +75,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     return null
   }
 
+  /**
+   * Renders the occupancy badge(s) based on the provided occupancies.
+   * @param {Array} occupancies - Array of occupancy objects
+   * @returns {JSX.Element} Rendered badge(s)
+   */
   const Badge = (occupancies) => {
     if (occupancies.length === 0) {
       return BadgeStandard(null, null)
@@ -98,6 +103,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     }
   }
 
+  /**
+   * Renders the standard occupancy badge.
+   * @param {Object} occupancy - Occupancy object
+   * @returns {JSX.Element} Rendered badge
+   */
   const BadgeStandard = (occupancy) => {
     if (!occupancy) {
       return (
@@ -133,6 +143,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     )
   }
 
+  /**
+   * Renders the first day occupancy badge.
+   * @param {Object} occupancy - Occupancy object
+   * @returns {JSX.Element} Rendered badge
+   */
   const BadgeFirstDay = (occupancy) => {
     const codeName = occupancy?.occupantCode || ""
     return (
@@ -163,6 +178,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     )
   }
 
+  /**
+   * Renders the last day occupancy badge.
+   * @param {Object} occupancy - Occupancy object
+   * @returns {JSX.Element} Rendered badge
+   */
   const BadgeLastDay = (occupancy) => {
     const codeName = occupancy?.occupantCode || ""
     return (
@@ -190,6 +210,11 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
     )
   }
 
+  /**
+   * Renders the mixed occupancy badge.
+   * @param {Array} occupancies - Array of occupancy objects
+   * @returns {JSX.Element} Rendered badge
+   */
   const BadgeMix = (occupancies) => {
     const firstOccupancy = occupancies[0]
     const firstCodeName = firstOccupancy?.occupantCode || ""

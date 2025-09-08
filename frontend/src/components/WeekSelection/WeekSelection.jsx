@@ -1,7 +1,10 @@
-// WeekSelection.jsx
+// 📁 CSS imports
 import "./WeekSelection.scss"
 
-// 👉 FontAwesome icons
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+
+// 👉 FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faChevronRight,
@@ -9,18 +12,15 @@ import {
   faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons"
 
-// 👉 Redux
+// 📦 React imports
 import { useDispatch, useSelector } from "react-redux"
 
-// 👉 Utilities
+// 🧰 Local utilities
 import { formatDateToDDMM } from "../../utils/dateTools"
-import { capitalize} from "../../utils/stringTools"
+import { capitalize } from "../../utils/stringTools"
 
-// 👉 Material UI
+// 🧩 MUI Core imports
 import { IconButton } from "@mui/material"
-
-// 👉 Internationalization
-import { useTranslation } from "react-i18next"
 
 /**
  * WeekSelection component
@@ -37,8 +37,9 @@ import { useTranslation } from "react-i18next"
  * return <WeekSelection />
  */
 const WeekSelection = () => {
-  const { t } = useTranslation() // i18n translation hook
-  const dispatch = useDispatch() // Redux dispatch function
+  // Translation module
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   // Get current week number and range from Redux store
   const weekNumber = useSelector((state) => state.parameters.weekNumber)
@@ -66,7 +67,8 @@ const WeekSelection = () => {
             {capitalize(t("dates.week"))} {weekNumber}
           </p>
           <p className="week-selection__date-range">
-            {formatDateToDDMM(weekRange.monday)} - {formatDateToDDMM(weekRange.sunday)}
+            {formatDateToDDMM(weekRange.monday)} -{" "}
+            {formatDateToDDMM(weekRange.sunday)}
           </p>
         </div>
 

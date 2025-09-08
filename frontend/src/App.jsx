@@ -1,16 +1,26 @@
+// 🌍 Library imports
+import i18n from "./i18n"
+
+// 👉 Internal components
 import Router from "./router/Router"
 import Loader from "./components/Loader/Loader"
 import Error from "./components/Error/Error"
+
+// 📦 React imports
 import { useDispatch, useSelector } from "react-redux"
-import { clearUser } from "./features/userSlice"
-import { useAuthToken } from "./hooks/useAuthToken"
 import { useEffect } from "react"
-import i18n from "./i18n"
+
+// 🗃️ State & Data fetching
+import { clearUser } from "./features/userSlice"
+import { setLanguage } from "./features/parametersSlice"
+
+// 🌐 React Query hooks
+import { useAuthToken } from "./hooks/useAuthToken"
 import { useFetchGuestHouses } from "./hooks/useFetchGuestHouses"
 import { useFetchOccupancies } from "./hooks/useFetchOccupancies"
 import { useFetchUsers } from "./hooks/useFetchUsers"
 import { useFetchLogs } from "./hooks/useFetchLogs"
-import { setLanguage } from "./features/parametersSlice"
+
 
 /**
  * Main application component.
@@ -38,7 +48,7 @@ function App() {
 
   const language = useSelector((state) => state.parameters.language)
 
-  // Met à jour la langue Redux quand userLanguage change
+  // Update Redux language when user language changes
   useEffect(() => {
     if (userLanguage) {
       dispatch(setLanguage(userLanguage))
@@ -67,6 +77,7 @@ function App() {
   const { isLoading: isLoadingUsers, error: errorUsers } = useFetchUsers()
   const { isLoading: isLoadingLogs, error: errorLogs } = useFetchLogs()
 
+  // Show loader while fetching data
   if (
     isAuthLoading ||
     isLoadingGuestHouses ||
@@ -77,6 +88,7 @@ function App() {
     return <Loader />
   }
 
+  // Show error if any data fetching failed
   if (errorGuestHouses || errorOccupancies || errorUsers || errorLogs) {
     return <Error />
   }

@@ -1,6 +1,11 @@
-import { Button } from "@mui/material"
+// 📁 CSS imports
 import "./Error.scss"
+
+// 🌍 Library imports
 import { useTranslation } from "react-i18next"
+
+// 🧩 MUI Core imports
+import { Button } from "@mui/material"
 
 /**
  * Error component that displays an error message and a reload button.
@@ -14,7 +19,9 @@ import { useTranslation } from "react-i18next"
  * @returns {JSX.Element} Rendered Error component.
  */
 const Error = ({ errorMessage }) => {
-  const { t } = useTranslation() // Hook for i18n translations
+  // Translation module
+  const { t } = useTranslation()
+
   const message =
     errorMessage || t("messages.main-loading-error", { returnObjects: true })
 
@@ -34,7 +41,6 @@ const Error = ({ errorMessage }) => {
           ) : (
             <p>{message}</p>
           )}
-          {/* Render single message string */}
         </div>
 
         {/* Reload button */}

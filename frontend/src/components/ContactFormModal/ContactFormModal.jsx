@@ -1,4 +1,14 @@
+// 📁 CSS imports
 import "./ContactFormModal.scss"
+
+// 🌍 Library imports
+import { useTranslation } from "react-i18next"
+import emailjs from "@emailjs/browser"
+
+// 📦 React imports
+import { useState } from "react"
+
+// 🧩 MUI Core imports
 import {
   Dialog,
   DialogTitle,
@@ -13,11 +23,16 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material"
-import { useTranslation } from "react-i18next"
-import { useState } from "react"
-import emailjs from "@emailjs/browser"
 
+/**
+ * Contact form modal component
+ * @param {Object} param - Component props
+ * @param {boolean} param.open - Modal open state
+ * @param {function} param.onClose - Function to call on modal close
+ * @returns {JSX.Element|null} Rendered modal or null
+ */
 const ContactFormModal = ({ open, onClose }) => {
+  // Translation module
   const { t } = useTranslation()
 
   // Form state
@@ -28,14 +43,13 @@ const ContactFormModal = ({ open, onClose }) => {
     message: "",
   })
 
+  // States
   const [isFormValid, setIsFormValid] = useState(false)
-
   const [emailError, setEmailError] = useState("") // Email validation error
   const [messageStatus, setMessageStatus] = useState({
     message: "",
     severity: "success",
   }) // Alert message state
-
   const [isSending, setIsSending] = useState(false)
 
   // Handle form input changes
@@ -55,18 +69,28 @@ const ContactFormModal = ({ open, onClose }) => {
     validForm()
   }
 
+  /**
+   * Handles sending the email via EmailJS
+   * @returns {Promise<void>}
+   */
   const handleSendEmail = async () => {
     if (!isFormValid) {
       return
     }
 
+    // Indicate sending state for circular icon
     setIsSending(true)
+    // Show sending message
     setMessageStatus({
       message: t("contact.message-sending"),
       severity: "info",
     })
 
     try {
+      /**
+       * Send email using EmailJS service
+       * @see https://www.emailjs.com/docs/examples/reactjs/
+       */
       const response = await emailjs.send(
         "service_v3gewzd",
         "template_zebo77i",
@@ -81,6 +105,7 @@ const ContactFormModal = ({ open, onClose }) => {
         }
       )
 
+      /* Check if the email was sent successfully */
       if (response.text != "OK") {
         setMessageStatus({
           message: t("contact.message-failed"),
@@ -89,6 +114,7 @@ const ContactFormModal = ({ open, onClose }) => {
         throw new Error("Error while sending email")
       }
 
+      // Show success message
       setMessageStatus({
         message: t("contact.message-sent"),
         severity: "success",
@@ -125,7 +151,11 @@ const ContactFormModal = ({ open, onClose }) => {
     return true
   }
 
+  /**
+   * Validate the entire form
+   */
   const validForm = () => {
+    // Check if all fields are filled and email is valid
     const isValid =
       formData.firstName.trim() !== "" &&
       formData.lastName.trim() !== "" &&
@@ -135,6 +165,7 @@ const ContactFormModal = ({ open, onClose }) => {
     setIsFormValid(isValid)
   }
 
+  // Handle modal close
   const handleClose = () => {
     setMessageStatus({ message: "", severity: "success" })
     onClose()
@@ -196,6 +227,7 @@ const ContactFormModal = ({ open, onClose }) => {
                 required
               />
             </FormControl>
+
             {/* EMAIL FIELD */}
             <FormControl fullWidth>
               <FormLabel htmlFor="email" required className="signup__formlabel">
@@ -217,6 +249,7 @@ const ContactFormModal = ({ open, onClose }) => {
                 helperText={emailError}
               />
             </FormControl>
+
             {/* MESSAGE FIELD */}
             <FormControl fullWidth>
               <FormLabel

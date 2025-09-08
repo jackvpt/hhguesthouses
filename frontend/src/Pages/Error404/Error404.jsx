@@ -1,14 +1,14 @@
-// Import the Button component from Material UI for styled buttons
-import { Button } from "@mui/material"
-
-// Import the SCSS file for this page's specific styles
+// 📁 CSS imports
 import "./Error404.scss"
 
-// React Router hook to programmatically navigate within the app
-import { useNavigate } from "react-router-dom"
-
-// i18n hook to handle translations for different languages
+// 🌍 Library imports
 import { useTranslation } from "react-i18next"
+
+// 🧩 MUI Core imports
+import { Button } from "@mui/material"
+
+// 📦 React imports
+import { useNavigate } from "react-router-dom"
 
 /**
  * Error404 component to display a 404 error page
@@ -19,8 +19,10 @@ import { useTranslation } from "react-i18next"
  * @returns {JSX.Element} The 404 error page
  */
 const Error404 = () => {
-  const navigate = useNavigate() // Hook to redirect the user
-  const { t } = useTranslation() // Hook for translations
+  // Translation module
+  const { t } = useTranslation()
+  
+  const navigate = useNavigate() 
 
   return (
     <section className="error">

@@ -1,4 +1,7 @@
+// 🌐 React Query
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+// 🧰 API functions
 import { deleteOccupancy } from "../api/occupancies"
 
 /**

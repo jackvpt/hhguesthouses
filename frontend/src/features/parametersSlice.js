@@ -1,18 +1,14 @@
-// parametersSlice.js
+// 🗃️ State & Data fetching
 import { createSlice } from "@reduxjs/toolkit"
 
-// 👉 Utilities
+// 🧰 Local utilities
 import { getWeekNumber, getWeekRangeFromDate } from "../utils/dateTools"
 
-/**
- * Initial reference date for the week calculations
- */
+// Initial reference date for the week calculations
 const referenceDate = new Date()
 const referenceDateISO = referenceDate.toISOString()
 
-/**
- * Initial state of the parameters slice
- */
+// Initial state of the parameters slice
 const initialState = {
   // Week management
   referenceDate: referenceDateISO,
@@ -120,5 +116,4 @@ export const {
   setLanguage,
 } = parametersSlice.actions
 
-// Export reducer for store configuration
 export default parametersSlice.reducer
