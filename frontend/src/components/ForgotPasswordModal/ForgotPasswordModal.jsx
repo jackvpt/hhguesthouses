@@ -1,9 +1,8 @@
 // 📁 CSS imports
-import "./ContactFormModal.scss"
+import "./ForgotPasswordModal.scss"
 
 // 🌍 Library imports
 import { useTranslation } from "react-i18next"
-import emailjs from "@emailjs/browser"
 
 // 📦 React imports
 import { useState } from "react"
@@ -22,6 +21,7 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material"
+import { useRequestPasswordReset } from "../../hooks/useRequestPasswordReset"
 
 /**
  * Contact form modal component
@@ -30,16 +30,13 @@ import {
  * @param {function} param.onClose - Function to call on modal close
  * @returns {JSX.Element|null} Rendered modal or null
  */
-const ContactFormModal = ({ open, onClose }) => {
+const ForgotPasswordModal = ({ open, onClose }) => {
   // Translation module
   const { t } = useTranslation()
 
   // Form state
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
-    message: "",
   })
 
   // States
@@ -69,6 +66,31 @@ const ContactFormModal = ({ open, onClose }) => {
   }
 
   /**
+   * React Query: Request password reset mutation
+   */
+  const requestPasswordResetMutation = useRequestPasswordReset({
+    onSuccess: () => {
+      setMessageStatus({
+        message: t("contact.message-sent"),
+        severity: "success",
+      })
+      setFormData({ email: "" })
+      setIsFormValid(false)
+      console.log("Password reset request successful")
+      setIsSending(false)
+    },
+    onError: (error) => {
+      console.error(error)
+      setMessageStatus({
+        message: t("forgot-password.message-failed"),
+        severity: "error",
+      })
+      console.error("Error adding occupancy:", error)
+      setIsSending(false)
+    },
+  })
+
+  /**
    * Handles sending the email via EmailJS
    * @returns {Promise<void>}
    */
@@ -79,56 +101,14 @@ const ContactFormModal = ({ open, onClose }) => {
 
     // Indicate sending state for circular icon
     setIsSending(true)
+
     // Show sending message
     setMessageStatus({
-      message: t("contact.message-sending"),
+      message: t("forgot-password.message-sending"),
       severity: "info",
     })
 
-    try {
-      /**
-       * Send email using EmailJS service
-       * @see https://www.emailjs.com/docs/examples/reactjs/
-       */
-      const response = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          message: formData.message,
-        },
-        {
-          publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-        }
-      )
-
-      /* Check if the email was sent successfully */
-      if (response.text != "OK") {
-        setMessageStatus({
-          message: t("contact.message-failed"),
-          severity: "error",
-        })
-        throw new Error("Error while sending email")
-      }
-
-      // Show success message
-      setMessageStatus({
-        message: t("contact.message-sent"),
-        severity: "success",
-      })
-      setFormData({ firstName: "", lastName: "", email: "", message: "" })
-      setIsFormValid(false)
-    } catch (error) {
-      console.error(error)
-      setMessageStatus({
-        message: t("contact.message-failed"),
-        severity: "error",
-      })
-    } finally {
-      setIsSending(false)
-    }
+    requestPasswordResetMutation.mutate({ email: formData.email })
   }
 
   /**
@@ -155,17 +135,13 @@ const ContactFormModal = ({ open, onClose }) => {
    */
   const validForm = () => {
     // Check if all fields are filled and email is valid
-    const isValid =
-      formData.firstName.trim() !== "" &&
-      formData.lastName.trim() !== "" &&
-      formData.message.trim() !== "" &&
-      isEmailValid(formData.email)
+    const isValid = isEmailValid(formData.email)
 
     setIsFormValid(isValid)
   }
 
   // Handle modal close
-  const handleClose = () => {
+  const handleCancel = () => {
     setMessageStatus({ message: "", severity: "success" })
     onClose()
   }
@@ -173,7 +149,7 @@ const ContactFormModal = ({ open, onClose }) => {
   if (!open) return null
 
   return (
-    <section className="contact">
+    <section className="forgotPassword">
       <Dialog
         open={open}
         onClose={onClose}
@@ -186,47 +162,11 @@ const ContactFormModal = ({ open, onClose }) => {
         }}
       >
         {/* Modal title */}
-        <DialogTitle>{t("contact.title")}</DialogTitle>
+        <DialogTitle>{t("forgot-password.title")}</DialogTitle>
         <DialogContent>
           {/* FIRST NAME FIELD */}
           <Stack spacing={3}>
-            <FormControl fullWidth>
-              <FormLabel
-                htmlFor="firstName"
-                required
-                className="contact__formlabel"
-              >
-                First name
-              </FormLabel>
-              <TextField
-                id="firstName"
-                name="firstName"
-                sx={{ marginLeft: "10px" }}
-                value={formData.firstName}
-                onChange={handleInputChange}
-                required
-              />
-            </FormControl>
-
-            {/* LAST NAME FIELD */}
-            <FormControl fullWidth>
-              <FormLabel
-                htmlFor="lastName"
-                required
-                className="contact__formlabel"
-              >
-                Last name
-              </FormLabel>
-              <TextField
-                id="lastName"
-                name="lastName"
-                sx={{ marginLeft: "10px" }}
-                value={formData.lastName}
-                onChange={handleInputChange}
-                required
-              />
-            </FormControl>
-
+            <p>{t("forgot-password.instructions")}</p>
             {/* EMAIL FIELD */}
             <FormControl fullWidth>
               <FormLabel htmlFor="email" required className="signup__formlabel">
@@ -234,7 +174,7 @@ const ContactFormModal = ({ open, onClose }) => {
               </FormLabel>
               <TextField
                 sx={{ marginLeft: "10px" }}
-                className="contact__formlabel"
+                className="forgotPassword__formlabel"
                 id="email"
                 name="email"
                 type="email"
@@ -248,49 +188,25 @@ const ContactFormModal = ({ open, onClose }) => {
                 helperText={emailError}
               />
             </FormControl>
-
-            {/* MESSAGE FIELD */}
-            <FormControl fullWidth>
-              <FormLabel
-                htmlFor="message"
-                required
-                className="signup__formlabel"
-              >
-                {t("contact.message")}
-              </FormLabel>
-              <TextField
-                sx={{ marginLeft: "10px" }}
-                className="contact__formlabel"
-                id="message"
-                name="message"
-                type="text"
-                autoComplete="off"
-                variant="outlined"
-                value={formData.message}
-                onChange={handleInputChange}
-                onBlur={handleInputBlur}
-                required
-                multiline
-                minRows={4}
-                maxRows={8}
-              />
-            </FormControl>
           </Stack>
         </DialogContent>
 
         {/* Buttons */}
-        <div className="contact__buttons">
+        <div className="forgotPassword__buttons">
           <DialogActions>
+            {/** Cancel button */}
             <Button
-              className="btn_close"
+              className="btn_cancel"
               sx={{ m: 1, minWidth: 120 }}
               variant="contained"
-              onClick={handleClose}
+              onClick={handleCancel}
             >
-              {t("actions.close")}
+              {t("actions.cancel")}
             </Button>
+
+            {/** Reset button */}
             <Button
-              className="btn_send"
+              className="btn_resetPassword"
               sx={{ m: 1, minWidth: 120 }}
               variant="contained"
               onClick={handleSendEmail}
@@ -299,13 +215,13 @@ const ContactFormModal = ({ open, onClose }) => {
               {isSending ? (
                 <CircularProgress size={24} sx={{ color: "white" }} />
               ) : (
-                t("actions.send")
+                t("actions.reset-password")
               )}
             </Button>
           </DialogActions>
         </div>
 
-        <div className="contact__status">
+        <div className="forgotPassword__status">
           {/* Message status */}
           <Alert
             severity={messageStatus.severity}
@@ -327,4 +243,4 @@ const ContactFormModal = ({ open, onClose }) => {
   )
 }
 
-export default ContactFormModal
+export default ForgotPasswordModal

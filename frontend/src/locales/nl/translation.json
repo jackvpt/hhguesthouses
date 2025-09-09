@@ -15,7 +15,8 @@
     "close": "Sluiten",
     "reload-page": "Pagina herladen",
     "submit": "Verzenden",
-    "send": "Verzenden"
+    "send": "Verzenden",
+    "reset-password": "Wachtwoord resetten"
   },
   "messages": {
     "something-went-wrong": "Er is iets misgegaan!",
@@ -88,6 +89,7 @@
   "login": {
     "password": "Wachtwoord",
     "login": "Inloggen",
+    "forgot-password": "Wachtwoord vergeten?",
     "remember-me": "Onthoud mij",
     "no-account": "Heeft u geen account?",
     "contact-admin": "Neem contact op met de beheerder",
@@ -115,5 +117,12 @@
     "message-sending": "Bericht verzenden...",
     "message-sent": "Bericht succesvol verzonden",
     "message-failed": "Verzenden van bericht mislukt"
+  },
+  "forgot-password": {
+    "title": "Wachtwoord vergeten",
+    "instructions": "Voer uw e-mailadres hieronder in en we sturen u instructies om uw wachtwoord opnieuw in te stellen.",
+    "message-sending": "Instructies verzenden...",
+    "message-sent": "Instructies succesvol verzonden",
+    "message-failed": "Verzenden van instructies mislukt. Probeer het opnieuw."
   }
 }

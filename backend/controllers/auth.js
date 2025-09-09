@@ -186,7 +186,7 @@ exports.validate = async (req, res) => {
       userId: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      email:user.email,
+      email: user.email,
       codeName: user.codeName,
       settings: user.settings,
       role: user.role,
@@ -256,5 +256,114 @@ exports.updatePassword = async (req, res) => {
   } catch (error) {
     console.error("Password update failed:", error.message)
     res.status(500).json({ error: error.message || "Error updating password" })
+  }
+}
+
+/** REQUEST forgotten password reset (with Brevo) */
+exports.requestPasswordReset = async (req, res) => {
+  const { email } = req.body
+  console.log("Password reset request for email :>> ", email)
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email })
+    if (!user) {
+      console.log("User not found for this email")
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    // Retrieve preferred language or default to 'en'
+    const lang = user.settings?.preferredLanguage || "en"
+
+    // Create a JWT token valid for 1 hour
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
+      expiresIn: "1h",
+    })
+    const expiryDate = new Date()
+    expiryDate.setHours(expiryDate.getHours() + 1)
+
+    console.log(
+      `Password reset token (valid until ${expiryDate.toISOString()}): `,
+      token
+    )
+
+    // Generate the full link for the frontend
+    const resetLink = new URL(
+      `/auth/reset-password/${token}`,
+      process.env.FRONTEND_URL
+    ).toString()
+
+    // Initialize Brevo SDK
+    const SibApiV3Sdk = require("sib-api-v3-sdk")
+    const defaultClient = SibApiV3Sdk.ApiClient.instance
+    const apiKey = defaultClient.authentications["api-key"]
+    apiKey.apiKey = process.env.BREVO_API_KEY
+
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
+
+    // Prepare email
+    const sendSmtpEmail = {
+      to: [{ email: user.email, name: user.firstName }],
+      templateId: 1, // Use the ID of the email template created in Brevo
+      params: {
+        FIRSTNAME: user.firstName || "",
+        LASTNAME: user.lastName || "",
+        RESETLINK: resetLink,
+        EXPIRYTIME: expiryDate.toLocaleString()
+      },
+    }
+
+    // Send email
+    const response = await apiInstance.sendTransacEmail(sendSmtpEmail)
+    console.log("Email sent! ID:", response.messageId)
+
+    // Log
+    await createLog(user.email, "Password reset requested")
+
+    // API response
+    return res.json({ message: "Reset link sent to email" })
+  } catch (error) {
+    console.error(
+      "Password reset request failed:",
+      error.response?.body || error.message
+    )
+    res.status(500).json({ message: "Server error" })
+  }
+}
+
+/** RESET password using token */
+exports.resetPassword = async (req, res) => {
+  const { token } = req.params
+  const { newPassword } = req.body
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
+    const user = await User.findById(decoded.userId)
+    if (!user) return res.status(404).json({ message: "User not found" })
+
+    // Validate new password
+    if (!isValidPassword(newPassword)) {
+      return res.status(400).json({
+        error:
+          "Password is not valid (8 characters min, 1 uppercase, 1 lowercase, 1 number, 1 special char).",
+      })
+    }
+
+    // Find auth entry
+    const auth = await Auth.findOne({ userId: user._id })
+    if (!auth) return res.status(404).json({ message: "Auth not found" })
+
+    // Hash and update
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    auth.passwordHash = hashedPassword
+    await auth.save()
+
+    await createLog(user.email, "Password reset")
+
+    res.json({ message: "Password successfully reset" })
+  } catch (error) {
+    console.error("Password reset failed:", error.message)
+    res.status(400).json({ message: "Invalid or expired token" })
   }
 }

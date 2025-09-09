@@ -11,4 +11,8 @@ router.post("/login", authCtrl.login)
 router.get("/validate", authCtrl.validate)
 router.put("/update-password", authCtrl.updatePassword)
 
+// Password reset
+router.post("/request-password-reset", authCtrl.requestPasswordReset)
+router.post("/reset-password/:token", authCtrl.resetPassword)
+
 module.exports = router

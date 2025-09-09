@@ -115,3 +115,24 @@ export const updatePassword = async ({ currentPassword, newPassword }) => {
     throw error
   }
 }
+
+/**
+ * Request a password reset link.
+ *
+ * @param {Object} param0 - The request parameters.
+ * @param {string} param0.email - The email address of the user requesting the reset.
+ * @returns {Promise<Object>} The response data from the server.
+ * @throws {Object} Error response from the server or network error.
+ */
+export const requestPasswordReset = async ({ email }) => {
+  try {
+    // Make the POST request to request a password reset link
+    const response = await axios.post(`${BASE_URL}/request-password-reset`, {
+      email,
+    })
+    return response.data
+  } catch (error) {
+    console.error("Error requesting password reset:", error)
+    throw error
+  }
+}

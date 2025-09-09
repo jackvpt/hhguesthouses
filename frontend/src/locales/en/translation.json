@@ -15,7 +15,8 @@
     "close": "Close",
     "reload-page": "Reload page",
     "submit": "Submit",
-    "send": "Send"
+    "send": "Send",
+    "reset-password": "Reset password"
   },
   "messages": {
     "something-went-wrong": "Something went wrong!",
@@ -88,6 +89,7 @@
   "login": {
     "password": "Password",
     "login": "Log in",
+    "forgot-password": "Forgot your password?",
     "remember-me": "Remember me",
     "no-account": "Don't have an account?",
     "contact-admin": "Contact the administrator",
@@ -115,5 +117,12 @@
     "message-sending": "Sending message...",
     "message-sent": "Message sent successfully",
     "message-failed": "Failed to send message"
+  },
+  "forgot-password": {
+    "title": "Forgot Password",
+    "instructions": "Enter your email address below and we'll send you instructions to reset your password.",
+    "message-sending": "Sending instructions...",
+    "message-sent": "Instructions sent successfully",
+    "message-failed": "Failed to send instructions. Please try again."
   }
 }

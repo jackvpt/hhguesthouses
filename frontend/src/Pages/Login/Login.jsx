@@ -37,6 +37,7 @@ import { setLanguage } from "../../features/parametersSlice"
 
 // 👉 Internal components
 import ContactFormModal from "../../components/ContactFormModal/ContactFormModal"
+import ForgotPasswordModal from "../../components/ForgotPasswordModal/ForgotPasswordModal"
 
 /**
  * Login component
@@ -70,6 +71,7 @@ const Login = () => {
   const [loginError, setLoginError] = useState(false) // Login failure indicator
   const [rememberMe, setRememberMe] = useState(false) // Remember me checkbox
   const [contactFormModalOpen, setContactFormModalOpen] = useState(false)
+  const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false)
 
   // Toggle password visibility
   const handleClickShowPassword = () => {
@@ -253,6 +255,16 @@ const Login = () => {
         />
       </FormControl>
 
+      <div className="login__forgotten-password">
+        <button
+          type="button"
+          className="login__link"
+          onClick={() => setForgotPasswordModalOpen(true)}
+        >
+          {t("login.forgot-password")}
+        </button>
+      </div>
+
       {/* LOGIN BUTTON */}
       <Button
         variant="contained"
@@ -325,9 +337,16 @@ const Login = () => {
         </Alert>
       </Snackbar>
 
+      {/** CONTACT FORM MODAL */}
       <ContactFormModal
         open={contactFormModalOpen}
         onClose={() => setContactFormModalOpen(false)}
+      />
+
+      {/** FORGOT PASSWORD MODAL */}
+      <ForgotPasswordModal
+        open={forgotPasswordModalOpen}
+        onClose={() => setForgotPasswordModalOpen(false)}
       />
     </section>
   )
