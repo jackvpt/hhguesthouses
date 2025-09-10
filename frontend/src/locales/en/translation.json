@@ -124,5 +124,15 @@
     "message-sending": "Sending instructions...",
     "message-sent": "Instructions sent successfully",
     "message-failed": "Failed to send instructions. Please try again."
+  },
+  "reset-password": {
+    "title": "Reset Password",
+    "instructions": "Enter your new password below.",
+    "new-password": "New Password",
+    "confirm-password": "Confirm Password",
+    "password-requirements": "Password must be at least 8 characters long and contain at least one uppercase letter and one number.",
+    "passwords-do-not-match": "Passwords do not match.",
+    "message-success": "Password reset successfully. Redirection to login page",
+    "message-failed": "Failed to reset password. Please try again."
   }
 }

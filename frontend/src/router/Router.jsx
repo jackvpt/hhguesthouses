@@ -14,6 +14,7 @@ import Account from "../Pages/Account/Account"
 // 👉 Internal components
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
+import ResetPassword from "../Pages/ResetPassword/ResetPassword"
 
 /**
  * Application Router Component
@@ -38,6 +39,9 @@ export default function Router() {
 
       <main>
         <Routes>
+          {/* Reset Password Route */}
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
           {/* Routes for unauthenticated users */}
           {!isAuthenticated ? (
             <>

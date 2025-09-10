@@ -76,7 +76,6 @@ const ForgotPasswordModal = ({ open, onClose }) => {
       })
       setFormData({ email: "" })
       setIsFormValid(false)
-      console.log("Password reset request successful")
       setIsSending(false)
     },
     onError: (error) => {
@@ -85,7 +84,6 @@ const ForgotPasswordModal = ({ open, onClose }) => {
         message: t("forgot-password.message-failed"),
         severity: "error",
       })
-      console.error("Error adding occupancy:", error)
       setIsSending(false)
     },
   })

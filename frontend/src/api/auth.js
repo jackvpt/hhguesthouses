@@ -136,3 +136,30 @@ export const requestPasswordReset = async ({ email }) => {
     throw error
   }
 }
+
+/**
+ * Reset the user's password using a token.
+ *
+ * @async
+ * @function resetPassword
+ * @param {Object} params - Parameters for resetting the password.
+ * @param {string} params.token - The reset token from the email link.
+ * @param {string} params.newPassword - The new password to set.
+ * @returns {Promise<Object>} The response data confirming password reset.
+ * @throws {Object} Error response from the server or network error.
+ */
+export const resetPassword = async ({ token, newPassword }) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/reset-password`,
+      { newPassword },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error("Error resetting password:", error)
+    throw error.response?.data || error
+  }
+}

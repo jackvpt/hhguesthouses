@@ -289,7 +289,7 @@ exports.requestPasswordReset = async (req, res) => {
 
     // Generate the full link for the frontend
     const resetLink = new URL(
-      `/auth/reset-password/${token}`,
+      `/reset-password/${token}`,
       process.env.FRONTEND_URL
     ).toString()
 
@@ -309,7 +309,7 @@ exports.requestPasswordReset = async (req, res) => {
         FIRSTNAME: user.firstName || "",
         LASTNAME: user.lastName || "",
         RESETLINK: resetLink,
-        EXPIRYTIME: expiryDate.toLocaleString()
+        EXPIRYTIME: expiryDate.toLocaleString(),
       },
     }
 
@@ -333,17 +333,31 @@ exports.requestPasswordReset = async (req, res) => {
 
 /** RESET password using token */
 exports.resetPassword = async (req, res) => {
-  const { token } = req.params
   const { newPassword } = req.body
 
+  console.log("Password reset")
+
   try {
+    // Extract token from Authorization header
+    const authHeader = req.headers.authorization
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" })
+    }
+    const token = authHeader.split(" ")[1]
+
     // Verify token
     const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
     const user = await User.findById(decoded.userId)
-    if (!user) return res.status(404).json({ message: "User not found" })
+
+    console.log("User email :>> ", user?.email)
+    if (!user) {
+      console.log("User not found for this token")
+      return res.status(404).json({ message: "User not found" })
+    }
 
     // Validate new password
     if (!isValidPassword(newPassword)) {
+      console.log("New password not valid")
       return res.status(400).json({
         error:
           "Password is not valid (8 characters min, 1 uppercase, 1 lowercase, 1 number, 1 special char).",
@@ -352,18 +366,25 @@ exports.resetPassword = async (req, res) => {
 
     // Find auth entry
     const auth = await Auth.findOne({ userId: user._id })
-    if (!auth) return res.status(404).json({ message: "Auth not found" })
+    if (!auth) return res.status(400).json({ message: "Invalid request" })
 
     // Hash and update
     const hashedPassword = await bcrypt.hash(newPassword, 10)
     auth.passwordHash = hashedPassword
     await auth.save()
 
+    console.log("Password successfully reset for user:", user.email)
     await createLog(user.email, "Password reset")
 
     res.json({ message: "Password successfully reset" })
   } catch (error) {
-    console.error("Password reset failed:", error.message)
-    res.status(400).json({ message: "Invalid or expired token" })
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired" })
+    }
+    if (error.name === "JsonWebTokenError") {
+      return res.status(400).json({ message: "Invalid token" })
+    }
+    console.error("Password reset failed:", error)
+    res.status(500).json({ message: "Internal server error" })
   }
 }

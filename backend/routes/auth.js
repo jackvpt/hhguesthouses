@@ -13,6 +13,6 @@ router.put("/update-password", authCtrl.updatePassword)
 
 // Password reset
 router.post("/request-password-reset", authCtrl.requestPasswordReset)
-router.post("/reset-password/:token", authCtrl.resetPassword)
+router.post("/reset-password", authCtrl.resetPassword)
 
 module.exports = router

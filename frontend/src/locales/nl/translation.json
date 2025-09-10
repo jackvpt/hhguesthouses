@@ -124,5 +124,15 @@
     "message-sending": "Instructies verzenden...",
     "message-sent": "Instructies succesvol verzonden",
     "message-failed": "Verzenden van instructies mislukt. Probeer het opnieuw."
+  },
+  "reset-password": {
+    "title": "Wachtwoord opnieuw instellen",
+    "instructions": "Voer uw nieuwe wachtwoord hieronder in.",
+    "new-password": "Nieuw wachtwoord",
+    "confirm-password": "Bevestig wachtwoord",
+    "password-requirements": "Wachtwoord moet minimaal 8 tekens lang zijn en ten minste één hoofdletter en één cijfer bevatten.",
+    "passwords-do-not-match": "Wachtwoorden komen niet overeen.",
+    "message-success": "Wachtwoord succesvol opnieuw ingesteld. Doorverwijzing naar inlogpagina",
+    "message-failed": "Wachtwoord opnieuw instellen mislukt. Probeer het opnieuw."
   }
 }
