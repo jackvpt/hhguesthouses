@@ -55,7 +55,6 @@ const ForgotPasswordModal = ({ open, onClose }) => {
       ...prevData,
       [name]: value,
     }))
-    validForm()
   }
 
   // Validate input on blur

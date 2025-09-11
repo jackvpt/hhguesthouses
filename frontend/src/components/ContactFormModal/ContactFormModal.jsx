@@ -254,7 +254,7 @@ const ContactFormModal = ({ open, onClose }) => {
               <FormLabel
                 htmlFor="message"
                 required
-                className="signup__formlabel"
+                className="contact__formlabel"
               >
                 {t("contact.message")}
               </FormLabel>
@@ -297,7 +297,7 @@ const ContactFormModal = ({ open, onClose }) => {
               disabled={!isFormValid || isSending} // désactivé pendant le send
             >
               {isSending ? (
-                <CircularProgress size={24} sx={{ color: "white" }} />
+                <CircularProgress size={18} sx={{ color: "white" }} />
               ) : (
                 t("actions.send")
               )}

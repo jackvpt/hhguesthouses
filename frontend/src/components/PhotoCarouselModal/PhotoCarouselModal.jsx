@@ -60,6 +60,7 @@ const PhotoCarouselModal = ({ open, onClose, photos, title }) => {
         "& .MuiDialog-paper": {
           width: "100%",
           maxWidth: "512px",
+          margin:"1rem"
         },
       }}
     >

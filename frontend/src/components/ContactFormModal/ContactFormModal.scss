@@ -31,6 +31,13 @@
     }
   }
 
+  &__formlabel {
+    color: $text-color-1;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
   &__status {
     display: flex;
     flex-direction: column;
