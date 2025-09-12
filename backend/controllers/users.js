@@ -100,22 +100,39 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const userObject = req.body
-    userObject.updatedAt = new Date()
     const user = await getUserFromToken(req.headers.authorization)
+
+    // Get old user data
+    const oldUser = await User.findById(req.params.id)
+
+    // Update
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { ...userObject, _id: req.params.id },
-      { updatedAt: new Date() },
+      { ...userObject, _id: req.params.id, updatedAt: new Date() },
       { new: true }
     )
 
-    await createLog(user.email, "User updated",  updatedUser)
+    // Compare oldUser and updatedUser
+    let changes = {}
+    for (let key in userObject) {
+      if (oldUser[key] !== updatedUser[key]) {
+        changes[key] = {
+          old: oldUser[key],
+          new: updatedUser[key]
+        }
+      }
+    }
+
+    // Log with details of changes
+    await createLog(user.email, "User updated", changes)
 
     res.status(200).json(updatedUser)
     console.log(
-      `User updated: ${updatedUser._id} - ${updatedUser.firstName} - ${updatedUser.lastName}`
+      `User updated: ${updatedUser.firstName} ${updatedUser.lastName} - changes:`,
+      changes
     )
   } catch (error) {
     res.status(401).json({ error })
   }
 }
+

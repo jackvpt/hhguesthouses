@@ -57,9 +57,9 @@ exports.deleteOccupancy = async (req, res) => {
 
   try {
     const occupancy = await Occupancy.findById(req.params.id)
-
+    
     await Occupancy.deleteOne({ _id: req.params.id })
-
+    
     const logString = [
       occupancy.occupantCode,
       occupancy.house,
@@ -67,11 +67,12 @@ exports.deleteOccupancy = async (req, res) => {
       formatDateToDDMM(occupancy.arrivalDate),
       formatDateToDDMM(occupancy.departureDate),
     ]
+    
 
     await createLog(user.email, "Occupancy deleted", logString.join(" | "))
 
     res.status(200).json({ message: "Occupancy deleted successfully!" })
-    console.log(`Occupancy deleted: ${req.params.id}`)
+    console.log(`Occupancy deleted: ${logString.join(" | ")}`)
   } catch (error) {
     res
       .status(500)
