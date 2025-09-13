@@ -93,6 +93,7 @@ const ResetPassword = () => {
     validateForm(formData, newPasswordErrorState, confirmNewPasswordErrorState)
   }
 
+  // Validate the entire form
   const validateForm = (
     formData,
     newPasswordError,
@@ -107,7 +108,7 @@ const ResetPassword = () => {
   }
 
   /**
-   * Validates password complexity (example)
+   * Validates password complexity
    * @param {string} password
    * @returns {boolean}
    */
@@ -141,6 +142,7 @@ const ResetPassword = () => {
     },
   })
 
+  // Handle form submission
   const handleResetPassword = () => {
     setIsResetting(true)
     resetPasswordMutation.mutate({

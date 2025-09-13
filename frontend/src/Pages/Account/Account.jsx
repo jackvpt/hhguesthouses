@@ -82,7 +82,7 @@ const Account = () => {
   }
 
   /**
-   *
+   * Validates the entire form
    * @param {Object} formData
    * @param {boolean} newPasswordError
    * @param {boolean} confirmNewPasswordError
@@ -105,7 +105,7 @@ const Account = () => {
   }
 
   /**
-   *
+   * Handles input blur event for validation
    * @param {React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} event
    */
   const handleInputBlur = (event) => {
