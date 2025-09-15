@@ -9,3 +9,5 @@ const guestHousesCtrl = require("../controllers/guesthouses")
 router.get("/", guestHousesCtrl.getAllGuestHouses)
 
 module.exports = router
+
+

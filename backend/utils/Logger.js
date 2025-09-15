@@ -1,5 +1,12 @@
 const Log = require("../models/Log")
 
+/**
+ * Creates a log entry.
+ * @param {*} email - The email of the user.
+ * @param {*} action - The action performed by the user.
+ * @param {*} remarks - Additional remarks about the action.
+ * @returns {Promise<void>}
+ */
 async function createLog(email, action, remarks) {
   try {
     if (action === "Token validated") {

@@ -16,3 +16,4 @@ router.post("/request-password-reset", authCtrl.requestPasswordReset)
 router.post("/reset-password", authCtrl.resetPassword)
 
 module.exports = router
+
