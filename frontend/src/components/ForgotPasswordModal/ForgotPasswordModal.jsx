@@ -22,6 +22,7 @@ import {
   CircularProgress,
 } from "@mui/material"
 import { useRequestPasswordReset } from "../../hooks/useRequestPasswordReset"
+import { useSelector } from "react-redux"
 
 /**
  * Contact form modal component

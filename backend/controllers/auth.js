@@ -266,14 +266,14 @@ exports.requestPasswordReset = async (req, res) => {
 
   try {
     // Check if user exists
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email: email })
     if (!user) {
       console.log("User not found for this email")
       return res.status(404).json({ message: "User not found" })
     }
 
     // Retrieve preferred language or default to 'en'
-    const lang = user.settings?.preferredLanguage || "en"
+    const language = user.settings?.preferredLanguage || "en"
 
     // Create a JWT token valid for 1 hour
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
@@ -301,8 +301,8 @@ exports.requestPasswordReset = async (req, res) => {
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
 
-    const templateId = (lang)=>{
-      switch (lang) {
+    const templateId = (language) => {
+      switch (language) {
         case "nl":
           return 2 // Dutch template ID
         case "en":
@@ -314,7 +314,7 @@ exports.requestPasswordReset = async (req, res) => {
     // Prepare email
     const sendSmtpEmail = {
       to: [{ email: user.email, name: user.firstName }],
-      templateId: templateId(lang), // Use the ID of the email template created in Brevo
+      templateId: templateId(language), // Use the ID of the email template created in Brevo
       params: {
         FIRSTNAME: user.firstName || "",
         LASTNAME: user.lastName || "",
