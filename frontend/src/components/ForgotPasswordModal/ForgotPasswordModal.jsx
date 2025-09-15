@@ -207,7 +207,7 @@ const ForgotPasswordModal = ({ open, onClose }) => {
               sx={{ m: 1, minWidth: 120 }}
               variant="contained"
               onClick={handleSendEmail}
-              disabled={!isFormValid || isSending} // désactivé pendant le send
+              disabled={!isFormValid || isSending}
             >
               {isSending ? (
                 <CircularProgress size={24} sx={{ color: "white" }} />

@@ -301,10 +301,20 @@ exports.requestPasswordReset = async (req, res) => {
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi()
 
+    const templateId = (lang)=>{
+      switch (lang) {
+        case "nl":
+          return 2 // Dutch template ID
+        case "en":
+        default:
+          return 1 // English template ID
+      }
+    }
+
     // Prepare email
     const sendSmtpEmail = {
       to: [{ email: user.email, name: user.firstName }],
-      templateId: 1, // Use the ID of the email template created in Brevo
+      templateId: templateId(lang), // Use the ID of the email template created in Brevo
       params: {
         FIRSTNAME: user.firstName || "",
         LASTNAME: user.lastName || "",
