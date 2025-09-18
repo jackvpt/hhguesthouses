@@ -2,7 +2,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { persistStore, persistReducer } from "redux-persist"
 
-
 import storage from "redux-persist/lib/storage" // defaults to localStorage
 
 // 🗃️ State & Data fetching
@@ -17,7 +16,7 @@ import userSlice from "../features/userSlice"
  */
 const rootReducer = combineReducers({
   parameters: parametersSlice, // Volatile state, not persisted
-  user: userSlice,             // User state, will be persisted
+  user: userSlice, // User state, will be persisted
 })
 
 /**

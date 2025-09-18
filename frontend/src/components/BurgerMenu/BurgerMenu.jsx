@@ -110,6 +110,7 @@ export default function BurgerMenu() {
   const handleLogOut = () => {
     navigate("/login")
     localStorage.removeItem("token")
+    sessionStorage.removeItem("token")
     dispatch({ type: "user/clearUser" })
     dispatch({ type: "parameters/reset" })
     setOpen(false)

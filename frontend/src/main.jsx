@@ -42,6 +42,15 @@ const queryClient = new QueryClient({
   },
 })
 
+
+
+// Dark theme for the modal
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+})
+
 /**
  * Entry point of the React application.
  *
@@ -53,14 +62,6 @@ const queryClient = new QueryClient({
  * - `BrowserRouter` for client-side routing
  * - `ReactQueryDevtools` for debugging React Query (dev tool, initially closed)
  */
-
-// Dark theme for the modal
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-})
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>

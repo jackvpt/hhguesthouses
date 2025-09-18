@@ -1,185 +1,106 @@
 
+
 # HHGuestHouses - HeliHolland Guest Houses Management
+# 🖥️ BACK END
+
+
+**HH Guest Houses** is a modern React-based application for managing guesthouses in Heli Holland company.
+
+
+
+
+
   
 
-**HHGuestHouses** is a modern React-based application for managing guesthouses in Heli Holland company.
+
+  
+
+
+
+  
 
 ---
-## 🚀 BACK END URL routes
-http://localhost:3000/api-docs
-
-
-
 ## 🛠️ Tech Stack
 
-- **Node.js** – JavaScript runtime
-- **Express** – Web framework for building APIs
-- **MongoDB + Mongoose** – Database and ODM
-- **Helmet** – Security middleware for HTTP headers
-- **express-rate-limit** – Rate limiting middleware
-- **express-validator** – Request validation
-- **jsonwebtoken (JWT)** – Authentication and authorization
-- **bcrypt** – Password hashing
-- **Multer** – File upload handling
-- **Sharp** – Image processing
-- **dotenv** – Environment variables management
-- **nodemon** – Development tool for automatic server restart
-- **@getbrevo/brevo / sib-api-v3-sdk** – Email sending via Brevo API
----
+- ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=fff)**Node.js** – JavaScript runtime  
+- ![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=fff) **Express** – Web framework for building APIs  
+- ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff) + ![Mongoose](https://img.shields.io/badge/Mongoose-880000?logo=mongoose&logoColor=fff) **MongoDB + Mongoose** – Database and ODM  
+- ![Helmet](https://img.shields.io/badge/Helmet-000000?logo=helmet&logoColor=fff) **Helmet** – Security middleware for HTTP headers  
+- ![Rate Limit](https://img.shields.io/badge/express--rate--limit-3178C6?logo=express&logoColor=fff) **express-rate-limit** – Rate limiting middleware  
+- ![Validator](https://img.shields.io/badge/express--validator-FFCA28?logo=checkmarx&logoColor=000) **express-validator** – Request validation  
+- ![JWT](https://img.shields.io/badge/JWT-000000?logo=jsonwebtokens&logoColor=fff) **jsonwebtoken (JWT)** – Authentication and authorization  
+- ![bcrypt](https://img.shields.io/badge/bcrypt-004080?logo=keybase&logoColor=fff) **bcrypt** – Password hashing  
+- ![Multer](https://img.shields.io/badge/Multer-FF6F00?logo=files&logoColor=fff) **Multer** – File upload handling  
+- ![Sharp](https://img.shields.io/badge/Sharp-00BFFF?logo=sharp&logoColor=fff) **Sharp** – Image processing  
+- ![dotenv](https://img.shields.io/badge/dotenv-ECD53F?logo=dotenv&logoColor=000) **dotenv** – Environment variables management  
+- ![nodemon](https://img.shields.io/badge/nodemon-76D04B?logo=nodemon&logoColor=fff) **nodemon** – Development tool for automatic server restart  
+- ![Brevo](https://img.shields.io/badge/Brevo-0A84FF?logo=mailgun&logoColor=fff) **@getbrevo/brevo / sib-api-v3-sdk** – Email sending via Brevo API  
+
+
+
 ## 📦 Installation
+ Install npm
+ 
+ ```bash
+ npm install npm@latest -g
+ ```
 
-  
 
-1. Clone the repository:
+## 🚀 Run locally
 
-  
-
-```bash
-
-git  clone  https://github.com/your-username/hrnet.git
-
-cd  hrnet
-
-```
-
-  
-
-2. Install dependencies:
-
-  
+1. Clone the project
 
 ```bash
-
-npm  install
-
+  git clone https://github.com/jackvpt/hhguesthouses.git
 ```
 
-  
-
-3. Run the development server:
-
-  
+2. Go to the project directory
 
 ```bash
-
-npm  run  dev
-
+  cd hhguesthouses
 ```
 
-  
-
-Then open your browser at: http://localhost:5173
-
-  
-
----
-
-  
-
-## 🧪 Run Tests
-
-  
-
-To run tests from the terminal:
-
-  
+3. Install dependencies
 
 ```bash
-
-npx  vitest
-
+  npm install
 ```
 
-  
-
-To launch the test UI:
-
-  
+4. Start the server
 
 ```bash
-
-npx  vitest  --ui
-
+  nodemon server
 ```
 
-  
+5. Access the server
+  http://localhost:7000
 
----
+## 📡 API reference
+Go to swagger page: http://localhost:3000/api-docs
 
-  
-
-## 📁 Project Structure
-
-  
-
-```
-
-src/
-
-├── assets/ # Static assets (icons, images)
-
-├── components/ # Reusable UI components (Modal, Input, Table...)
-
-├── data/ # Constant data (departments, states)
-
-├── features/ # Redux slices (employeeSlice)
-
-├── models/ # Models
-
-├── pages/ # Main pages (CreateEmployee, EmployeeList)
-
-├── store/ # Redux store
-
-├── styles/ # SCSS styles
-
-├── __tests__/ # Unit and integration tests
-
-├── App.jsx # Main routing logic
-
-└── main.jsx # React entry point
-
-```
-
-  
-
----
-
-  
-
-## 📌 Modal Component
-
-  
-
-The project includes a custom, reusable modal component written in pure React for form submission confirmations, replacing the jQuery modal.
-
-  
-
----
-
-  
-
-## 🛡️ License
-
-  
-
-Licensed under the MIT License.
-
-See the `LICENSE` file for details.
-
-  
-
----
-
-  
-
+## 🗂️ Models schemas
+Go to swagger page: http://localhost:3000/api-docs
 ## 👨‍💻 Author
-
-  
-
 Developed by **jackvpt**
 
 GitHub: https://github.com/jackvpt
 
-  
+## 🛡️ License
+Licensed under the MIT License.
 
----
+See the `LICENSE` file for details.
+
+## 📁 Structure
+```
+📁 root/
+├─ 📁 controllers
+├─ 📁 middleware
+├─ 📁 models
+├─ 📁 routes
+├─ 📁 swagger
+├─ 📁 utils
+├─ 📄 app.js
+├─ 📄 package.json
+├─ 📄 server.js
+├─ 📄 swagger.js
+```
