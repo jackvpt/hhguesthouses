@@ -64,6 +64,7 @@ const RoomEdit = ({ guestHouse }) => {
   const user = useSelector((state) => state.user)
   const role = useSelector((state) => state.user.role)
   const isAdmin = role === "admin" || role === "super-admin"
+  const isSpecialAccess = user.role === "special-guest"
 
   // React Query: Fetch occupancies
   const {
@@ -369,7 +370,7 @@ const RoomEdit = ({ guestHouse }) => {
   return (
     <section className="room-edit">
       {/* Admin view (select user + date picker) */}
-      {isAdmin && (
+      {(isAdmin || isSpecialAccess) && (
         <>
           {/* Occupant code name select */}
           <FormControl
@@ -384,6 +385,7 @@ const RoomEdit = ({ guestHouse }) => {
               onChange={handleNameChange}
               size="small"
               fullWidth
+              disabled={!isAdmin}
             >
               {users.map((user) => (
                 <MenuItem key={user.codeName} value={user.codeName}>
@@ -423,12 +425,13 @@ const RoomEdit = ({ guestHouse }) => {
       )}
 
       {/* Regular user view (arrival date toggle) */}
-      {!isAdmin && (
+      {!isAdmin && !isSpecialAccess && (
         <div className="room-edit__arrival-date">
           <FormControl
             sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
             <FormLabel className="form-label">{t("room-edit.guest")}</FormLabel>
+
             <ToggleButtonGroup
               className="room-edit__arrival-date-toggle-group"
               value={toggleArrivalDate}
