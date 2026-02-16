@@ -216,9 +216,14 @@ const OccupancyBadge = ({ occupancies, guestHouse, date }) => {
    * @returns {JSX.Element} Rendered badge
    */
   const BadgeMix = (occupancies) => {
-    const firstOccupancy = occupancies[0]
+    const sortedOccupancies = [...occupancies].sort(
+      (a, b) => new Date(a.arrivalDate) - new Date(b.arrivalDate),
+    )
+    console.log("sorted",sortedOccupancies)
+
+    const firstOccupancy = sortedOccupancies[0]
     const firstCodeName = firstOccupancy?.occupantCode || ""
-    const secondOccupancy = occupancies[1]
+    const secondOccupancy = sortedOccupancies[1]
     const secondCodeName = secondOccupancy?.occupantCode || ""
 
     return (
