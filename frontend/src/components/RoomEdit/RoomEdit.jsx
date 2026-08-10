@@ -89,9 +89,7 @@ const RoomEdit = ({ guestHouse }) => {
     onSuccess: () => {
       setToastMessage(t("room-edit.occupancy-added"))
       setToastOpen(true)
-      setTimeout(() => {
-        handleCancelClick()
-      }, 2000)
+      handleCancelClick()
     },
     onError: (error) => {
       console.error("Error adding occupancy:", error)
@@ -105,9 +103,7 @@ const RoomEdit = ({ guestHouse }) => {
     onSuccess: () => {
       setToastMessage(t("room-edit.occupancy-deleted"))
       setToastOpen(true)
-      setTimeout(() => {
-        handleCancelClick()
-      }, 2000)
+      handleCancelClick()
     },
     onError: (error) => {
       console.error("Error deleting occupancy:", error)
@@ -121,9 +117,7 @@ const RoomEdit = ({ guestHouse }) => {
     onSuccess: () => {
       setToastMessage(t("room-edit.occupancy-updated"))
       setToastOpen(true)
-      setTimeout(() => {
-        handleCancelClick()
-      }, 2000)
+      handleCancelClick()
     },
     onError: (error) => {
       console.error("Error updating occupancy:", error)
@@ -132,7 +126,7 @@ const RoomEdit = ({ guestHouse }) => {
 
   const houseEditMode = useSelector((state) => state.parameters.houseEditMode)
   const selectedOccupancy = useSelector(
-    (state) => state.parameters.selectedOccupancy
+    (state) => state.parameters.selectedOccupancy,
   )
 
   // States
@@ -140,7 +134,7 @@ const RoomEdit = ({ guestHouse }) => {
   const [toastMessage, setToastMessage] = useState("")
   const [codeName, setCodeName] = useState(user.codeName)
   const [room, setRoom] = useState(
-    selectedOccupancy?.room || guestHouse.rooms[0]?.name || ""
+    selectedOccupancy?.room || guestHouse.rooms[0]?.name || "",
   )
   const [toggleArrivalDate, setToggleArrivalDate] = useState("today")
   const [arrivalDate, setArrivalDate] = useState(new Date())
@@ -160,7 +154,7 @@ const RoomEdit = ({ guestHouse }) => {
     setArrivalDate(date)
 
     setDepartureDate(
-      new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2))
+      new Date(selectedOccupancy?.departureDate || addDays(new Date(), 2)),
     )
   }, [selectedOccupancy, users, guestHouse.rooms, user.codeName])
 
@@ -180,7 +174,7 @@ const RoomEdit = ({ guestHouse }) => {
 
     // Filter occupancies for the same guest house and room
     const sameRoomOccupancies = occupancies.filter(
-      (occ) => occ.house === guestHouse.name && occ.room === room
+      (occ) => occ.house === guestHouse.name && occ.room === room,
     )
 
     // Check for date overlaps, ignoring the current user's occupancy if modifying
@@ -542,9 +536,9 @@ const RoomEdit = ({ guestHouse }) => {
       >
         {isRoomAvailable()
           ? `${t("room-edit.room")} ${room} ${t(
-              "common-words.is-available"
+              "common-words.is-available",
             )} ${t("common-words.from")} ${formatDateToDDMM(arrivalDate)} ${t(
-              "common-words.to"
+              "common-words.to",
             )} ${formatDateToDDMM(departureDate)}.`
           : t("room-edit.room-not-available")}
       </Alert>
