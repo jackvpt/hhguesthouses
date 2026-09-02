@@ -9,7 +9,7 @@ import "./Footer.scss"
  */
 const Footer = () => {
   // Render a simple footer element
-  return <footer>© Pegasoft 2025</footer>
+  return <footer>© Pegasoft 2025 - 2026</footer>
 }
 
 export default Footer
