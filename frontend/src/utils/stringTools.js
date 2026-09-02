@@ -18,6 +18,7 @@ export function convertRole(role) {
     manager: "Manager",
     admin: "Admin",
     "super-admin": "Super Admin",
+    "special-guest": "Special Guest",
   }
 
   // Return the mapped role, or empty string if not found

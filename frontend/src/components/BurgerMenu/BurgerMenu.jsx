@@ -145,7 +145,7 @@ export default function BurgerMenu() {
       />
     )
   }
-
+console.log('user.role :>> ', user.role);
   return (
     <>
       <section className="burger-menu">

@@ -41,7 +41,7 @@ const GuestHouseCard = ({ guestHouse }) => {
   // Get user role from Redux store to check edit permissions
   const role = useSelector((state) => state.user.role)
   const editAllowed =
-    role === "guest" || role === "admin" || role === "super-admin"
+    role === "guest" || role==="special-guest" || role === "admin" || role === "super-admin"
 
   /**
    * Handles toggling the RoomEdit form visibility.

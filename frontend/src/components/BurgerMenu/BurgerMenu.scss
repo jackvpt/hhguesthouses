@@ -18,6 +18,11 @@
       color: $guest-color;
     }
 
+    .special-guest {
+      background-color: $super-guest-background-color;
+      color: $super-guest-color;
+    }
+
     .manager {
       background-color: $manager-background-color;
     }
