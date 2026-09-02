@@ -179,9 +179,9 @@ const RoomEdit = ({ guestHouse }) => {
 
     // Check for date overlaps, ignoring the current user's occupancy if modifying
     const overlap = sameRoomOccupancies.some((occ) => {
-      if (occ.occupantCode === codeName) {
-        return false
-      }
+      // if (occ.occupantCode === codeName) {
+      //   return false
+      // }
       const occArrival = normalizeDate(occ.arrivalDate)
       const occDeparture = normalizeDate(occ.departureDate)
 
@@ -496,7 +496,7 @@ const RoomEdit = ({ guestHouse }) => {
 
       {/* Room select */}
       <FormControl
-        className="room-edit__roomName"
+        
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -510,6 +510,7 @@ const RoomEdit = ({ guestHouse }) => {
         <Select
           labelId="select-room-label"
           id="select-room"
+          className="room-edit__roomName"
           value={room}
           onChange={handleRoomChange}
           size="small"
