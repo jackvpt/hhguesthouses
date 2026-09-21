@@ -28,17 +28,6 @@
       flex-direction: row;
     }
   }
-  &__roomName {
-    flex: 1;
-
-    .MuiSelect-select {
-      padding: 8px;
-    }
-
-    &:hover {
-      background-color: $primary-color-4;
-    }
-  }
 
   &__departure-date {
     flex: 1;
