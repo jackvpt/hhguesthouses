@@ -69,7 +69,7 @@ const Login = () => {
   const [toast, setToast] = useState({ message: "", severity: "success" }) // Toast message state
   const [toastOpen, setToastOpen] = useState(false) // Toast visibility
   const [loginError, setLoginError] = useState(false) // Login failure indicator
-  const [rememberMe, setRememberMe] = useState(false) // Remember me checkbox
+  const [rememberMe, setRememberMe] = useState(true) // Remember me checkbox
   const [contactFormModalOpen, setContactFormModalOpen] = useState(false)
   const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false)
 
